@@ -1,18 +1,18 @@
 ---
-title: ACTIVITY
-keywords: ACTIVITY
+title: Call
+keywords: Call
 sidebar: crmweb_sidebar
-permalink: crm-nirvana-web/activity.html
+permalink: crm-nirvana-web/call.html
 folder: CRMWeb
 hide_sidebar: false
 comments: false
 ---
 
-# ACTIVITY
 
-## CALL
 
-### Create
+# CALL
+
+## Create
 
 You can create your Call by following the given steps:
 
@@ -38,13 +38,13 @@ Select **Add Call**.
 
 
 
-### List
+## List
 
 Click on **Activity → Calls**. The list of Call will display.
 
 ![](/images/activity-list.png)
 
-### Edit
+## Edit
 
 You can edit Calls by following the given steps:
 
