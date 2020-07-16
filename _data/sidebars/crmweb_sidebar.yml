@@ -25,5 +25,176 @@ entries:
     url: /crm-nirvana-web/introduction.html
     folderitems:
     -
+  - title: Dashboard
+    output: single
+    url: /crm-nirvana-web/dashboard.html
+    folderitems:
+    -
+  - title: Company
+    output: single
+    url: /crm-nirvana-web/company.html
+    folderitems:
+    -
+  - title: Campus
+    output: single
+    url: /crm-nirvana-web/campus.html
+    folderitems:
+    -
+  - title: Material Department
+    output: single
+    url: /crm-nirvana-web/material-department.html
+    folderitems:
+    -
+  - title: Tax Area
+    output: single
+    url: /crm-nirvana-web/tax-area.html
+    folderitems:
+    -
+  - title: Lead
+    output: single
+    url: /crm-nirvana-web/lead.html
+    folderitems:
+    -
+  - title: Prospect List
+    output: single
+    url: /crm-nirvana-web/prospect-list.html
+    folderitems:
+    -
+  - title: Opportunity 
+    output: single
+    url: /crm-nirvana-web/opportunity.html
+    folderitems:
+    -
+  - title: Customer
+    output: single
+    url: /crm-nirvana-web/customer.html
+    folderitems:
+    -
+  - title: General Party
+    output: single
+    url: /crm-nirvana-web/general-party.html
+    folderitems:
+    -
+  - title: Transporter
+    output: single
+    url: /crm-nirvana-web/transporter.html
+    folderitems:
+    -
+  - title: JV Partner
+    output: single
+    url: /crm-nirvana-web/jv-partner.html
+    folderitems:
+    -
+  - title: Customer Persons
+    output: single
+    url: /crm-nirvana-web/customer-person.html
+    folderitems:
+    -
+  - title: Activity
+    output: single
+    url: /crm-nirvana-web/activity.html
+    folderitems:
+    -
+  - title: Messages
+    output: single
+    url: /crm-nirvana-web/messages.html
+    folderitems:
+    -
+  - title: Meeting
+    output: single
+    url: /crm-nirvana-web/meeting.html
+    folderitems:
+    -
+  - title: Task
+    output: single
+    url: /crm-nirvana-web/task.html
+    folderitems:
+    -
+  - title: Email
+    output: single
+    url: /crm-nirvana-web/email.html
+    folderitems:
+    -
+  - title: Email Template
+    output: single
+    url: /crm-nirvana-web/email-template.html
+    folderitems:
+    -
+  - title: Campaigns
+    output: single
+    url: /crm-nirvana-web/campaigns.html
+    folderitems:
+    -
+  - title: Email Marketing
+    output: single
+    url: /crm-nirvana-web/email-marketing.html
+    folderitems:
+    -
+  - title: Call Marketing
+    output: single
+    url: /crm-nirvana-web/call-marketing.html
+    folderitems:
+    -
+  - title: Sales Enquiry
+    output: single
+    url: /crm-nirvana-web/sales-enquiry.html
+    folderitems:
+    -
+  - title: Project
+    output: single
+    url: /crm-nirvana-web/project.html
+    folderitems:
+    -
+  - title: Sales Order
+    output: single
+    url: /crm-nirvana-web/sales-order.html
+    folderitems:
+    -
+  - title: Inspection
+    output: single
+    url: /crm-nirvana-web/inspection.html
+    folderitems:
+    -
+  - title: Dispatch
+    output: single
+    url: /crm-nirvana-web/dispatch.html
+    folderitems:
+    -
+  - title: Field Report
+    output: single
+    url: /crm-nirvana-web/field-report.html
+    folderitems:
+    -
+  - title: Item Units
+    output: single
+    url: /crm-nirvana-web/item-units.html
+    folderitems:
+    -
+  - title: Measurement Property
+    output: single
+    url: /crm-nirvana-web/measurement-property.html
+    folderitems:
+    -
+  - title: Inbound Email
+    output: single
+    url: /crm-nirvana-web/inbound-email.html
+    folderitems:
+    -
+  - title: Outbound Email
+    output: single
+    url: /crm-nirvana-web/outbound-email.html
+    folderitems:
+    -
+  - title: Outbound SMS
+    output: single
+    url: /crm-nirvana-web/outbound-sms.html
+    folderitems:
+    -
+  - title: Teams
+    output: single
+    url: /crm-nirvana-web/teams.html
+    folderitems:
+    -
+ 
   
   
