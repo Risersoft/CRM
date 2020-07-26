@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create Dispatch by following the given steps:
+You can create field report by following the given steps:
 
 **STEP-1**: Click on **Enquiry → Reports→ Field Reports→ New Field Report**.
 

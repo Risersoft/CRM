@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create your Email by following the given steps:
+You can create your Email marketing by following the given steps:
 
 **STEP-1**: Click on **Activity → Campaigns → List Of Campaigns**. Select any one Campaign and Right Click on it.
 Select Add Email Marketing.

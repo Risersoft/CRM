@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create Dispatch by following the given steps:
+You can create measurement property by following the given steps:
 
 **STEP-1**: Click on **Master → Measurement Property→ New Measurement Property**. Measurement Property form will appear.
 

@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create your Meeting by following the given steps:
+You can create your task by following the given steps:
 
 **STEP-1**: Click on **Prospects → Lead → List Of Leads**.
 

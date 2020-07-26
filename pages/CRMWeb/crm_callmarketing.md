@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create your Email by following the given steps:
+You can create your call marketing by following the given steps:
 
 **STEP-1**: Click on **Activity → Call Marketings → New Call Marketing**. Call Marketing Form will appear.
 

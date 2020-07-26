@@ -22,7 +22,7 @@ You can create Inspection by following the given steps:
 
 ![](/images/inspection-detail.png)
 
-**STEP-4**: Click on **Save** button.
+**STEP-3**: Click on **Save** button.
 
 ## List
 

@@ -58,6 +58,19 @@ entries:
       output: web
       url: /crm-nirvana-web/measurement-property.html
       
+    - title: Inbound Email
+      output: web
+      url: /crm-nirvana-web/inbound-email.html
+ 
+    - title: Outbound Email
+      output: web
+      url: /crm-nirvana-web/outbound-email.html
+ 
+    - title: Outbound SMS
+      output: web
+      url: /crm-nirvana-web/outbound-sms.html
+      
+      
   - title: Orders
     output: web, pdf 
     folderitems: 
@@ -173,17 +186,7 @@ entries:
       output: web
       url: /crm-nirvana-web/call-marketing.html
  
-    - title: Inbound Email
-      output: web
-      url: /crm-nirvana-web/inbound-email.html
- 
-    - title: Outbound Email
-      output: web
-      url: /crm-nirvana-web/outbound-email.html
- 
-    - title: Outbound SMS
-      output: web
-      url: /crm-nirvana-web/outbound-sms.html
+    
  
 
  

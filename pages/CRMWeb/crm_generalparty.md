@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create transporter by following the given steps:
+You can create general party by following the given steps:
 
 **STEP-1**: Click on **Prospects → Contact → General Party → New General Party**. The General Party form will appear.
 

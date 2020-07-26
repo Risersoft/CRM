@@ -26,7 +26,7 @@ You can create Projects by following the given steps:
 
 
 
-**STEP-4**: Click on **Save** button.
+**STEP-3**: Click on **Save** button.
 
 ## List
 

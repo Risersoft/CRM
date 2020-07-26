@@ -12,7 +12,7 @@ comments: false
 
 ## Create
 
-You can create Dispatch by following the given steps:
+You can create item unit by following the given steps:
 
 **STEP-1**: Click on **Master → Item Units→ New Item Unit**. Item Unit form will appear.
 

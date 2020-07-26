@@ -52,9 +52,9 @@ You can create Sales Order by following the given steps:
 
 ![](/images/sales-order-hsn-master.png)
 
-**STEP-6**: Save Spare Order Form. And Redirect back To Sales Order Form. And Submit form by clicking on Save.
+**STEP-7**: Save Spare Order Form. And Redirect back To Sales Order Form. And Submit form by clicking on Save.
 
-**STEP-7**: Similarly, User can Add Repair Order Form. Fill Details, Add Hsn no. and after successfully saving redirect back to Sales Order.
+**STEP-8**: Similarly, User can Add Repair Order Form. Fill Details, Add Hsn no. and after successfully saving redirect back to Sales Order.
 
 ![](/images/sales-order-add-repair-form.png)
 

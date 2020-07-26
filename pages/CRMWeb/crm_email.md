@@ -18,7 +18,7 @@ You can create your Email by following the given steps:
 
 Select any one Lead and Right Click on it.
 
-Select **Add Task**.
+Select **Add Email**.
 
 
 ![](/images/email-create.png)
@@ -38,16 +38,16 @@ Select **Add Task**.
 
 ![](/images/email-assignment.png)
 
-**STEP-4**: Click on Send button to Send Email. By clicking on send button form will be saved first and then Email will be sent.
+**STEP-5**: Click on Send button to Send Email. By clicking on send button form will be saved first and then Email will be sent.
 
-**STEP-5**: Click on Track button to Track sent email status.
+**STEP-6**: Click on Track button to Track sent email status.
 
 
 ![](/images/email-track.png)
 
 
 
-**STEP-6**: Click on **Save** button to save email without sending it.
+**STEP-7**: Click on **Save** button to save email without sending it.
 
 >Note: You can Add Email from Opportunity, Customer, Person and Campaign using same above method.
 

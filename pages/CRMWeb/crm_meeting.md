@@ -28,7 +28,7 @@ Select Add Meeting.
 
 ![](/images/meeting-details.png)
 
-**STEP-3**:  Assign Messages to User or team by selecting single or multiple entries from the list.
+**STEP-3**:  Assign Mettings to User or team by selecting single or multiple entries from the list.
 
 **STEP-4**: Click on Save button.
 

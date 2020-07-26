@@ -40,7 +40,7 @@ You can create your Email Template by following the given steps:
 
 ## List
 
-Click on **Activity → Email Template→ List Of Email Templates**. The list of Email Templates will display.
+**STEP-5**: Click on **Activity → Email Template→ List Of Email Templates**. The list of Email Templates will display.
 
 
 

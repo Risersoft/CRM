@@ -39,7 +39,7 @@ You can create Sales Enquiry by following the given steps:
 
 ![](/images/sales-enquiry-assign-opportunity-comparative.png)
 
-**STEP-4**: Click on **Save** button.
+**STEP-5**: Click on **Save** button.
 
 
 ## List
