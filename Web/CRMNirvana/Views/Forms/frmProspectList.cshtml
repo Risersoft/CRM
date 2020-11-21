@@ -1,0 +1,734 @@
+﻿@using AuthorizationFramework.Proxies
+@using risersoft.shared.portable
+@using risersoft.app.mxform.crm
+@using risersoft.shared.portable.Proxies
+@using risersoft.shared.web.Extensions
+@using Newtonsoft.Json
+
+@model frmProspectListModel
+@{
+    ViewData["Title"] = "Prospect List";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link href="~/Content/component-chosen.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0rem 0rem 0.25rem;
+    }
+
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+
+
+    .customdiv {
+        width: 100%;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    select, textarea, input {
+        max-width: initial;
+    }
+
+    #dialogFilterUser {
+        display: none;
+    }
+
+    #dialogfilterTeam, dialogCustomer {
+        display: none;
+    }
+
+    .btn-default {
+        max-width: 540px !important;
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+    }
+
+    #loading {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Prospect List</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Lead Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Prospect List Detail</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                @*<div class="col-md-1"></div>*@
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Name<span style="color:red">*</span></label>
+                                                    <input type="text" class="form-control" name="txtname" ng-model="ProspectListInfo.Name" required ng-class="{true:'error'}[submitted()&& userform.txtname.$invalid]" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Description</label>
+                                                    <textarea class="form-control" ng-model="ProspectListInfo.Description" style="resize:none;height:38px;"></textarea>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Domain Name</label>
+                                                    <input type="text" class="form-control" ng-model="ProspectListInfo.DomainName" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @*<div class="col-md-1"></div>*@
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext"> List Type <span style="color:red">*</span></label>
+                                                    <select class="form-control" name="ddllisttype" ng-model="ProspectListInfo.ListTypeSelected" ng-options="type as type.descriptot for type in dsCombo.ListType track by type.codeword" required ng-class="{true:'error'}[submitted()&&userform.ddllisttype.$invalid]"> </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label style="background-color:transparent;padding:0px;border: none;margin-top: 30px;">
+                                                        <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="ProspectListInfo.DynamicList" />&nbsp;Dynamic Lists
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @*<div class="col-md-1"></div>*@
+                                                <div class="col-md-4" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Acc'">
+                                                    <button type="button" class="btn btn-default" id="btnaccredirect" ng-click="redirect('account')">Add Account</button>
+
+                                                    <button type="button" class="btn btn-default" id="btnacc" ng-click="cusitem('account')">Select Account</button>
+                                                </div>
+                                                <div class="col-md-4" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Pers'">
+                                                    <button type="button" class="btn btn-default" id="btnpersredirect" ng-click="redirect('person')">Add Persons</button>
+
+                                                    <button type="button" class="btn btn-default" id="btnpers" ng-click="cusitem('person')">Select Persons</button>
+                                                </div>
+                                                <div class="col-md-4" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Lead'">
+                                                    <button type="button" class="btn btn-default" id="btnleadredirect" ng-click="redirect('lead')">Add Lead</button>
+
+                                                    <button type="button" class="btn btn-default" id="btnlead" ng-click="cusitem('lead')">Select Lead</button>
+                                                </div>
+                                                <div class="col-md-4" ng-if="ProspectListInfo.ListTypeSelected.codeword =='User'">
+                                                    @*<button type="button" class="btn btn-default" id="btnuserredirect"  ng-click="redirect('user')">Add User</button>*@
+
+                                                    <button type="button" class="btn btn-default" id="btnuser" ng-click="cusitem('user')">Select User</button>
+
+                                                </div>
+                                            </div>
+                                            <!--For Account-->
+                                            <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Acc'">
+
+                                                <div class="col-md-12">
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Acc'" ng-show="Account.length==0">
+                                                        <p>No Records Found.</p>
+                                                    </div>
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Acc'" ng-hide="Account.length==0">
+                                                        <table class="table table-responsive">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>PartyName</th>
+                                                                    <th>City</th>
+                                                                    <th>Phone</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="row in model.GridViews.Account.MainGrid.myDS.dt">
+                                                                    <td>{{row.PartyName}}</td>
+                                                                    <td>{{row.SelCity}}</td>
+                                                                    <td>{{row.SelPhNum}}</td>
+                                                                    <td>
+                                                                        <a href="" style="z-index:35;position:relative;float:right" ng-click="delete($index,'Account')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <!--For Person-->
+                                            <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Pers'">
+
+                                                <div class="col-md-12">
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Pers'" ng-show="Person.length==0">
+                                                        <p>No Records Found.</p>
+                                                    </div>
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Pers'" ng-hide="Person.length==0">
+                                                        <table class="table table-responsive">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>FullName</th>
+                                                                    <th>Email</th>
+                                                                    <th>Phone</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="row in model.GridViews.Person.MainGrid.myDS.dt">
+                                                                    <td>{{row.FullName}}</td>
+                                                                    <td>{{row.Email}}</td>
+                                                                    <td>{{row.PrPhone}}</td>
+                                                                    <td>
+                                                                        <a href="" style="z-index:35;position:relative;float:right" ng-click="delete($index,'Person')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <!--For Lead-->
+                                            <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Lead'">
+
+                                                <div class="col-md-12">
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Lead'" ng-show="Lead.length==0">
+                                                        <p>No Records Found.</p>
+                                                    </div>
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='Lead'" ng-hide="Lead.length==0">
+                                                        <table class="table table-responsive">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Title</th>
+                                                                    <th>Email</th>
+                                                                    <th>Phone</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="row in model.GridViews.Lead.MainGrid.myDS.dt">
+                                                                    <td>{{row.Name}}</td>
+                                                                    <td>{{row.Title}}</td>
+                                                                    <td>{{row.Email1}}</td>
+                                                                    <td>{{row.PhoneMobile}}</td>
+                                                                    <td>
+                                                                        <a href="" style="z-index:35;position:relative;float:right" ng-click="delete($index,'Lead')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <!--For User-->
+                                            <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='User'">
+
+                                                <div class="col-md-12">
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='User'" ng-show="User.length==0">
+                                                        <p>No Records Found.</p>
+                                                    </div>
+                                                    <div class="row" ng-if="ProspectListInfo.ListTypeSelected.codeword =='User'" ng-hide="User.length==0">
+                                                        <table class="table table-responsive">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>UserName</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="row in model.GridViews.User.MainGrid.myDS.dt">
+                                                                    <td>{{row.UserName}}</td>
+                                                                    <td>
+                                                                        <a href="" style="z-index:35;position:relative;float:right" ng-click="delete($index,'User')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Assignment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading2">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading2">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="User" checked /> User
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="Team" /> Team
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='User'">
+                                            <label class="control-label labeltext">User :</label><br />
+                                            <select id="multiple" name="pros_mul" @*ng-change="clearfields(ProspectListInfo.AssignUserIDSelected,'user')"*@ ng-model="ProspectListInfo.AssignUserIDSelected" class="form-control form-control-chosen" ng-options="item.UserName for item in dsCombo.User track by item.UserID" data-placeholder="Please select..." multiple></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='Team'">
+                                            <label class="control-label labeltext">Team :</label><br />
+                                            <select id="single" name="pros_sin" @*ng-change="clearfields(ProspectListInfo.AssignTeamIDSelected,'team')"*@ ng-model="ProspectListInfo.AssignTeamIDSelected" class="form-control form-control-chosen" ng-options="item.Name for item in dsCombo.Team track by item.TeamID" data-placeholder="Please select..."></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                @Html.Partial("_SavePanel")
+            </div>
+        </div>
+
+        <div id="dialogFilterUser">
+            <div ng-repeat="row in user_dsCombo">
+                <input id="rbCustomer_{{row.UserID}}" type="radio" ng-model="$parent.SelectedUserId" value="{{row.UserID}}" /> {{row.UserName}}
+            </div>
+        </div>
+        <div id="dialogfilterTeam">
+            <div ng-repeat="row in team_dsCombo">
+                <input id="team_{{row.TeamID}}" type="radio" ng-model="$parent.SelectedTeamId" value="{{row.TeamID}}" />{{row.Name}}
+            </div>
+        </div>
+        <div id="dialogCustomer">
+
+        </div>
+    </form>
+
+</div>
+
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+            $('.form-control-chosen').chosen({
+                // Chosen options here
+                allow_single_deselect: false,
+                width: '100%'
+            });
+            //Delegate
+            $(document).delegate("#acMainGrid", "iggridrowselectorscheckboxstatechanged", function (evt, ui) {
+
+                $('#acMainGrid').igGridSelection('selectedRows', ui.row);
+                rui = ui;
+            });
+        });
+
+        rsApp.controller('FormController', function ($scope, $http, usSpinnerService) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.ProspectListInfo = $scope.model.dsForm.DT[0];
+
+                $scope.ValueLists = $scope.model.ValueLists;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+                $scope.Lead = $scope.model.GridViews.Lead.MainGrid.myDS.dt;
+                $scope.Account = $scope.model.GridViews.Account.MainGrid.myDS.dt;
+                $scope.Person = $scope.model.GridViews.Person.MainGrid.myDS.dt;
+                $scope.User = $scope.model.GridViews.User.MainGrid.myDS.dt;
+                $scope.GenerateDelPayload = function () {
+                    var payload = { EntityKey: 'ProspectList', ID: $scope.model.dsForm.DT[0].ProspectListID, AcceptWarning: false };
+                    return payload;
+                };
+
+                @Html.RenderLookup("ProspectListInfo", Model, Model.dsForm.Tables(0))
+
+                // Single And Multiple select-------
+                if (Array.isArray($scope.model.GridViews.Team.MainGrid.myDS.dt) && $scope.model.GridViews.Team.MainGrid.myDS.dt.length) {
+
+                    $scope.ProspectListInfo.AssignUserIDSelected = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                }
+                else {
+
+                    //Selected Assigend User in Edit Mode
+                    $scope.ProspectListInfo.AssignUserIDSelected = [$scope.ProspectListInfo.AssignUserIDSelected];
+                }
+                $scope.ProspectListInfo.AssignTeamIDSelected = [$scope.ProspectListInfo.AssignTeamIDSelected];
+
+                //multiple select
+                $scope.cusitem = function (keyval) {
+
+                    $scope.PLfmode = ($scope.model.frmMode == 2 ? false : true);
+                    if ($scope.model.frmMode == 1 && $scope.PLfmode) {
+                        $scope.IsInitializing = true;
+                        $scope.result = '';
+                        if (keyval == 'account') {
+                            var payload = { AccIDCsv: 0 };
+                        }
+                        else if (keyval == 'lead') {
+                            var payload = { LeadIDCsv: 0 };
+
+                        }
+                        else if (keyval == 'person') {
+                            var payload = { PersIDCsv: 0 };
+
+                        }
+                        else if (keyval == 'user') {
+                            var payload = { UserIDCsv: '00000000-0000-0000-0000-000000000000' };
+
+                        }
+                        var url = '/frmProspectList/ParamsModel' + location.search;
+                        payload = JSON.stringify(payload);
+                        var token = $('input[name="__RequestVerificationToken"]').val();
+                        var payloaddata = { key: keyval, Params: payload, __RequestVerificationToken: token };
+                        $.post(url, payloaddata, function (result) {
+
+                            $("#dialogCustomer").html(result);
+                            $("#dialogCustomer").dialog({
+                                autoOpen: false,
+                                modal: true,
+                                preventSelect: false,
+                                width: 1100,
+                                height: 600,
+                                overflow: 'scroll',
+                                buttons: [
+                                    {
+                                        text: "Save",
+                                        click: function (event, ui) {
+
+                                            var rowData = $("#acMainGrid").igGridSelection("selectedRows");
+                                            var allData = rui.grid.tmpDataSource.Records;
+
+                                            for (var i = 0; i < rowData.length; i++) {
+                                                if (keyval == 'account') {
+                                                    $scope.Account.push($.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0]);
+                                                    $scope.Lead = [];
+                                                    $scope.Person = [];
+                                                    $scope.User = [];
+                                                }
+                                                else if (keyval == 'lead') {
+                                                    $scope.Lead.push($.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0]);
+                                                    $scope.Account = [];
+                                                    $scope.Person = [];
+                                                    $scope.User = [];
+                                                }
+                                                else if (keyval == 'person') {
+                                                    $scope.Person.push($.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0]);
+                                                    $scope.Lead = [];
+                                                    $scope.Account = [];
+                                                    $scope.User = [];
+                                                }
+                                                else if (keyval == 'user') {
+                                                    $scope.User.push($.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0]);
+                                                    $scope.Lead = [];
+                                                    $scope.Person = [];
+                                                    $scope.Account = [];
+                                                }
+                                            }
+                                            $scope.$apply();
+
+                                            $(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        text: "Cancel",
+                                        click: function () {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                ]
+                            });
+                            $("#dialogCustomer").dialog("open");
+                        });
+                    }
+                    else {
+                        alert("You need to save first before proceeding");
+                    }
+                }
+
+            }
+
+            loadmodel($scope.model)
+            //Redirect
+            $scope.redirect = function (key) {
+                var url = '';
+                if (key == "account") {
+                    url = "frmPartyMain";
+
+                }
+                else if (key == "lead") {
+                    url = "frmLead";
+                }
+                else if (key == "person") {
+                    url = "frmGenPerson";
+                }
+
+                $scope.PLfrmmode = ($scope.model.frmMode == 2 ? false : true);
+                if ($scope.model.frmMode == 1 && $scope.PLfrmmode) {
+                    $scope.info = $scope.ProspectListInfo;
+                    if (key == "account") {
+                        $scope.info.partytype = 'C';
+                    }
+
+                    var base = '/App/Link' + location.search;
+                    var payload = { fKey: url, fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) } // fMode: 'acAddM',
+                    $.post(base, payload, function (result) {
+                        $scope.status = 'loaded';
+                        window.location = result;
+                    })
+                }
+                else {
+                    alert("Please Submit form Before Adding");
+                }
+            }
+
+            $scope.delete = function (index,val) {
+                $scope[val].splice(index, 1);
+            }
+
+            $scope.clearfields = function (key) {
+
+                if (key == 'Team') {
+
+                    $scope.ProspectListInfo.AssignUserIDSelected = [];
+                    $('#multiple').val([]);
+                    $('#multiple').trigger('chosen:updated');
+                    $scope.model.dsForm.DT[0].AssignTeamID = $scope.ProspectListInfo.AssignTeamIDSelected.TeamID;
+
+                    $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                    $scope.model.dsForm.DT[0].AssignUserSetID = null
+                    $scope.model.dsForm.DT[0].AssignUserID = null
+                }
+                if (key == 'User') {
+                    $scope.ProspectListInfo.AssignTeamIDSelected = null;
+                    $('#single').val([]);
+                    $('#single').trigger('chosen:updated');
+                    if ($scope.ProspectListInfo.AssignUserIDSelected != null && $scope.ProspectListInfo.AssignUserIDSelected != undefined) {
+                        var auLength = $scope.ProspectListInfo.AssignUserIDSelected.length;
+                        if (auLength > 1) {
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            for (var i = 0; i < $scope.ProspectListInfo.AssignUserIDSelected.length; i++) {
+
+                                $scope.model.GridViews.Team.MainGrid.myDS.dt.push({ UserID: $scope.ProspectListInfo.AssignUserIDSelected[i].UserID, UserName: $scope.ProspectListInfo.AssignUserIDSelected[i].UserName });
+
+                            }
+
+                            $scope.model.dsForm.DT[0].AssignUserID = null;
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                        else {
+                            // debugger;
+                            $scope.model.dsForm.DT[0].AssignUserID = $scope.ProspectListInfo.AssignUserIDSelected[0].UserID;
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            $scope.model.dsForm.DT[0].AssignUserSetID = null
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+
+                        }
+
+                    }
+                }
+
+            }
+
+            $scope.cleanupmodel = function (datamodel) {
+
+            };
+            $scope.calculatemodel = function () {
+                //empty function
+                var key = $scope.Selectedassig;
+                $scope.clearfields(key);
+
+                var keyval = $scope.ProspectListInfo.ListTypeSelected.codeword;
+                if (keyval == 'Acc') {
+                    for (var i = 0; i < $scope.Account.length; i++) {
+                        $scope.Account[i].IDField = "CustomerID";
+                        $scope.Account[i].IDValue = $scope.Account[i].CustomerID;
+                    }
+                }
+                else if (keyval == 'Lead') {
+                    for (var i = 0; i < $scope.Lead.length; i++) {
+                        $scope.Lead[i].IDField = "LeadID";
+                        $scope.Lead[i].IDValue = $scope.Lead[i].LeadID;
+                    }  }
+                else if (keyval == 'Pers') {
+                    for (var i = 0; i < $scope.Person.length; i++) {
+                        $scope.Person[i].IDField = "PersonID";
+                        $scope.Person[i].IDValue = $scope.Person[i].PersonID;
+                    }
+                }
+                else if (keyval == 'User') {
+                    for (var i = 0; i < $scope.User.length; i++) {
+                        $scope.User[i].IDField = "UserID";
+                        $scope.User[i].IDValue2 = $scope.User[i].UserID;
+                    }
+                }
+
+            };
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

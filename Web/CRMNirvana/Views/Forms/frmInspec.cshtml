@@ -1,0 +1,498 @@
+﻿@using AuthorizationFramework.Proxies
+@using risersoft.shared.portable
+@using risersoft.app.mxform.crm
+@using risersoft.shared.portable.Proxies
+@using risersoft.shared.web.Extensions
+@using Newtonsoft.Json
+
+@model frmInspecModel
+@{
+    ViewData["Title"] = "frmInspec";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/bootree.js" type="text/javascript"></script>
+<style type="text/css">
+    li {
+        list-style: none;
+    }
+
+        li > label {
+            margin-bottom: 0px !important;
+        }
+
+    .labeltext {
+        margin-bottom: 0px;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .customfile {
+        background-color: #e9ecef;
+        color: #495057;
+        border-radius: 0;
+        border: 1px solid #ced4da;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-weight: 400;
+        line-height: 1.5;
+        margin-right: 12px;
+    }
+
+    #progressc {
+        display: none;
+    }
+
+    .progress {
+        height: 25px !important;
+    }
+
+    .progressdis {
+        display: block !important;
+        width: 750px
+    }
+
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Inspection</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Basic</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Inspection Type</label>
+                                                <select type="text" class="form-control" ng-model="Inspect.InspecTypeSelected" ng-options="insp.descriptot for insp in dsCombo.InspecType track by insp.codeword "></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext"> Purpose</label>
+                                                <input type="text" class="form-control" ng-model="Inspect.Purpose" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext"> Offer No.</label>
+                                                <input type="text" class="form-control" ng-model="Inspect.OfferNum" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Offer Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="Inspect.OfferDate" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Call Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="Inspect.CallDate" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext"> No. Of Days Required</label>
+                                                <input type="text" class="form-control" ng-model="Inspect.DaysReq" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Status</label>
+                                                <select type="text" class="form-control" ng-model="Inspect.StatusNumSelected" ng-options="stat.statusText for stat in dsCombo.Status track by stat.StatusNum"></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Encl</label>
+                                                <input type="text" class="form-control" ng-model="Inspect.Encl" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Serial Nos. Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTwo">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Serial Nos.</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row" ng-show="SerialItem ==''">
+                                            <h6>No Data Available.</h6>
+                                        </div>
+                                        <div class="row" ng-show="SerialItem !==''">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Info-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="heading3">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Info </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapse3" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading3">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Inspection Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="Inspect.InspecDate" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Upto</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="Inspect.UptoDate" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Report Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="Inspect.ReportDate" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Campus</label>
+                                                <select class="form-control" ng-model="Inspect.CampusIDSelected" ng-options="camp.dispname for camp in dsCombo.Campus track by camp.campusid "></select>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            @*<div class="col-md-3">
+                                                    <label class="control-label labeltext">Inspection Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="Inspect.InspecDate" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Upto</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="Inspect.UptoDate" />
+                                                </div>*@
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Test Carried Out</label>
+                                                <input type="text" class="form-control" ng-model="Inspect.Tests" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Action To Be Taken (if any)</label>
+                                                <input type="text" class="form-control" ng-model="Inspect.Actions" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Document Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading4">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Document</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading4">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('DocList')">Add Document</a>
+
+                                            </div>
+                                        </div>
+                                        <div ng-repeat="rows in DocList">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Prefix</label>
+                                                    <input type="text" class="form-control" name="txtname" ng-model="rows.Prefix" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Document</label>
+                                                    <select class="form-control" ng-model="rows.docnameid" ng-options="doc.DocName for doc in dsCombo.DOC track by doc.docnameid "></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Postfix</label>
+                                                    <input type="text" class="form-control" ng-model="rows.Postfix" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Document No.</label>
+                                                    <input type="text" class="form-control" ng-model="rows.DocNumber" />
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext"> Document Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="rows.DocDate" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">No. Of Copies</label>
+                                                    <input type="text" class="form-control" ng-model="rows.numcopies" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Document Details</label>
+                                                    <input type="text" class="form-control" ng-model="rows.DocDetails" />
+
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Status</label>
+                                                    <select class="form-control" ng-model="rows.Statusnum" ng-options="stat.statustext for stat in dsCombo.BG2 track by stat.statusnum "></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Completion Letter</label>
+                                                    <input type="text" class="form-control" ng-model="rows.completionletter" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Completion Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="rows.completiondate" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Remarks</label>
+                                                    <textarea class="form-control" rows="1" ng-model="rows.remark"></textarea>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'DocList')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><hr /></div>
+                    </div>
+                </div>
+            </div>
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+
+            <div class="row">
+                @Html.Partial("_SavePanel")
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+
+            ////Delegate
+            //$(document).delegate("#acMainGrid", "iggridcellclick", function (evt, ui) {
+            //    $('#acMainGrid').igGridSelection('selectRow', ui.rowIndex);
+            //    rui = ui;
+            //});
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+                $scope.model = result;
+                $scope.Inspect = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.DocList = $scope.model.GridViews.Doc.MainGrid.myDS.dt;
+                $scope.SerialItem = $scope.model.GridViews.SerialItem.MainGrid.myDS.dt;
+                @Html.RenderLookup("Inspect", Model, Model.dsForm.Tables[0])
+            }
+
+            loadmodel($scope.model)
+
+            //Add row
+            $scope.Add = function (value) {
+                if (value == 'DocList') {
+                    $scope.DocList.push({});
+                }
+                else if (value == 'Spare') {
+                    $scope.Spare.push({});
+
+                }
+            }
+            //delete row
+            $scope.delete = function (index,value) {
+                if (value == 'DocList') {
+                    $scope.DocList.splice(index, 1);
+                }
+                else if (value == 'Spare'){
+                    $scope.Spare.splice(index, 1);
+
+                }
+            }
+
+            $scope.cleanupmodel = function (datamodel) {
+
+                };
+
+            $scope.calculatemodel = function () {
+
+            };
+
+            $scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+    <link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jqueryui")
+}
+
+
+

@@ -1,0 +1,31 @@
+﻿
+Enteries to be Done from Backend for Getting started with New Tenant.
+
+1- DocNumSys Entries, for generation of CampusCode.
+2- Users
+
+Enteries to be Done from UI.
+
+1- Company
+2- Campus
+3- Lead
+4- Customer
+5- Persons
+6- Opportunities
+7- Call
+8- TextMessage
+9- Meeting
+10- Email
+11- Invoice
+12- EmailMarketing
+13- CallMarketing
+14- EmailTemplate
+15- InboundEmail
+16 OutBoundEmail
+17- OutBoundSMS
+18- Campaign
+19- ProspectList
+20- SalesCase
+21- SalesTask
+22- Team
+

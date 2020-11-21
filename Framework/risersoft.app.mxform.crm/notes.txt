@@ -1,0 +1,6 @@
+﻿TODO:
+1)	Outbound Email: Manual send + EmailMarketing send + Track
+2)	TextMessage send
+3)	CallMarketing : Create call records
+4)	Inbound mail: Monitor email addresses
+5) frmAttribValue HTMLHelper

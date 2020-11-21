@@ -1,0 +1,334 @@
+﻿@using AuthorizationFramework.Proxies
+@using risersoft.shared.portable
+@using risersoft.app.mxform
+@using risersoft.shared.portable.Proxies
+@using risersoft.shared.web.Extensions
+@using Newtonsoft.Json
+
+@model frmMatDepModel
+@{
+    ViewData["Title"] = "frmMatDep";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Content/jQueryUI-datetimepicker.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<style type="text/css">
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    #btntender {
+        width: 19%;
+        float: right;
+        margin-right: 6px;
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #txttender {
+        width: 79% !important;
+        display: inline;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-right: none;
+        border-radius: 0.25rem;
+        background-color: white;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+    .custominline {
+        display: inline-block;
+        width: 21%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.2rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    input, select, textarea {
+        max-width: 540px;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+</style>
+
+
+<!--Canmpus Form-->
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Material Dept</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label labeltext">Code</label>
+                            <input type="text" class="form-control" ng-model="Mat.DepCode" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label labeltext">Name</label>
+                            <input type="text" class="form-control" ng-model="Mat.DepName" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext">Number</label>
+                            <input type="text" class="form-control" ng-model="Mat.UnitNum" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext">HR Dept</label>
+                            <select class="form-control" ng-model="Mat.DepIDSelected" ng-options="dep.DepName for dep in dsCombo.Dep track by dep.DepId"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Shop</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.Shop" /> Shop</label>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label labeltext">Incentive Group</label>
+                            <input type="text" class="form-control" ng-model="Mat.IncGroup" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Has Non-Confirmities</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.HasNC" /> Has Non-Confirmities</label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;"> Accepts WorkOrder</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.AcceptsWO" /> Accepts WorkOrder</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Accepts Mfg Order</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.AcceptsMO" /> Accepts Mfg Order</label>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Accepts Document</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.AcceptsDoc" /> Accepts Document</label>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Store</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.IsStore" /> Store</label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;"> Gives Requisition</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.GivesReq" /> Gives Requisition</label>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Incentives</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.HasIncentive" /> Incentives</label>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Has Test Lab</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.HasLab" /> Has Test Lab</label>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label labeltext">Lab Name</label>
+                            <input type="text" class="form-control" ng-model="Mat.LabName" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label labeltext"> Test Group</label>
+                            <input type="text" class="form-control" ng-model="Mat.TestGroup" />
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label labeltext" style="visibility:hidden;width: 100%;">Old</label>
+                            <label class="input-group-addon labeltext" style="background: transparent;border: none;"> <input type="checkbox" style="width:20px;" ng-model="Mat.OldShop" /> Old</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.Partial("_SavePanel")
+        </div>
+    </form>
+</div>
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+
+        });
+
+
+        rsApp.controller('FormController', function ($scope, $http) {
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.Mat = $scope.model.dsForm.DT[0];
+                $scope.dsCombo = $scope.model.dsCombo;
+                debugger;
+               $scope.ValueLists = $scope.model.ValueLists;
+
+                @Html.RenderLookup("Mat", Model, Model.dsForm.Tables(0))
+
+             };
+
+            loadmodel($scope.model);
+
+            $scope.cleanupmodel = function (datamodel) {
+
+            };
+            $scope.calculatemodel = function () {
+
+
+            };
+
+            $scope.visdel = false;@Html.RenderFile("~/scripts/rsforms.js")
+
+
+        }
+
+    )
+    </script>
+    <link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jqueryui")
+}
+

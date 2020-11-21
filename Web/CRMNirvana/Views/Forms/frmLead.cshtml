@@ -1,0 +1,716 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmLeadModel
+@{
+    ViewData["Title"] = "Lead";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link href="~/Content/component-chosen.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0rem 0rem 0.25rem;
+    }
+
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+
+
+    .customdiv {
+        width: 100%;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    select, textarea, input {
+        max-width: initial;
+    }
+
+    #dialogFilterUser {
+        display: none;
+    }
+
+    #dialogfilterTeam {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Lead</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Lead Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Lead Detail</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Lead Source</label>
+                                            <select class="form-control" ng-model="LeadInfo.LeadSourceSelected" ng-options="lead as lead.descriptot for lead in dsCombo.LeadSource track by lead.codeword">  </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Lead Source Description</label>
+                                            <textarea class="form-control" ng-model="LeadInfo.LeadSourceDescrip" style="resize:none;" rows="1"></textarea>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Reffered By</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.ReferedBY" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Title</label>
+                                            <select class="form-control" ng-model="LeadInfo.SalutationSelected" ng-options="sal as sal.descriptot for sal in dsCombo.Salutation track by sal.codeword">  </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">FirstName</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.FirstName" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Lastname<span style="color:red">*</span></label>
+                                            <input type="text" name="Lastname" class="form-control" ng-model="LeadInfo.LastName" required ng-class="{true: 'error'}[submitted() && userform.Lastname.$invalid]" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Title</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.Title" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Department</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.Department" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Contact Panel-->
+
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingTwo">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Contact Detail</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseTwo" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Office Phone</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.PhoneWork" numbers-only />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Mobile</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.PhoneMobile" numbers-only />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Home Phone</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.PhoneHome" numbers-only />
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Other Phone</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.PhoneOther" numbers-only />
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Fax</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.PhoneFax" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Email</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.Email1" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Alt Email</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.Email2" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Website</label>
+                                            <input type="text" class="form-control" ng-model="LeadInfo.Website" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Status</label>
+                                            <select class="form-control" ng-model="LeadInfo.Status" ng-options="stat as stat.descriptot for stat in dsCombo.Status track by stat.codeword"></select>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <label class="control-label labeltext"> Status Description</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+
+                                            <textarea type="text" class="form-control" ng-model="LeadInfo.StatusDescrip" rows="4"></textarea>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+
+                                                <div class="col-md-10">
+                                                    <label><input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="LeadInfo.EmailOptOut" />&nbsp;Email Opt Out</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <label><input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="LeadInfo.DoNotCall" />&nbsp;Do Not Call</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <label> <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="LeadInfo.InvalidEmail" />&nbsp;Invalid Email</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <label>SMS Opt in &nbsp;<select ng-model="LeadInfo.SmsOptInSelected" ng-options="sms as sms.DisplayText for sms in SMSOptIn.ValueListItems track by sms.DisplayText"></select></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Address-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading3">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">ADDRESS INFORMATION</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading3">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-10 labeltext" style="border-bottom:1px solid rgba(104, 150, 208, 0.63)">Primary Address</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Street</label>
+                                            <input class="form-control" ng-model="LeadInfo.PrimaryAddressStreet" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">City</label>
+                                            <input class="form-control" ng-model="LeadInfo.PrimaryAddressCity" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">PostalCode</label>
+                                            <input class="form-control" ng-model="LeadInfo.PrimaryAddressPostalCode" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Country</label>
+                                            <select class="form-control" ng-model="LeadInfo.PrimaryAddressCountrySelected" ng-options="coun.country for coun in dsCombo.CO track by coun.country" ng-change="changestatePrimary(LeadInfo.PrimaryAddressCountrySelected)"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">State</label>
+                                            <select class="form-control" ng-model="LeadInfo.PrimaryAddressStateSelected" ng-options="state as state.SubDivisionName for state in PrimaryAddressState track by state.SubDivisionName"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-10 labeltext" style="border-bottom:1px solid rgba(104, 150, 208, 0.63)">Alternate Address</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Street</label>
+                                            <input class="form-control" ng-model="LeadInfo.AltAddressStreet" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">City</label>
+                                            <input class="form-control" ng-model="LeadInfo.AltAddressCity" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">PostalCode</label>
+                                            <input class="form-control" ng-model="LeadInfo.AltAddressPostalCode" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Country</label>
+                                            <select class="form-control" ng-model="LeadInfo.AltAddressCountrySelected" ng-options="coun.country for coun in dsCombo.CO track by coun.country" ng-change="changestateAlt(LeadInfo.AltAddressCountrySelected)"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">State</label>
+                                            <select class="form-control" ng-model="LeadInfo.AltAddressStateSelected" ng-options="state as state.SubDivisionName for state in AltAddressState track by state.SubDivisionName"></select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Description-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingFour">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Description</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-7">
+                                            <label class="control-label labeltext">Description</label>
+                                            <textarea class="form-control" ng-model="LeadInfo.Description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><hr /></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Assignment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion5" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading5">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion5" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse5" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading5">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="User" checked /> User
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="Team" /> Team
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='User'">
+                                            <label class="control-label labeltext">User :</label><br />
+                                            <select id="multiple" name="lead_mul" @*ng-change="clearfields(LeadInfo.AssignUserIDSelected,'user')"*@ ng-model="LeadInfo.AssignUserIDSelected" class="form-control form-control-chosen" ng-options="item.UserName for item in dsCombo.User track by item.UserID" data-placeholder="Please select..." multiple></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='Team'">
+                                            <label class="control-label labeltext">Team :</label><br />
+                                            <select id="single" name="lead_sin" @*ng-change="clearfields(LeadInfo.AssignTeamIDSelected,'team')"*@ ng-model="LeadInfo.AssignTeamIDSelected" class="form-control form-control-chosen" ng-options="item.Name for item in dsCombo.Team track by item.TeamID" data-placeholder="Please select..."></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" ng-show="model.vBag.prospectlistid" id="btnbacktoProspectlist" ng-click="backtoprev()" style="margin-bottom: 16px; color: #fff;background: #50a74f !important;border-color: #0c940b !important;" Class="btn btn-primary btnf">Go To Prospect List</button>
+                </div>
+                <div class="col-md-9">
+                    @Html.Partial("_SavePanel")
+                </div>
+            </div>
+            @*<div class="row">
+                    @Html.Partial("_SavePanel")
+
+                </div>*@
+
+        </div>
+        @*<div id="dialogFilterfile">
+                <div ng-repeat="row in Division">
+
+                   <input type="checkbox" ng-model="row.DivisionCode" />   {{row.DivisionName}}
+
+                </div>
+            </div>*@
+
+        <div id="dialogFilterUser">
+            <div ng-repeat="row in user_dsCombo">
+                <input id="rbCustomer_{{row.UserID}}" type="radio" ng-model="$parent.SelectedUserId" value="{{row.UserID}}" /> {{row.UserName}}
+            </div>
+        </div>
+        <div id="dialogfilterTeam">
+            <div ng-repeat="row in team_dsCombo">
+                <input id="team_{{row.TeamID}}" type="radio" ng-model="$parent.SelectedTeamId" value="{{row.TeamID}}" />{{row.Name}}
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+
+@section botscripts{
+
+
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+            $('.form-control-chosen').chosen({
+                // Chosen options here
+                allow_single_deselect: false,
+                width: '100%'
+            });
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.LeadInfo = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.LeadSource = $scope.model.ValueLists.LeadSource;
+                $scope.Salutation = $scope.model.ValueLists.Salutation;
+                $scope.SMSOptIn = $scope.model.ValueLists.SMSOptIn;
+                $scope.Status = $scope.model.ValueLists.Status;
+                //For delete button
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+
+                $scope.GenerateDelPayload = function () {
+                    var payload = { EntityKey: 'Lead', ID: $scope.model.dsForm.DT[0].LeadID, AcceptWarning: false };
+                    return payload;
+                };
+
+                @Html.RenderLookup("LeadInfo", Model, Model.dsForm.Tables(0))
+
+                // Single And Multiple select-------
+                if (Array.isArray($scope.model.GridViews.Team.MainGrid.myDS.dt) && $scope.model.GridViews.Team.MainGrid.myDS.dt.length) {
+
+                    $scope.LeadInfo.AssignUserIDSelected = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                }
+                else {
+                    //Selected Assigend User in Edit Mode
+                    $scope.LeadInfo.AssignUserIDSelected = [$scope.LeadInfo.AssignUserIDSelected];
+                }
+                $scope.LeadInfo.AssignTeamIDSelected = [$scope.LeadInfo.AssignTeamIDSelected];
+
+
+
+                $scope.changestatePrimary = function (id) {
+                    $scope.PrimaryAddressState = [];
+
+                    if (id) {
+                        //debugger;
+                        $scope.PrimaryAddressState = $.grep($scope.dsCombo.SU, function (item, index) { return item.countrycode === id.countrycode });
+
+                    }
+
+                };
+                $scope.changestateAlt = function (id) {
+
+                    $scope.AltAddressState = [];
+                    if (id) {
+                        //debugger;
+                        $scope.AltAddressState= $.grep($scope.dsCombo.SU, function (item, index) { return item.countrycode === id.countrycode });
+
+                    }
+
+                };
+
+                $scope.changestatePrimary($scope.LeadInfo.PrimaryAddressCountrySelected);
+                $scope.changestateAlt($scope.LeadInfo.AltAddressCountrySelected);
+
+            }
+
+            loadmodel($scope.model)
+            // redirect back to Prospect List
+            $scope.backtoprev = function () {
+
+                $scope.info = $scope.model.dsForm.DT[0];
+                $scope.PropertyNameSelected = $scope.model.vBag.prospectlistid;
+                var base = '/App/Link' + location.search;
+                var payload = { fKey: 'frmProspectList', fMode: 'acEditM', IDX: $scope.PropertyNameSelected, rowData: JSON.stringify($scope.info) }; // for edit
+                $.post(base, payload, function (result) {
+                    $scope.status = 'loaded';
+                    window.location = result;
+                });
+            }
+
+               $scope.clearfields = function (key) {
+
+                if (key == 'Team') {
+
+                    $scope.LeadInfo.AssignUserIDSelected = [];
+                    $('#multiple').val([]);
+                    $('#multiple').trigger('chosen:updated');
+                    $scope.model.dsForm.DT[0].AssignTeamID = $scope.LeadInfo.AssignTeamIDSelected.TeamID;
+
+                    $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                    $scope.model.dsForm.DT[0].AssignUserSetID = null
+                    $scope.model.dsForm.DT[0].AssignUserID = null
+                }
+                if (key == 'User') {
+                    $scope.LeadInfo.AssignTeamIDSelected = null;
+                    $('#single').val([]);
+                    $('#single').trigger('chosen:updated');
+                    if ($scope.LeadInfo.AssignUserIDSelected != null && $scope.LeadInfo.AssignUserIDSelected != undefined) {
+                        var auLength = $scope.LeadInfo.AssignUserIDSelected.length;
+                        if (auLength > 1) {
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            for (var i = 0; i < $scope.LeadInfo.AssignUserIDSelected.length; i++) {
+
+                                $scope.model.GridViews.Team.MainGrid.myDS.dt.push({ UserID: $scope.LeadInfo.AssignUserIDSelected[i].UserID, UserName: $scope.LeadInfo.AssignUserIDSelected[i].UserName });
+
+                            }
+
+                            $scope.model.dsForm.DT[0].AssignUserID = null;
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                        else {
+                            // debugger;
+                            $scope.model.dsForm.DT[0].AssignUserID = $scope.LeadInfo.AssignUserIDSelected[0].UserID;
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            $scope.model.dsForm.DT[0].AssignUserSetID = null
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                    }
+                }
+            }
+
+            $scope.cleanupmodel = function (datamodel) {
+                //debugger;
+                //datamodel.GridViews.SOVal.MainGrid.myDS.dt = [];
+            };
+            $scope.calculatemodel = function () {
+                //empty function
+                var keyval = $scope.Selectedassig;
+                $scope.clearfields(keyval);
+
+            };
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

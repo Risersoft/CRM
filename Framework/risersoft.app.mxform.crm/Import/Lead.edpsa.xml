@@ -1,0 +1,305 @@
+﻿<Schema connectioncode="" connectiontype="Source" createdby="user">
+  <RecordTypes>
+    <RecordType Name="Lead Template">
+      <Fields>
+        <Field Name="LeadSource">
+          <Name>LeadSource</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Lead Source</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="LeadSourceDescrip">
+          <Name>LeadSourceDescrip</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Lead Source Description</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Department">
+          <Name>Department</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Department</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="ReferedBY">
+          <Name>ReferedBY</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Reffered By</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Salutation">
+          <Name>Salutation</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Name Title</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="FirstName">
+          <Name>FirstName</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>First Name</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="LastName">
+          <Name>LastName</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Last Name</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PhoneWork">
+          <Name>PhoneWork</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Office Phone</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PhoneMobile">
+          <Name>PhoneMobile</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Mobile Phone</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PhoneHome">
+          <Name>PhoneHome</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Home Phone</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PhoneOther">
+          <Name>PhoneOther</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Other Phone</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PhoneFax">
+          <Name>PhoneFax</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Fax</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="SmsOptIn">
+          <Name>SmsOptIn</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>SMS Opt In</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Status">
+          <Name>Status</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Status</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="StatusDescrip">
+          <Name>StatusDescrip</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Status description</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Email1">
+          <Name>Email1</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Email Address</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Email2">
+          <Name>Email2</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Other Email Address</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Website">
+          <Name>Website</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Website</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PrimaryAddressStreet">
+          <Name>PrimaryAddressStreet</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Primary Street</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PrimaryAddressCity">
+          <Name>PrimaryAddressCity</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Primary City</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PrimaryAddressState">
+          <Name>PrimaryAddressState</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Primary State</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PrimaryAddressPostalCode">
+          <Name>PrimaryAddressPostalCode</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Primary Postal Code</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="PrimaryAddressCountry">
+          <Name>PrimaryAddressCountry</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Primary Country</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="True" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AltAddressStreet">
+          <Name>AltAddressStreet</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Alternate Street</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AltAddressCity">
+          <Name>AltAddressCity</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Alternate City</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AltAddressState">
+          <Name>AltAddressState</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Alternate State</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AltAddressPostalCode">
+          <Name>AltAddressPostalCode</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Alternate Postal Code</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AltAddressCountry">
+          <Name>AltAddressCountry</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Alternate Country</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AssignUserID">
+          <Name>AssignUserID</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Assigned To User</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AssignTeamID">
+          <Name>AssignTeamID</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Assigned To Team</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="AssignUserSetID">
+          <Name>AssignUserSetID</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Team Members</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="Description">
+          <Name>Description</Name>
+          <RecordType>Lead Template</RecordType>
+          <Description>Description</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="1" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="WarningCode">
+          <Name>WarningCode</Name>
+          <RecordType>Outward Transactions Template</RecordType>
+          <Description>Warning Codes</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="2" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="WarningText">
+          <Name>WarningText</Name>
+          <RecordType>Outward Transactions Template</RecordType>
+          <Description>Warning Descriptions</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="2" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="ErrorCode">
+          <Name>ErrorCode</Name>
+          <RecordType>Outward Transactions Template</RecordType>
+          <Description>Error Codes</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="2" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+        <Field Name="ErrorText">
+          <Name>ErrorText</Name>
+          <RecordType>Outward Transactions Template</RecordType>
+          <Description>Error Descriptions</Description>
+          <DataType>Text</DataType>
+          <Size>0</Size>
+          <Config DefaultExpr="" Level="2" Mandatory="False" PadChar=" " Alignment="Left" />
+        </Field>
+      </Fields>
+      <ValidationExpressions />
+      <Name>Lead Template</Name>
+      <Config Ignore="False" IgnoreRows="2" />
+    </RecordType>
+    <RecordType Name="Look_Up_Values">
+      <Fields />
+      <ValidationExpressions />
+      <Name>Look_Up_Values</Name>
+      <Config Ignore="False" />
+    </RecordType>
+  </RecordTypes>
+</Schema>

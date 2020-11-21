@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{925C7216-73BC-45AF-9BEE-9B9B87EFC00A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>risersoft.app.crm</RootNamespace>
+    <AssemblyName>risersoft.app.crm</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>risersoft.app.crm.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug2|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>risersoft.app.sales.xml</DocumentationFile>
+    <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>risersoft.app.crm.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Debug2'">
+      <ItemGroup>
+        <ProjectReference Include="..\..\..\Framework\Win\risersoft.shared.win\risersoft.shared.win.vbproj">
+          <Project>{6e272ec6-dc22-46f8-bb94-40780818737b}</Project>
+          <Name>risersoft.shared.win</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.shared\risersoft.shared.vbproj">
+          <Project>{678f7367-71bb-425c-a388-b45d25822ca3}</Project>
+          <Name>risersoft.shared</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.shared.dotnetfx\risersoft.shared.dotnetfx.vbproj">
+          <Project>{3dc06d9d-b9b9-414c-b83c-2b9eeaaf5ea6}</Project>
+          <Name>risersoft.shared.dotnetfx</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.app.mxent\risersoft.app.mxent.vbproj">
+          <Project>{2693738b-de66-476d-afda-fd39e4579f27}</Project>
+          <Name>risersoft.app.mxent</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Win\risersoft.app.shared\risersoft.app.shared.vbproj">
+          <Project>{45cc2480-572f-409a-8c7a-30a31d6fe513}</Project>
+          <Name>risersoft.app.shared</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.shared.db\risersoft.shared.db.vbproj">
+          <Project>{093E113D-C44C-404E-9B03-E301DD4DA319}</Project>
+          <Name>risersoft.shared.db</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.shared.lm\risersoft.shared.lm.csproj">
+          <Project>{2A4A24C0-7357-4EA4-84B8-642F07B1FC5F}</Project>
+          <Name>risersoft.shared.lm</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.shared.portable\risersoft.shared.portable.csproj">
+          <Project>{1742c540-4c7d-4397-8a46-f6a6ade33c5e}</Project>
+          <Name>risersoft.shared.portable</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\..\..\Framework\Shared\risersoft.shared.console\risersoft.shared.agent.csproj">
+          <Project>{39e6633f-2d15-4a82-a033-ac89108616e4}</Project>
+          <Name>risersoft.shared.agent</Name>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="risersoft.app.mxent">
+          <HintPath>..\..\..\common\depends\risersoft.app.mxent.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.app.shared">
+          <HintPath>..\..\..\common\depends\risersoft.app.shared.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared">
+          <HintPath>..\..\..\common\depends\risersoft.shared.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared.dotnetfx">
+          <HintPath>..\..\..\common\depends\risersoft.shared.dotnetfx.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared.db">
+          <HintPath>..\..\..\common\depends\risersoft.shared.db.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared.lm">
+          <HintPath>..\..\..\common\depends\risersoft.shared.lm.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared.win">
+          <HintPath>..\..\..\common\depends\risersoft.shared.win.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared.portable">
+          <HintPath>..\..\..\common\depends\risersoft.shared.portable.dll</HintPath>
+        </Reference>
+        <Reference Include="risersoft.shared.agent">
+          <HintPath>..\..\..\common\depends\risersoft.shared.agent.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Reference Include="Infragistics.Shared,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.Design">
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.Misc,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.Misc.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinCalcManager,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.UltraWinCalcManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinEditors,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.UltraWinEditors.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinGrid,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.UltraWinGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinTabControl,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.UltraWinTabControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinTree,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.UltraWinTree.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Win,Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Common\lib\Infragistics\Infragistics.Win.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Compression.Base, Version=18.3460.0.47, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\ERPv2\packages\Syncfusion.Compression.Base.18.3.0.47\lib\net46\Syncfusion.Compression.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.DocIO.Base, Version=18.3460.0.47, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\ERPv2\packages\Syncfusion.DocIO.Wpf.18.3.0.47\lib\net46\Syncfusion.DocIO.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=18.3460.0.47, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\ERPv2\packages\Syncfusion.Licensing.18.3.0.47\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.OfficeChart.Base, Version=18.3460.0.47, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\ERPv2\packages\Syncfusion.OfficeChart.Base.18.3.0.47\lib\net46\Syncfusion.OfficeChart.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfRichTextBoxAdv.WPF, Version=18.3460.0.47, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\ERPv2\packages\Syncfusion.SfRichTextBoxAdv.WPF.18.3.0.47\lib\net46\Syncfusion.SfRichTextBoxAdv.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.WPF, Version=18.3460.0.47, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\..\..\ERPv2\packages\Syncfusion.Shared.WPF.18.3.0.47\lib\net46\Syncfusion.Shared.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="risersoft.app.config" />
+    <Import Include="risersoft.app.mxform.crm" />
+    <Import Include="risersoft.app.shared" />
+    <Import Include="risersoft.shared" />
+    <Import Include="risersoft.shared.dotnetfx" />
+    <Import Include="risersoft.shared.win" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmCall.Designer.vb">
+      <DependentUpon>frmCall.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCall.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCallMarketing.Designer.vb">
+      <DependentUpon>frmCallMarketing.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCallMarketing.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCampaign.Designer.vb">
+      <DependentUpon>frmCampaign.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCampaign.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConvertLeadOpp.Designer.vb">
+      <DependentUpon>frmConvertLeadOpp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmConvertLeadOpp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFieldReport.designer.vb">
+      <DependentUpon>frmFieldReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFieldReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFieldReportItem.designer.vb">
+      <DependentUpon>frmFieldReportItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFieldReportItem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInvoiceItemCRM.designer.vb">
+      <DependentUpon>frmInvoiceItemCRM.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmInvoiceItemCRM.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInvoiceSaleCRM.designer.vb">
+      <DependentUpon>frmInvoiceSaleCRM.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmInvoiceSaleCRM.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLead.Designer.vb">
+      <DependentUpon>frmLead.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmLead.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOpportunity.Designer.vb">
+      <DependentUpon>frmOpportunity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOpportunity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOutBoundSMS.Designer.vb">
+      <DependentUpon>frmOutBoundSMS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOutBoundSMS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProspectList.Designer.vb">
+      <DependentUpon>frmProspectList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProspectList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSalesCase.Designer.vb">
+      <DependentUpon>frmSalesCase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSalesCase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEmail.Designer.vb">
+      <DependentUpon>frmEmail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEmail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEmailMarketing.Designer.vb">
+      <DependentUpon>frmEmailMarketing.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEmailMarketing.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEmailTemplate.Designer.vb">
+      <DependentUpon>frmEmailTemplate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEmailTemplate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInBoundEmail.Designer.vb">
+      <DependentUpon>frmInBoundEmail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmInBoundEmail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMeeting.Designer.vb">
+      <DependentUpon>frmMeeting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMeeting.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTeam.Designer.vb">
+      <DependentUpon>frmTeam.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTeam.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTextMessage.Designer.vb">
+      <DependentUpon>frmTextMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTextMessage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOutBoundEmail.Designer.vb">
+      <DependentUpon>frmOutBoundEmail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOutBoundEmail.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSalesTask.Designer.vb">
+      <DependentUpon>frmSalesTask.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSalesTask.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmCall.resx">
+      <DependentUpon>frmCall.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCallMarketing.resx">
+      <DependentUpon>frmCallMarketing.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCampaign.resx">
+      <DependentUpon>frmCampaign.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConvertLeadOpp.resx">
+      <DependentUpon>frmConvertLeadOpp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFieldReport.resx">
+      <DependentUpon>frmFieldReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFieldReportItem.resx">
+      <DependentUpon>frmFieldReportItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInvoiceItemCRM.resx">
+      <DependentUpon>frmInvoiceItemCRM.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInvoiceSaleCRM.resx">
+      <DependentUpon>frmInvoiceSaleCRM.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLead.resx">
+      <DependentUpon>frmLead.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOpportunity.resx">
+      <DependentUpon>frmOpportunity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOutBoundSMS.resx">
+      <DependentUpon>frmOutBoundSMS.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProspectList.resx">
+      <DependentUpon>frmProspectList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSalesCase.resx">
+      <DependentUpon>frmSalesCase.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEmail.resx">
+      <DependentUpon>frmEmail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEmailMarketing.resx">
+      <DependentUpon>frmEmailMarketing.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEmailTemplate.resx">
+      <DependentUpon>frmEmailTemplate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInBoundEmail.resx">
+      <DependentUpon>frmInBoundEmail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMeeting.resx">
+      <DependentUpon>frmMeeting.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOutBoundEmail.resx">
+      <DependentUpon>frmOutBoundEmail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSalesTask.resx">
+      <DependentUpon>frmSalesTask.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTeam.resx">
+      <DependentUpon>frmTeam.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTextMessage.resx">
+      <DependentUpon>frmTextMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Forms\risersoft.app.mxform\risersoft.app.mxform.vbproj">
+      <Project>{0e5882d2-22b1-4716-99df-680a77ae3e19}</Project>
+      <Name>risersoft.app.mxform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Windows\risersoft.app.config\risersoft.app.config.vbproj">
+      <Project>{6e72e896-afce-497c-95ed-676f43b862f1}</Project>
+      <Name>risersoft.app.config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\risersoft.app.mxform.crm\risersoft.app.mxform.crm.vbproj">
+      <Project>{0d52b103-e9cc-43fd-9986-bd4a1a78e8d7}</Project>
+      <Name>risersoft.app.mxform.crm</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

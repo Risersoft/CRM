@@ -1,0 +1,457 @@
+﻿@using AuthorizationFramework.Proxies
+@using risersoft.shared.cloud.common
+@using risersoft.app.mxform
+@using Newtonsoft.Json
+@using risersoft.shared.web.Extensions
+
+@model frmSpecs2Model
+@{
+    ViewData["Title"] = "Specs";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+
+<style type="text/css">
+    .table thead th {
+        color: #52caff;
+        vertical-align: bottom;
+        border-bottom: 1px solid #e6e8e8;
+    }
+
+    .table th {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: none;
+    }
+
+    .table td {
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+        vertical-align: top;
+        border-top: 1px solid #e6e8e8;
+    }
+
+    .table th .inptable {
+        margin-bottom: 0px !important;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    #btntender {
+        width: 19%;
+        float: right;
+        margin-right: 6px;
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #txttender {
+        width: 79% !important;
+        display: inline;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-right: none;
+        border-radius: 0.25rem;
+        background-color: white;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+    .custominline {
+        display: inline-block;
+        width: 21%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <input type="hidden" id="hdnData" />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Specs</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div Class="row">
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Specification No.</label>
+                            <input type="text" class="form-control" ng-model="Spec.SpecNum" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Revision No.</label>
+                            <input type="text" class="form-control" ng-model="Spec.RevNum" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Version No.</label>
+                            <input type="text" class="form-control" ng-model="Spec.VMSIndex" />
+
+                        </div>
+
+                    </div>
+
+                    <div class="row"><hr /></div>
+
+                </div>
+            </div>
+
+            <!--VMS-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionWork" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingWork">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionWork" href="#collapseWork" aria-expanded="true" aria-controls="collapseWork">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">VMS</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseWork" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingWork">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label class="control-label labeltext">Specification Version Management System</label>
+                                                </div>
+                                            </div>
+                                            <!--Standard-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapsest" aria-expanded="true" aria-controls="collapsest" style="border-bottom:1px solid #d6cfcf">
+                                                    <label>Standard Specification</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapsest">
+                                                <div class="row" style="margin-top:15px;">
+                                                    <input type="button" value="Add" class="btn-primary btn-default" style="margin-right:10px;" />
+                                                    <input type="button" value="New" class="btn-primary btn-default" ng-click="RedirectToStSpec()" />
+
+                                                </div>
+                                                <div class="row">
+
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+                                            <!--Specification-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapsevendor" aria-expanded="true" aria-controls="collapsevendor" style="border-bottom:1px solid #d6cfcf">
+                                                    <label>Specification</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapsevendor">
+                                                <div class="row">
+                                                    <div Class="col-md-12">
+                                                        <Label Class="control-label labeltext">Our Specs</Label>
+                                                        <input type="text" ng-model="Spec.KanSpecs" Class="form-control" style="max-width:100% !important;" />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <Label Class="control-label labeltext">Supplier Specs</Label>
+                                                        <input type="text" ng-model="Spec.SuppSpec" Class="form-control" style="max-width:100% !important;" />
+                                                    </div>
+                                                    <div Class="col-md-12">
+                                                        <Label Class="control-label labeltext">Packing</Label>
+                                                        <input type="text" ng-model="Spec.Packing" Class="form-control" style="max-width:100% !important;" />
+                                                    </div>
+                                                    <div Class="col-md-6">
+                                                        <Label Class="control-label labeltext">Make</Label>
+                                                        <input type="text" ng-model="Spec.Make" Class="form-control" style="max-width:100% !important;" />
+                                                    </div>
+                                                    <div Class="col-md-6">
+                                                        <Label Class="control-label labeltext" style="visibility:hidden;width:100%">specification</Label>
+                                                        <label class="input-group-addon" style="background-color:transparent;border:none;"><input type="checkbox" ng-model="Spec.IsCurrent" />Specification Is Current</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+                                            <!--Bill Of Material-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapsematerial" aria-expanded="true" aria-controls="collapsematerial" style="border-bottom:1px solid #d6cfcf">
+                                                    <label>Bill Of Material</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapsematerial">
+                                                <div class="row">
+                                                    <input type="button" class="btn btn-default" value="Add Version" />
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+                                            <!--Spec Summary-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapsesummary" aria-expanded="true" aria-controls="collapsesummary" style="border-bottom:1px solid #d6cfcf">
+                                                    <label>Spec Summary</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapsesummary">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="control-label labeltext">Version Spec Summary</label>
+                                                        <input type="text" class="form-control" style="max-width:100%" ng-model="Spec.SpecMatSpec" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+
+                                            <!--Vendor-->
+                                            @*<div class="row">
+                                                    <div class="col-md-12" data-toggle="collapse" href="#collapsevendor{{$index}}" aria-expanded="true" aria-controls="collapsevendor{{$index}}" style="border-bottom:1px solid #d6cfcf">
+                                                        <label class="labeltext">Vendor</label>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-collapse collapse show" id="collapsevendor{{$index}}">
+                                                    <div class="row">
+                                                        <div Class="col-md-3">
+                                                            <Label Class="control-label labeltext">Contract Started From</Label>
+                                                            <input type="text" ng-model="row.HRContractStart" Class="form-control my-datepicker" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <Label Class="control-label labeltext">Contract Ended On</Label>
+                                                            <input type="text" ng-model="row.HRContractEnd" Class="form-control my-datepicker" />
+                                                        </div>
+                                                        <div Class="col-md-3">
+                                                            <Label Class="control-label labeltext">Nature of Work</Label>
+                                                            <input type="text" ng-model="row.WorkNature" Class="form-control" />
+                                                        </div>
+                                                        <div Class="col-md-3">
+                                                            <Label Class="control-label labeltext">% Service Charges</Label>
+                                                            <input type="text" ng-model="row.HRContractSvcChgPer" Class="form-control" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row"><hr /></div>*@
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" @* ng-show="model.frmMode==1 && visbacktoform" *@ id="btnbacktosalesorder" ng-click="backtoprev()" style="margin-bottom: 16px; color: #fff;background: #50a74f !important;border-color: #0c940b !important;" Class="btn btn-primary btnf">Back To Item</button>
+                </div>
+                <div class="col-md-9">
+                    @Html.Partial("_SavePanel")
+                </div>
+
+            </div>
+
+
+        </div>
+        <div id="dialogCustomer">
+
+        </div>
+    </form>
+</div>
+
+@section botscripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+        });
+        rsApp.controller('FormController', function ($scope, $http) {
+            $scope.model = JSON.parse($("#model_json").val());
+            //$scope.data = "This is data come from json";
+
+            var loadmodel = function (result) {
+                $scope.model = result;
+                debugger;
+                $scope.Spec = $scope.model.dsForm.DT[0];
+                if ($scope.model.pViewState.ContextRow.valuebag.NextIndex) {
+                    $scope.Spec.SpecNum = $scope.model.pViewState.ContextRow.valuebag.NextIndex;
+
+                }
+
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.ValueLists = $scope.model.ValueLists;
+                 @Html.RenderLookup("Spec", Model, Model.dsForm.Tables(0))
+
+
+                $scope.item = function () {
+
+                    //$scope.party.push({});
+                    //$scope.sub.push({});
+                };
+
+
+                $scope.delete = function (index) {
+                    $scope.party.splice(index, 1);
+                    $scope.sub.splice(index, 1);
+
+                };
+
+
+            }
+            loadmodel($scope.model);
+            $scope.calculateAll = function () {
+
+            };
+            $scope.RedirectToStSpec = function () {
+                //$scope.ItemMode = ($scope.model.frmMode == 2 ? false : true);
+                //if ($scope.model.frmMode == 1 && $scope.ItemMode) {
+                $scope.info = $scope.Spec;
+                //$scope.info.WOTypeSelected = $scope.WO.WOTypeSelected.codeword;
+                var base = '/App/Link' + location.search;
+                var payload = { fKey: 'frmStSpec', fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) }
+                $.post(base, payload, function (result) {
+                    $scope.status = 'loaded';
+                    window.location = result;
+                });
+                //}
+                //else {
+                //    alert("Please Submit form Before Adding HSN");
+                //}
+            }
+
+
+            $scope.cleanupmodel = function (datamodel) {
+                //empty function
+            };
+            $scope.calculatemodel = function () {
+                debugger;
+                $scope.Spec.SubCATID = null;
+                $scope.Spec.SubCATIDSelected = null;
+                // $scope.model.pViewState.ContextRow.valuebag.SubCATID = null;
+            };
+
+            $scope.visdel = false;
+            $scope.visdelete = false;
+            @Html.RenderFile("~/scripts/rsforms.js")
+        });
+    </script>
+}
+

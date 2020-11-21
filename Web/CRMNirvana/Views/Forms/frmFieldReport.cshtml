@@ -1,0 +1,568 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmFieldReportModel
+@{
+    ViewData["Title"] = "frmFieldReport";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/bootree.js" type="text/javascript"></script>
+
+<style type="text/css">
+    li {
+        list-style: none;
+    }
+
+        li > label {
+            margin-bottom: 0px !important;
+        }
+
+    .labeltext {
+        margin-bottom: 0px;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .customfile {
+        background-color: #e9ecef;
+        color: #495057;
+        border-radius: 0;
+        border: 1px solid #ced4da;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-weight: 400;
+        line-height: 1.5;
+        margin-right: 12px;
+    }
+
+    #progressc {
+        display: none;
+    }
+
+    .progress {
+        height: 25px !important;
+    }
+
+    .progressdis {
+        display: block !important;
+        width: 750px
+    }
+
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Field Report</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> General</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Report Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="FR.ReportDate" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Report No.</label>
+                                                <input type="text" class="form-control" ng-model="FR.ReportNum" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Defect Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="FR.DefectDate" style="max-width:540px !important;" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext"> Attend Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="FR.AttendDate" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">SupplyDate</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="FR.SupplyDate" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Inst Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="FR.InstDate" style="max-width:540px !important;" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Attend User<span style="color:red">*</span></label>
+                                                <select class="form-control" id="ddluser" style="max-width:540px !important;" ng-model="FR.AttendedByIDSelected" ng-options="us.FullName for us in dsCombo.User track by us.UserID" name="ddluser" required ng-class="{true: 'error'}[submitted() && userform.ddluser.$invalid]"></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Place<span style="color:red">*</span></label>
+                                                <input type="text" class="form-control" ng-model="FR.Place" style="max-width:540px !important;" name="Place" required ng-class="{true: 'error'}[submitted() && userform.Place.$invalid]" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Item List Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTwo">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Item List</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add()">Add Item</a>
+
+                                            </div>
+                                        </div>
+                                        <div ng-repeat="rows in ItemList">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Finding<span style="color:red">*</span></label>
+                                                    <input type="text" class="form-control" ng-model="rows.Findings" name="Finding{{$index}}" style="max-width:540px !important;" required ng-class="{true: 'error'}[submitted() && userform.Finding{{$index}}.$invalid]" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Category</label>
+                                                    <select class="form-control" ng-model="rows.CategoryIDSelected" ng-change="getSubCat(this,$index)" ng-options="stat.NCCat for stat in dsCombo.NCCat track by stat.NCCat"></select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Sub-Category<span style="color:red">*</span></label>
+                                                    <select class="form-control" ng-model="rows.ProdNCCatIDSelected" ng-options="sub.NCSubCat for sub in SubCatList{{$index}} track by sub.ProdNCCatId" name="SubCategory{{$index}}" required ng-class="{true: 'error'}[submitted() && userform.SubCategory{{$index}}.$invalid]"></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Status</label>
+                                                    <select class="form-control" ng-model="rows.StatusNumSelected" ng-options="stat.statusText for stat in dsCombo.Status track by stat.StatusNum"></select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Estimated Reasons</label>
+                                                    <input type="text" class="form-control" ng-model="rows.EstimatedReasons" style="max-width:540px !important;" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Action Taken</label>
+                                                    <input type="text" class="form-control" ng-model="rows.ActionTaken" style="max-width:540px !important;" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Prevention Action</label>
+                                                    <input type="text" class="form-control" ng-model="rows.PrevenAction" style="max-width:540px !important;" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Suggestion</label>
+                                                    <input type="text" class="form-control" ng-model="rows.Suggestions" style="max-width:540px !important;" />
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index)"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--File Upload Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading3" style="background-color:#c2c8ce">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse3" aria-expanded="true" aria-controls="collapse3" id="fileupanchor" class="disabled">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;" id="FUheading">Save To Enable File Uploading</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading3" ng-show="model.frmMode==1 && vispan">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+
+                                            <div class="col-md-5">
+                                                <div class="custom-file mb-3">
+                                                    <input type="file" id="filename" accept="application/pdf" name="file" class="custom-file-input" @*autocomplete="off"*@ />
+                                                    <label class="custom-file-label" id="labelfile" for="filename">Choose file</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7" style="padding:0px;">
+                                                <input type="button" value="Upload" id="btnUpload" class="customfile" ng-click="Upload()" />
+                                                @*<input type="button" value="Open" class="customfile" ng-click="openfile()" />*@
+                                                <input type="button" value="Remove" class="customfile" ng-click="removefile()" />
+                                                @*<input type="button" value="View" class="customfile" />*@
+                                                <input type="button" value="Clear" class="customfile" ng-click="clearfile()" />
+                                                @*<a onclick="javascipt:window.open('YourPDF.pdf');" class="popup">Clic to open.</a>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <div Class="form-group">
+                <div Class="col-md-offset-2 col-md-10 " style="margin-top:8px">
+                    <div class="progress" id="progressc" style="text-align:center">
+                        <div class="progress-bar"></div>
+                        <div class="percent">0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12" id="showpdf">
+                </div>
+            </div>
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+
+            <div class="row">
+                @Html.Partial("_SavePanel")
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+            //Browse file
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+                $scope.model = result;
+                $scope.FR = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+               // debugger;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.ItemList = $scope.model.GridViews.ItemList.MainGrid.myDS.dt;
+                $scope.SubCatList;
+                $.each($scope.ItemList, function (index, row) {
+                   // debugger;
+                    row.StatusNumSelected = $.grep($scope.dsCombo.Status, function (item, index) { return item.StatusNum === row.StatusNum })[0];
+                    row.ProdNCCatIDSelected = $.grep($scope.dsCombo.NCSubCat, function (item, index) { return item.ProdNCCatId === row.ProdNCCatID })[0];
+                    row.CategoryIDSelected = $.grep($scope.dsCombo.NCCat, function (item, index) { return item.NCCat == row.ProdNCCatIDSelected.NCCat })[0];
+                });
+                if ($scope.model.frmMode == 1) {
+                   // debugger;
+                    $scope.vispan = ($scope.frmMode == 2 ? false : true);
+                    $('#FUheading').empty();
+                    $('#FUheading').append("File Upload");
+                    $('#heading3').css('background-color', '#1b7cd0');
+                    $('#fileupanchor').removeClass('disabled');
+                }
+                @Html.RenderLookup("FR", Model, Model.dsForm.Tables(0))
+
+                $scope.download = function () {
+
+                    $scope.editMode = ($scope.model.frmMode == 2 ? false : true);
+                    if ($scope.model.frmMode == 1 && $scope.editMode) {
+
+                        var url = '/frmFieldReport/ParamsOutput' + location.search;
+                        var payload = { filename: '', frid: $scope.model.dsForm.DT[0].FieldReportID };
+                        payload = JSON.stringify(payload);
+                        var token = $('input[name="__RequestVerificationToken"]').val();
+                        var payloaddata = { key: 'download', Params: payload, __RequestVerificationToken: token };
+                        $.post(url, payloaddata, function (result) {
+                            if (result.success) {
+
+                                var tr = '<iframe src="'+result.Data+'" style="width:600px; height:500px;" frameborder="0"></iframe>';
+                                $('#showpdf').append(tr);
+                               // alert("Mail Send");
+                                //document.cookie = "";
+                                //document.cookie = "0";
+
+                            }
+                            else {
+                                alert("Failed");
+                            }
+                        });
+
+                    }
+
+                }
+              //  $scope.download()
+
+
+
+            }
+
+            loadmodel($scope.model)
+
+            //$scope.openfile = function () {
+            //    debugger;
+            //    var fileName = $('#filename').val().split("\\").pop();
+            //    window.open(fileName);
+
+            //}
+            $scope.clearfile = function () {
+                $('#filename').val('');
+                $('#labelfile').text('');
+            }
+            $scope.removefile = function () {
+                $scope.btndel();
+            }
+            $scope.GenerateDelPayload = function () {
+                //debugger;
+                     var payload = { EntityKey: 'FieldReport', ID: $scope.model.dsForm.DT[0].FieldReportID, AcceptWarning: false };
+                    return payload;
+               };
+            //Add row
+            $scope.Add = function () {
+                $scope.ItemList.push({});
+            }
+            //delete row
+            $scope.delete = function (index) {
+                $scope.ItemList.splice(index, 1);
+            }
+            $scope.getSubCat = function (value, index) {
+               // debugger;
+                var vall = 'SubCatList'+index;
+                $scope[vall] = $.grep($scope.dsCombo.NCSubCat, function (item, index) { return (item.NCCat == value.rows.CategoryIDSelected.NCCat) })
+
+            }
+            var bar = $('.progress-bar');
+            var percent = $('.percent');
+            var fileSize = "";
+            var pFileId = "";
+            var iFileId = "";
+            var lstModifiedDateTime = "";
+
+            $scope.Upload = function () {
+                //debugger;
+                $scope.addDisable();
+                $scope.addJsonDisable();
+                $scope.id = $scope.model.dsForm.DT[0].FieldReportID;
+                var filc = '', filec = '', docType = '';
+                //var action_type = $(this).attr("id") == "btnUpload" ? "import" : "convertjson";
+                var action_type = getUrlParameter("ActionType");
+
+                // For Progress baar
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                $('.cprocess').removeClass('progressdis');
+                $('.cfailure').removeClass('progressdis');
+                $('.cprocess').html('');
+                $('.cfailure').html('');
+                filc = $('#filename');
+                //filec = $('#filename').val();
+
+                var file = filc.get(0).files;
+
+                filc = $('#filename');
+                filec = $('#filename').val();
+                var filess = '';
+                for (var index = 0; index < file.length; index++) {
+                    if (filess == '') {
+                        filess = file[index].name;
+                    }
+                    else {
+                        filess = filess + "," + file[index].name;
+                    }
+                   // filess.push(document.getElementById('filename').files[index]);
+
+                }
+
+                var url = '/frmFieldReport/ParamsOutput' + location.search;
+                //  var payload = { filename: filec, frid: $scope.id};
+                var payload = { filename: filess, frid: $scope.id }
+                payload = JSON.stringify(payload);
+                var payloaddata = { key: 'sas', Params: payload, __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() };
+                // generic fxn
+                $scope.UploadFile(url, payloaddata);
+            }
+
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = window.location.search.substring(1),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                    }
+                }
+            }
+
+            $scope.addDisable=function() {
+                $('#DocType').attr("disabled", true);
+                $('#filename').attr("disabled", true);
+                $('#btnUpload').attr("disabled", true);
+                $('#btnsave').attr("disabled", true);
+            }
+
+            $scope.addJsonDisable=function() {
+                $('#DocTypeC').attr("disabled", true);
+                $('#filenamec').attr("disabled", true);
+                $('#btnJsonUpload').attr("disabled", true);
+            }
+
+            $scope.cleanupmodel = function (datamodel) { };
+
+            $scope.calculatemodel = function () {
+                if ($scope.model.frmMode == 1 && _fileName !==undefined) {
+                    $scope.FR.PDFSource = _fileName;
+                }
+            };
+            $scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+

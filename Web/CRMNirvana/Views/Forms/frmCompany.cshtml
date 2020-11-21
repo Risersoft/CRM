@@ -1,0 +1,681 @@
+﻿@using risersoft.app.mxform
+@using risersoft.shared.web.Extensions
+@using Newtonsoft.Json
+
+@model frmCompanyModel
+@{
+    ViewData["Title"] = "Company";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = JsonConvert.SerializeObject(Model, Formatting.Indented, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml });
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+
+<style type="text/css">
+    .table thead th {
+        color: #52caff;
+        vertical-align: bottom;
+        border-bottom: 1px solid #e6e8e8;
+    }
+
+    .table th {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: none;
+    }
+
+    .table td {
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+        vertical-align: top;
+        border-top: 1px solid #e6e8e8;
+    }
+
+    .table th .inptable {
+        margin-bottom: 0px !important;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    #btntender {
+        width: 19%;
+        float: right;
+        margin-right: 6px;
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #txttender {
+        width: 79% !important;
+        display: inline;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-right: none;
+        border-radius: 0.25rem;
+        background-color: white;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+    .custominline {
+        display: inline-block;
+        width: 21%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    input, select, textarea {
+        max-width: 540px;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+</style>
+<!--dESIGN cOMPNAY fORM-->
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Company</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> BASIC</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div Class="row" style="margin-top: 40px;">
+                                        <div Class="col-md-1"></div>
+                                        <div Class="col-md-5">
+                                            <Label Class="control-label labeltext">Name <span class="red">*</span></Label>
+                                            <input name="disname" type="text" ng-model="CompanyInfo.CompName" style="max-width: 540px;" class="form-control" required ng-class="{true: 'error'}[submitted() && userform.disname.$invalid]" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <Label Class="control-label labeltext">PAN No. <span class="red">*</span></Label>
+                                            <input name="panno" type="text" ng-model="CompanyInfo.PANNum" maxlength="10" style="max-width: 540px;" class="form-control" required ng-class="{true: 'error'}[submitted() && userform.panno.$invalid]" />
+                                        </div>
+
+                                    </div>
+
+                                    <!--GSTN Registration-->
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3">
+                                            <a href="" class="btn btn-default" style="z-index:35;position:relative;margin-top:26px;background-color:#d0d0d0 !important" ng-click="item()">Add Registration</a>
+                                        </div>
+                                        <!--Row Loop-->
+                                    </div>
+                                    <div ng-repeat="row in GstNo">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-3">
+
+                                                <label class="control-label labeltext">GSTIN <span class="red">*</span></label>
+                                                <input type="text" name="gstc{{$index}}" ng-model="row.GSTIN" ng-change="changef(row)" maxlength="15" class="form-control" required ng-class="{true: 'error'}[submitted() && userform.gstc{{$index}}.$invalid]" />
+                                            </div>
+
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">RegDate <span class="red">*</span></label>
+                                                <input type="text" name="datec{{$index}}" ng-model="row.RegDate" class="form-control my-datepicker" required ng-class="{true: 'error'}[submitted() && userform.datec{{$index}}.$invalid]" />
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">GSTRegType <span class="red">*</span></label>
+                                                <select name="categoryc{{$index}}" ng-model="row.GSTRegTypeSelected" ng-options="itemtx.descriptot for itemtx in Table1 track by itemtx.codeword" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.categoryc{{$index}}.$invalid]"></select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">SearchResult</label><input type="text" ng-model="row.SearchResult" class="form-control" />
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Tax Area <span class="red">*</span></label>
+                                                <select name="category{{$index}}" ng-model="row.TaxAreaIDSelected" ng-options="itemtx.Descrip for itemtx in GstTx track by itemtx.TaxAreaID" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.category{{$index}}.$invalid]"></select>
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Application Num</label><input type="text" ng-model="row.ApplicationNum" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">GSTN UserId <span class="red">*</span></label>
+                                                <input type="text" name="cate{{$index}}" ng-model="row.GSTNUserId" class="form-control" required ng-class="{true: 'error'}[submitted() && userform.cate{{$index}}.$invalid]" />
+                                            </div>
+                                            <div class="col-md-2"><label class="control-label labeltext">Credit <span class="red">*</span></label><select name="ctwn{{$index}}" ng-model="row.PartialCreditSelected" ng-options="txdn.DisplayText for txdn in ValueLists.PartialCredit.ValueListItems track by txdn.DataValue" class="form-control" required ng-class="{true: 'error'}[submitted() && userform.ctwn{{$index}}.$invalid]"></select></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">AuthPAN</label><input type="text" ng-model="row.AuthPAN" class="form-control" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">EWB UserName</label>
+                                                <input type="text" ng-model="row.EWBUserName" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">EWB Password</label>
+                                                <input type="text" ng-model="row.EWBPassword" class="form-control" />
+                                            </div>
+
+
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Turn Over <span class="red">*</span></label>
+                                                <input type="text" name="cateo{{$index}}" ng-model="row.TurnOver" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.cateo{{$index}}.$invalid]" />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Is HeadOffice </label><select name="country" ng-model="row.IsHeadOfficeSelected" ng-options="itemhc.DisplayText for itemhc in ValueLists.IsHeadOffice.ValueListItems track by itemhc.DataValue" Class="form-control"></select>
+                                            </div>
+
+
+                                            <div class="col-md-1">
+                                                <a href="" style="z-index:35;position:relative;margin-top:38px;float:right" ng-click="delete($index)"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="row"><hr /></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Head office-->
+
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading2">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Head Office </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading2">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div Class="row">
+                                        <div Class="col-md-1"></div>
+
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Address <span class="red">*</span></label>
+                                            <textarea name="cadd" ng-model="CompanyInfo.Address" class="form-control" style="height:113px;resize:none;" required ng-class="{true: 'error'}[submitted() && userform.cadd.$invalid]"></textarea>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row">
+                                                <div Class="col-md-5">
+                                                    <Label Class="control-label labeltext">City <span class="red">*</span></Label>
+                                                    <input name="city" type="text" ng-model="CompanyInfo.City" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.city.$invalid]" />
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <Label Class="control-label labeltext">PinCode <span class="red">*</span></Label>
+                                                    <input name="pcode" type="text" ng-model="CompanyInfo.Pincode" Class="form-control" maxlength="6" numbers-only required ng-class="{true: 'error'}[submitted() && userform.pcode.$invalid]" />
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div Class="col-md-5">
+                                                    <Label Class="control-label labeltext">Country <span class="red">*</span></Label>
+                                                    <select name="country" ng-model="CompanyInfo.CountrySelected" ng-options="itemcoun.country for itemcoun in dsCombo.CO track by itemcoun.country" ng-change="changestate(CompanyInfo.CountrySelected)" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.country.$invalid]"></select>
+
+                                                </div>
+                                                <div Class="col-md-5">
+                                                    <Label Class="control-label labeltext">State <span class="red">*</span></Label>
+                                                    <select name="state" ng-model="CompanyInfo.StateSelected" ng-options="itemsu.SubDivisionName for itemsu in State track by itemsu.SubDivisionName" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.state.$invalid]"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">CIN No.</label>
+                                            <input type="text" ng-model="CompanyInfo.CINNum" class="form-control" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Ph No.</label>
+                                            <label>
+                                                <input type="text" ng-model="CompanyInfo.PhCountry" class="input-group-addon" style="width:20%;" />
+                                                <input type="text" ng-model="CompanyInfo.PhArea" class="input-group-addon" style="width:20%" />
+                                                <input type="text" ng-model="CompanyInfo.Phnum" class="input-group-addon" style="width:53%" />
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Fax No.</label>
+                                            <label>
+                                                <input type="text" ng-model="CompanyInfo.FaxCountry" class="input-group-addon" style="width:20%" />
+                                                <input type="text" ng-model="CompanyInfo.FaxArea" class="input-group-addon" style="width:20%" />
+                                                <input type="text" ng-model="CompanyInfo.Faxnum" class="input-group-addon" style="width:51%" />
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Email</label>
+                                            <input type="text" ng-model="CompanyInfo.Email" class="form-control" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Web</label>
+                                            <input type="text" ng-model="CompanyInfo.Web" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+
+            <!--Config Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading3">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Config </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading3">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Brand</label>
+                                            <input type="text" ng-model="CompanyInfo.BrandName" class="form-control" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <Label Class="control-label labeltext">Fin Start Date <span class="red">*</span></Label>
+                                            <input type="text" id="companydate" name="companydate" datetime="yyyy-mm-dd" ng-model="CompanyInfo.FinStartDate" Class="form-control" required ng-class="{true: 'error'}[submitted() && userform.companydate.$invalid]" />
+
+                                        </div>
+                                        <div class="col-md-3" ng-show="HO!=''">
+                                            <Label Class="control-label labeltext">HO Campus</Label>
+                                            <select ng-model="CompanyInfo.HOCampusIDSelected" ng-options="camp.DispName for camp in dt track by camp.CampusID" Class="form-control"></select>
+
+                                        </div>
+
+                                    </div>
+
+                                    @*<div class="row" ng-show="HO!=''">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-5">
+                                                <Label Class="control-label">HO Campus</Label>
+                                                <select ng-model="CompanyInfo.HOCampusIDSelected" ng-options="camp.DispName for camp in dt track by camp.CampusID" Class="form-control"></select>
+
+                                            </div>
+                                            <div class="col-md-5">
+
+                                            </div>
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Logo-->
+            @*<div class="row">
+                    <div class="customdiv">
+                        <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                            <div class="panel-heading active" role="tab" id="heading4">
+                                <div class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-11" style="padding-left:25px;"> Logo </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div id="collapse4" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading4">
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        <div class="row" style="margin-top:25px">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-5">
+                                                <img src="" data-ng-src="{{CompanyInfo.TCLogo}}" alt="" style="height: 160px;width: 160px;" />
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="control-label labeltext">Upload Logo</label><br />
+                                                <input type="file" id="filename" name="filename" Class="form-control" onchange="angular.element(this).scope().SelectFile(event)" autocomplete="off" />
+
+                                            </div>
+                                            <div class="col-md-5">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><hr /></div>
+                    </div>
+                </div>*@
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                @Html.Partial("_SavePanel")
+
+            </div>
+        </div>
+    </form>
+</div>
+<!--dESIGN cOMPANY fORM-->
+
+@section botscripts{
+    <script type="text/javascript">
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+                $scope.model = result;
+                $scope.CompanyInfo = $scope.model.dsForm.DT[0];
+               // debugger;
+                $scope.CompanyInfo.TCLogo = "data:image/jpeg;base64,"+ $scope.model.dsForm.DT[0].TCLogo;
+                $scope.ValueLists = $scope.model.ValueLists;
+
+                $scope.GstTx = $scope.model.GridViews.GstReg.MainGrid.dsLookup.Table0;
+                $scope.Table1 = $scope.model.GridViews.GstReg.MainGrid.dsLookup.Table1;
+
+                $scope.GstNo = $scope.model.GridViews.GstReg.MainGrid.myDS.dt;
+                $('#companydate').datepicker({ dateFormat: 'yy-mm-dd' });
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.dt = $scope.model.GridViews.Campus.MainGrid.myDS.dt;
+                $scope.HO = $scope.dt;
+
+                $scope.item = function () {
+                    $scope.GstNo.push({});
+                };
+
+                $scope.delete = function (index) {
+                    $scope.GstNo.splice(index, 1);
+                };
+
+                $scope.dsCombo = $scope.model.dsCombo;
+                @Html.RenderLookup("CompanyInfo", Model, Model.dsForm.Tables[0]);
+
+                $scope.changestate = function (id) {
+                    $scope.State = [];
+                    if (id) {
+                        $.each($scope.dsCombo.SU, function (item, index) {
+                            if (index.countrycode === id.countrycode) {
+                                $scope.State.push(index);
+                            }
+                        });
+                    }
+                };
+
+                $scope.changestate($scope.CompanyInfo.CountrySelected);
+                $scope.CompanyInfo.HOCampusIDSelected = $.grep($scope.dt, function (item, index) { return item.CampusID === $scope.CompanyInfo.HOCampusID })[0];
+                $.each($scope.GstNo, function (index, row) {
+                    row.TaxAreaIDSelected = $.grep($scope.GstTx, function (item, index) { return item.TaxAreaID === row.TaxAreaID })[0];
+                    row.GSTRegTypeSelected = $.grep($scope.Table1, function (item, index) { return item.codeword === row.GSTRegType })[0];
+                    row.PartialCreditSelected = $.grep($scope.ValueLists.PartialCredit.ValueListItems, function (item, index) { return item.DataValue == row.PartialCredit })[0];
+                    row.IsProductionSelected = $.grep($scope.ValueLists.Envc.ValueListItems, function (item, index) { return item.DataValue == row.IsProduction })[0];
+                    row.IsHeadOfficeSelected = $.grep($scope.ValueLists.IsHeadOffice.ValueListItems, function (item, index) { return item.DataValue == row.IsHeadOffice })[0];
+                });
+
+                $scope.partyfn = function (code) {
+
+                    $scope.SelectedParty = $.grep($scope.dsCombo.Customer, function (item, index) { return item.CustomerID === code.CustomerID })[0];
+                    $scope.CompanyInfo.CTIN = $scope.SelectedParty.GSTIN;
+                };
+
+                $scope.changef = function (row) {
+
+                    var gstin = row.GSTIN.split('');
+                    if (gstin[0] != undefined && gstin[1] != undefined) {
+                        var gstinc = gstin[0] + gstin[1];
+                        row.TaxAreaIDSelected = $.grep($scope.GstTx, function (item, index) { return item.TINCode === gstinc })[0];
+
+                  }
+                };
+
+                $scope.itemf = function (gstindata) {
+                    if (gstindata != undefined) {
+                        var url = '/frmGstCompany/ParamsOutput' + location.search;
+                        var payload = { gstin: gstindata };
+                        payload = JSON.stringify(payload);
+
+                        var token = $('input[name="__RequestVerificationToken"]').val();
+                        var payloaddata = { key: 'search', Params: payload, __RequestVerificationToken: token };
+
+                        $.post(url, payloaddata, function (result) {
+                            if (result.success) {
+                                $scope.Datac = result.Data;
+                                    $("#dialog-manual").dialog({
+                                        autoOpen: false,
+                                        modal: true,
+                                        width: 1100,
+                                        title: "GSTIN",
+                                        hide: {
+                                            effect: "fade",
+                                            duration: 1000
+                                        }
+                                });
+
+                                $scope.$apply();
+                                $("#dialog-manual").dialog("open");
+                            }
+                            else {
+                                alert(result.message);
+                            }
+                        });
+                    }
+                };
+
+               // Upload Logo image
+                $scope.SelectFile = function (e) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $scope.CompanyInfo.TCLogo = e.target.result;
+                        $scope.$apply();
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                };
+           };
+
+            loadmodel($scope.model);
+            $scope.cleanupmodel = function (datamodel) {
+                datamodel.GridViews.GstReg.MainGrid.dsLookup = null;
+            };
+            $scope.calculatemodel = function () {
+                //empty function
+            };
+
+            $scope.visdel = false;@Html.RenderFile("~/scripts/rsforms.js");
+        })
+    </script>
+}

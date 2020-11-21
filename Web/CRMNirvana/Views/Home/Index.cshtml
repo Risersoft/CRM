@@ -1,0 +1,62 @@
+﻿@using risersoft.shared.cloud.common
+@{
+    ViewData["Title"] = "Home Page";
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/').ToString();
+    string banner = risersoft.shared.GlobalCore.GetConfigSetting("banner");
+    if (string.IsNullOrWhiteSpace(banner))
+    {
+        banner = "/Content/images/CRM-banner.jpg";
+    }
+    else
+    {
+        banner = baseUrl + banner;
+    }
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <img src="@banner" style="width:650px;" class="img-responsive banner-img">
+    </div>
+    <div class="col-md-3 gst-banner-text">
+        <h1 class="gst-banner-text-title">CRMNirvana</h1>
+        <p class="lead gst-banner-text-para">Sell Smarter.</p>
+        <p><a href="/app" class="btn btn-primary btn-lg">Start Now &raquo;</a></p>
+
+        <div class="col-md-12" style="margin-top:155px;">
+            <a href="https://play.google.com/store/apps/details?id=com.risersoft.crmnirvana" target="_blank"><img class="play" src="~/Content/images/playstore-button.png" style="width:100px;"></a>&nbsp;
+            <a href="#appstore" target="_blank"><img class="app" src="~/Content/images/appstore-button.png" style="width:100px;"></a>
+        </div>
+    </div>
+</div>
+<div><br /><br /></div>
+<div class="row clsimgb">
+    <div class="col-md-3 footer-nav footer-text">
+        <div class="clsfoot">
+            <h2>Pipeline Management</h2>
+            <p>
+                Keep track of the customer's mind. Act in time to achieve a quantum jump in sales.
+
+            </p>
+        </div>
+    </div>
+    <div class="col-md-3 footer-nav footer-text">
+        <div class="clsfoot">
+            <h2>Enquiry Management</h2>
+            <p>
+                Ensure Effective Enquiry Management-Gain Trust of the Prospective customer.
+            </p>
+        </div>
+    </div>
+    <div class="col-md-3 footer-nav footer-text">
+        <div class="clsfoot">
+            <h2>Order Management</h2>
+            <p>Earn Customer Delight by managing order, inspection, dispatch and invoices.</p>
+        </div>
+    </div>
+    <div class="col-md-3 footer-text">
+        <div class="clsfoot">
+            <h2>Multi Platform</h2>
+            <p>Securely access your cloud hosted data from desktop, web & mobile.</p>
+        </div>
+    </div>
+</div>

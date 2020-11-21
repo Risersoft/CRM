@@ -1,0 +1,175 @@
+﻿@using risersoft.app.mxform
+
+@model ctlItemVMS2Model
+@{
+    Layout = null;
+    var modelJson1 = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/bootree.js" type="text/javascript"></script>
+
+<style>
+    .fa-edit {
+        padding: 6px;
+        border: 1px solid #bbbaba;
+        background-color: #0bc308;
+    }
+
+    .spanbtn {
+        padding: 6px;
+        border: 1px solid #bbbaba;
+    }
+
+        .spanbtn:focus {
+            border: 2px solid rgba(33, 136, 243, 0.5803921568627451);
+            background-color: rgba(98, 142, 210, 0.10196078431372549);
+        }
+
+        .spanbtn:hover {
+            border: 2px solid rgba(33, 136, 243, 0.5803921568627451);
+        }
+
+    .input-group-addon {
+        border: none;
+        background: transparent;
+    }
+</style>
+<!--VMS-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="row" style="height:200px;padding-left:10px;">
+                    <div class="col-md-12" id="specdata"></div>
+                </div>
+                <div class="row" id="rev" style="height:200px;padding-left:10px;">
+                    <div class="col-md-12" style="height:30px">
+                        <input type="button" class="form-control" value="Rev 0" /><button type="button" class="fa-eye"></button><button class="fa fa-edit"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <input type="hidden" id="model_json1" value='@Html.Raw(modelJson1)' />
+                <div class="row">
+                    <div class="col-md-3">
+                        Standard<select id="ddlstandard"></select>
+                    </div>
+                    <div class="col-md-3">
+                        Revision<select id="ddlrevision"></select>
+                    </div>
+                </div>
+                <!--Specification-->
+                <div class="row">
+                    <div class="col-md-12" data-toggle="collapse" href="#collapsevendor{{$index}}" aria-expanded="true" aria-controls="collapsevendor{{$index}}" style="border-bottom:1px solid #d6cfcf">
+                        <label>Specification</label>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse show" id="collapsevendor{{$index}}">
+                    <div class="row">
+                        <div Class="col-md-4">
+                            <Label Class="control-label labeltext">Our Specs</Label>
+                            <input type="text" id="KanSpecs" Class="form-control" style="max-width:100% !important;" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <Label Class="control-label labeltext">Supplier Specs</Label>
+                            <input type="text" id="suppspec" Class="form-control" style="max-width:100% !important;" readonly />
+                        </div>
+                        <div Class="col-md-4">
+                            <Label Class="control-label labeltext">Packing</Label>
+                            <input type="text" id="packing" Class="form-control" style="max-width:100% !important;" readonly />
+                        </div>
+                        <div Class="col-md-4">
+                            <Label Class="control-label labeltext">Make</Label>
+                            <input type="text" id="make" Class="form-control" style="max-width:100% !important;" readonly />
+                        </div>
+                        <div Class="col-md-4">
+                            <Label Class="control-label labeltext" style="visibility:hidden;width:100%">specification</Label>
+                            <label class="input-group-addon" style="background-color:transparent;border:none;">
+                                <input type="checkbox" id="iscurrent" disabled />Specification Is Current
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row"><hr /></div>
+                <!--Bill Of Material-->
+                <div class="row">
+                    <div class="col-md-12" data-toggle="collapse" href="#collapsematerial{{$index}}" aria-expanded="true" aria-controls="collapsematerial{{$index}}" style="border-bottom:1px solid #d6cfcf">
+                        <label>Bill Of Material</label>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse show" id="collapsematerial{{$index}}">
+                    <div class="row"></div>
+                </div>
+                <div class="row"><hr /></div>
+                <!--Spec Summary-->
+                <div class="row">
+                    <div class="col-md-12" data-toggle="collapse" href="#collapsesummary{{$index}}" aria-expanded="true" aria-controls="collapsesummary{{$index}}" style="border-bottom:1px solid #d6cfcf">
+                        <label>Spec Summary</label>
+                    </div>
+                </div>
+                <div class="panel-collapse collapse show" id="collapsesummary{{$index}}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label labeltext">Version Spec Summary</label>
+                            <input type="text" class="form-control" style="max-width:100%" id="specMatspec" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //  debugger;
+        var model1 = JSON.parse($("#model_json1").val());
+        var RevSpec = model1.dsForm.RevNum[1];
+        // CreateSideButtonsForSpec(model1);
+        if (model1.dsForm.RevNum.length > 0) {
+            AppendRevNumData(model1.dsForm.RevNum[0]);
+            // debugger;
+            $('#specdata').empty();
+            for (var i = 0; i < model1.dsForm.RevNum.length; i++) {
+                // debugger;
+                var divd = '<label class="input-group-addon">\
+                <span class="spanbtn" onclick="AppendRevNumData('+ i + ')">Spec ' + (i + 1) + '</span>\
+                <button class="fa fa-edit" disabled></button>\
+            </label>';
+                $('#specdata').append(divd);
+            }
+        }
+        //Rev: "Rev 0"
+        //iscurrent: true
+        //itemvmsid: 20099
+        //kanspecs: "Our Specification"
+        //make: "MAking"
+        //packing: "Packing"
+        //revnum: 0
+        //specmatspec: "Spec"
+        //specnum: 1
+        //specwrite: "S1R0"
+        //suppspec: "Supplier"
+        //version: "Version 1"
+    });
+
+    function AppendRevNumData(RevSpec) {
+        $('#KanSpecs').val(RevSpec.kanspecs);
+        $('#suppspec').val(RevSpec.suppspec);
+        $('#packing').val(RevSpec.packing);
+        $('#make').val(RevSpec.make);
+        if (RevSpec.iscurrent == true) {
+            $('#iscurrent').prop('checked', true);
+        }
+        else {
+            $('#iscurrent').prop('checked', false);
+        }
+        $('#specMatspec').val(RevSpec.specmatspec);
+    }
+</script>
+

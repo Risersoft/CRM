@@ -1,0 +1,715 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmEmailMarketingModel
+@{
+    ViewData["Title"] = "EmailMarketing";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Content/jQueryUI-datetimepicker.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link href="~/Content/component-chosen.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    var defaultRTE;
+    function created() {
+        defaultRTE = this
+    };
+</script>
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        /*border-radius: 0.25rem 0rem 0rem 0.25rem;*/
+        border-radius: 0.25rem;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    select, textarea, input {
+        max-width: initial;
+    }
+
+    #dialogFilterUser {
+        display: none;
+    }
+
+    #dialogfilterTeam, #dialogCustomer {
+        display: none;
+    }
+
+    .custom-group-button {
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+    }
+
+    #loading {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-6" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Email Marketing</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="button" value="Track" class="btn-default" ng-click="EmailTrack()" style="float:right;margin-bottom: 16px; color: #fff;background: #50a74f !important;border-color: #0c940b !important" />
+
+                            <input type="button" value="Send" class="btn-default" ng-click="sendEmail()" style="float:right;margin-bottom: 16px; color: #fff;background: #50a74f !important;border-color: #0c940b !important;margin-right:10px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:20px;">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">Name<span style="color:red">*</span></label>
+                                    <input type="text" class="form-control" ng-model="emailM.Name" name="Emailname" required ng-class="{true: 'error'}[submitted() && userform.Emailname.$invalid]" />
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">
+                                        Start Date And Time<span style="color:red">*</span>
+                                    </label>
+                                    <input type="text" class="form-control my-datepicker" ng-model="emailM.SDate" name="SDate" required ng-class="{true: 'error'}[submitted() && userform.SDate.$invalid]" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">
+                                        Status Text<span style="color:red">*</span>
+                                    </label>
+                                    <select class="form-control" ng-model="emailM.StatusSelected" ng-options="stat.DisplayText for stat in Status.ValueListItems track by stat.DataValue" name="Status" required ng-class="{true: 'error'}[submitted() && userform.Status.$invalid]"></select>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">
+                                        From Name<span style="color:red">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="emailM.FromName" name="fromname" required ng-class="{true: 'error'}[submitted() && userform.fromname.$invalid]" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">Email Template<span style="color:red">*</span></label>
+                                    <select class="form-control" ng-model="emailM.TemplateIDSelected" ng-change="GetEmailTemplate(emailM.TemplateIDSelected)" ng-options="email.Name for email in dsCombo.Template track by email.EmailTemplateID" name="TemplateID" required ng-class="{true: 'error'}[submitted() && userform.TemplateID.$invalid]"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext" style="visibility:hidden">Prospect list</label>
+                                    <label class="input-group">
+                                        <input type="checkbox" class="checkbox_All" ng-model="emailM.AllProspectList" ng-change="GetCampaignProspectList(emailM.AllProspectList)" style="width:20px;height:20px;vertical-align:middle;" /> All Prospect Lists
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">Reply-To-Name</label>
+                                    <input type="text" class="form-control" ng-model="emailM.ReplyToName" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext">Reply-To-Addr</label>
+                                    <input type="text" class="form-control" ng-model="emailM.ReplyToAddr" />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext"> Outbound Email</label>
+                                    <select class="form-control" ng-model="emailM.OutBoundEmailIDSelected" @*ng-change="AddDatainEmail(emailM.OutBoundEmailID,'outbound')"*@ ng-options="email.FromName for email in dsCombo.OutBound track by email.OutBoundEmailID"></select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label labeltext"> Inbound Email</label>
+                                    <select class="form-control" ng-model="emailM.InboundEmailIDSelected" ng-options="email.FromName for email in dsCombo.InBound track by email.InBoundEmailID"></select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Prospect List-->
+
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading4">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Prospect</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading4">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <input type="button" id="btnprospect" value="Add Prospects" class="btn btn-default" ng-click="cusitem(Prospect.ProspectListID)" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-disabled="emailM.AllProspectList" />
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="Prospect.length==0">
+                                        <p>No Records Found.</p>
+                                    </div>
+                                    <div class="row" ng-hide="Prospect.length==0">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Description</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">UserSetName</label>
+                                        </div>
+                                    </div>
+
+                                    <div id="pro" ng-repeat="row in model.GridViews.Prospect.MainGrid.myDS.dt">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-3">
+                                                <label>{{row.Name}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>{{row.Description}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>{{row.UserSetName}}</label>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="javascript:void(0)" style="z-index:35;position:relative;float:right" ng-click="delete($index)" ng-disabled="emailM.AllProspectList"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Email Tracking-->
+            <!--Tracking-->
+            <div class="row" id="trackingdiv" style="visibility:hidden">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading3">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Tracking Details</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading3">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10" ng-show="EmailTrackingDet.length==0">
+                                            <p>No Records Found.</p>
+                                        </div>
+                                        <div class="col-md-10" ng-hide="EmailTrackingDet.length==0">
+                                            <table class="table table-responsive">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.no</th>
+                                                        <th>Recipient</th>
+                                                        <th>Event</th>
+                                                        <th>Geolocation</th>
+                                                        <th>Client Info</th>
+                                                        @*<th>Date Time</th>*@
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="row in EmailTrackingDet">
+                                                        <td><div>{{$index + 1}}</div></td>
+                                                        <td><div>{{row.Recipient}}</div></td>
+                                                        <td><div>{{row.Event}}</div></td>
+                                                        <td><div>{{row.Geolocation}}</div></td>
+                                                        <td><div>{{row.ClientInfo}}</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+
+            <div class="row">
+                @Html.Partial("_SavePanel")
+            </div>
+        </div>
+
+        <div id="dialogCustomer">
+
+        </div>
+    </form>
+
+</div>
+
+
+@section botscripts{
+    <script type="text/javascript">
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    //$(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                    $(this).datetimepicker()
+                });
+            }, 10);
+
+            $('.form-control-chosen').chosen({
+                // Chosen options here
+                allow_single_deselect: false,
+                width: '100%'
+            });
+            //Delegate
+            //$(document).delegate("#acMainGrid", "iggridrowselectorscheckboxstatechanged", function (evt, ui) {
+            //    debugger;
+            //    $('#acMainGrid').igGridSelection('selectedRows', ui.row);
+            //    rui = ui;
+            //});
+
+            document.cookie = "0";
+        });
+
+        rsApp.controller('FormController', function ($scope, $http, usSpinnerService) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+            $scope.Selectedassig = 'User';
+            $scope.Sendemailkey = 0;
+            $scope.EmailTemplateData = '';
+            $scope.ProspectListItem = [];
+            $scope.CampaignProspectListItem = [];
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.emailM= $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+                //debugger;
+                $scope.Status = $scope.model.ValueLists.Status;
+                $scope.Prospect = $scope.model.GridViews.Prospect.MainGrid.myDS.dt;
+                $scope.dsCombo = $scope.model.dsCombo;
+                //$scope.Team = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+                $scope.EmailView = $scope.model.GridViews.Email.MainGrid.myDS.dt;
+
+                $scope.GenerateDelPayload = function () {
+                    var payload = { EntityKey: 'EmailM', ID: $scope.model.dsForm.DT[0].EmailMarketingID, AcceptWarning: false };
+                    return payload;
+                };
+
+                 @Html.RenderLookup("emailM", Model, Model.dsForm.Tables(0))
+
+                $scope.cusitem = function (val) {
+
+                    if (val) {
+                        var idval = val;
+                    }
+                    else {
+                        var idval = 0;
+                    }
+                    $scope.IsInitializing = true;
+                    $scope.result = '';
+                    var payload = { ProsIDcsv: idval }; // not required here
+                    var url = '/frmEmailMarketing/ParamsModel' + location.search;
+                    payload = JSON.stringify(payload);
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    var payloaddata = { key: "prospect", Params: payload, __RequestVerificationToken: token };
+                    igGridDataPostData(url, payloaddata, "dialogCustomer", "ProspectList", "prospectlist")
+
+                    $scope.GetProspectListItemValue();
+                }
+
+                //Send Email
+                $scope.SendEmailData = function () {
+
+                    var cookie = document.cookie;
+
+                    $scope.SendEmailMode = ($scope.model.frmMode == 2 ? false : true);
+                    if ($scope.model.frmMode == 1 && $scope.SendEmailMode) {
+                        if (cookie == 1 && $scope.Sendemailkey==1) {
+
+                            var url = '/frmEmailMarketing/IDOutput' + location.search;
+                            var payload = { ID: $scope.model.dsForm.DT[0].EmailMarketingID };
+                            var token = $('input[name="__RequestVerificationToken"]').val();
+                            var payloaddata = { key: 'email', ID: $scope.model.dsForm.DT[0].EmailMarketingID, __RequestVerificationToken: token };
+                            $.post(url, payloaddata, function (result) {
+                                if (result.success) {
+                                    alert("Mail Send");
+                                    document.cookie = "";
+                                    document.cookie = "0";
+
+
+                                }
+                                else {
+                                    alert("Failed");
+                                }
+                            });
+                        }
+                    }
+                }
+                $scope.SendEmailData();
+                $scope.GetEmailTemplate = function (value) {
+
+                    var Email = value;
+                    var url = '/frmEmailMarketing/IDOutput' + location.search;
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    var payloaddata = { key: 'template', ID: Email.EmailTemplateID, __RequestVerificationToken: token };
+                    $.post(url, payloaddata, function (result) {
+
+                        if (result.success) {
+
+                            $scope.EmailTemplateData = result.Data.Data.Table[0];
+                            $scope.$apply();
+                        }
+                        else {
+                            alert("Failed");
+                        }
+                    });
+
+
+                }
+
+                if ($scope.emailM.TemplateIDSelected != undefined && $scope.emailM.TemplateIDSelected != null) {
+                    $scope.GetEmailTemplate($scope.emailM.TemplateIDSelected)
+
+                }
+
+                $scope.delete = function (index) {
+                    $scope.Prospect.splice(index, 1);
+                }
+            }
+
+            loadmodel($scope.model)
+
+            $scope.gridfxn = function (rowData, allData, keyValue) {
+                for (var i = 0; i < rowData.length; i++) {
+                   // debugger;
+                    $scope.Prospect.push($.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0]);
+                }
+            }
+
+            $scope.GetProspectListItemValue = function () {
+               // debugger;
+                var url = '/frmEmailMarketing/IDOutput' + location.search;
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                var payloaddata = { key: 'prospectlistitem', ID: '0', __RequestVerificationToken: token };
+                $.post(url, payloaddata, function (result) {
+                  //  debugger;
+                    if (result.success) {
+
+                        $scope.ProspectListItem = result.Data.Data.Table;
+                        $scope.$apply();
+                    }
+                    else {
+                        alert("Failed");
+                    }
+                });
+            }
+
+
+            $scope.sendEmail = function () {
+                $scope.Sendemailkey = 1;
+
+                $scope.btnsave()
+                document.cookie = "";
+                document.cookie = "1";
+            }
+            //Email tracking
+            $scope.EmailTrack = function () {
+
+                $scope.SendEmailMode = ($scope.model.frmMode == 2 ? false : true);
+                //if ($scope.Email.EmailMessageId !== null) {
+                    if ($scope.model.frmMode == 1 && $scope.SendEmailMode) {
+                        //debugger;
+                        $('#trackingdiv').css('visibility', 'visible');
+
+                        var url = '/frmEmailMarketing/IDOutput' + location.search;
+                        var token = $('input[name="__RequestVerificationToken"]').val();
+                        var payloaddata = { key: 'track', ID: $scope.model.dsForm.DT[0].EmailMarketingID, __RequestVerificationToken: token };
+                        $.post(url, payloaddata, function (result) {
+                           // debugger;
+                            if (result) {
+                                var Items = [];
+                                var count = 0;
+                                for (var i = 0; i < result.length; i++) {
+                                    if (result[i] != null && result[i].Items != null) {
+                                        var ri = result[i].Items;
+                                        for (var j = 0; j < ri.length; j++) {
+                                            Items[count] = ri[j];
+                                            count++;
+                                        }
+                                    }
+                                }
+
+                                $scope.EmailTrackingDet = Items;
+                                $scope.$apply();
+                            }
+                            else {
+                                alert("Failed");
+                            }
+                        });
+                    }
+               // }
+                //else {
+                //    $('#trackingdiv').css('visibility', 'hidden');
+                //    alert("This Email hasn't been sent. Please send this email before tracking");
+                //}
+            }
+
+
+            $scope.cleanupmodel = function (datamodel) {
+
+            };
+            // All prospect checkbox checked
+            $scope.GetCampaignProspectList = function (value) {
+
+                if (value ==true) {
+                    var Id = $scope.emailM.CampaignID;
+                    var url = '/frmEmailMarketing/IDOutput' + location.search;
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    var payloaddata = { key: 'Campaign', ID: Id, __RequestVerificationToken: token };
+                    $.post(url, payloaddata, function (result) {
+
+                        if (result.success) {
+
+                            $scope.CampaignProspectListItem = result.Data.Data.Table;
+                            $scope.$apply();
+                            // $scope.UpdateEmailList()
+                        }
+                        else {
+                            alert("Failed");
+                        }
+                    });
+                }
+
+            }
+
+            $scope.GetCampaignProspectList($scope.model.dsForm.DT[0].AllProspectList)
+
+            $scope.calculatemodel = function () {
+               // debugger;
+                if ($scope.model.GridViews.Email.MainGrid.myDS.dt.length > 0) {
+                    for (var i = 0; i < $scope.model.GridViews.Email.MainGrid.myDS.dt.length; i++) {
+                       // debugger;
+                        $scope.EmailView[i].ContentHtml = window.btoa($scope.EmailView[i].ContentHtml);
+                    }
+                }
+
+                for (var i = 0; i < $scope.Prospect.length; i++) {
+                    $scope.Prospect[i].PIDField = 'EmailMarketingID';
+                }
+                    //If Email Sent Button is clicked
+                if ($scope.Sendemailkey == 1) {
+                    var ProspectValues = [];
+                    var arr = [];
+                    var value = $scope.emailM.OutBoundEmailIDSelected;
+                    var dd = $scope.EmailTemplateData;
+                    var ContentHTML = '';
+                    ContentHTML = window.btoa(dd.ContentHtml);
+                    $scope.emailM.TemplateIDSelected.ContentHtml = ContentHTML;
+
+                        if ($scope.emailM.AllProspectList) {
+                            ProspectValues = $scope.CampaignProspectListItem;
+
+                            if (ProspectValues != null) {
+                                for (var i = 0; i < ProspectValues.length; i++) {
+                                    if (ProspectValues != null) {
+                                        //for (var j = 0; j < ProspectValues[i].length; j++) {
+                                      //  debugger;
+                                        if (ProspectValues[i].IDField !== null && ProspectValues[i].IDValue !== null) {
+
+                                            var IDfield = ProspectValues[i].IDField;
+                                            var IDValue = ProspectValues[i].IDValue;
+                                            arr = { EmailID: null, OutBoundEmailID: value.OutBoundEmailID, Type: "Out", FromName: value.FromName, Content: dd.Content, ContentHtml: ContentHTML, EmailTemplateID: dd.EmailTemplateID, Name: dd.Subject, PIDField: IDfield, PIDValue: IDValue,AttachmentJson:dd.AttachmentJson };
+
+                                            $scope.EmailView.push(arr);
+                                        }
+                                        //}
+                                    }
+
+                                }
+                            }
+
+                         }
+
+                        else {
+                            $scope.Prospectdata = $scope.ProspectListItem;
+                            for (var i = 0; i < $scope.Prospect.length; i++) {
+
+                                ProspectValues[i] = $.grep($scope.Prospectdata, function (item, index) { return item.ProspectListID == $scope.Prospect[i].ProspectListID })
+                            }
+
+                            if (ProspectValues != null) {
+                                for (var i = 0; i < ProspectValues.length; i++) {
+                                    if (ProspectValues != null) {
+                                        for (var j = 0; j < ProspectValues[i].length; j++) {
+
+                                            if (ProspectValues[i][j].IDField !== null && ProspectValues[i][j].IDValue !== null) {
+
+                                                var IDfield = ProspectValues[i][j].IDField;
+                                                var IDValue = ProspectValues[i][j].IDValue;
+                                                arr = { EmailID: null, OutBoundEmailID: value.OutBoundEmailID, Type: "Out", FromName: value.FromName, Content: dd.Content, ContentHtml: ContentHTML, EmailTemplateID: dd.EmailTemplateID, Name: dd.Subject, PIDField: IDfield, PIDValue: IDValue };
+
+                                                $scope.EmailView.push(arr);
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                                //for (var i = 0; i < $scope.model.GridViews.Prospect.MainGrid.myDS.dt.length; i++) {
+                                //    debugger;
+                                //    var ToAddr = $scope.Prospect[i].UserSetName;
+                                //    arr = { EmailID: null, OutBoundEmailID: value.OutBoundEmailID, Type: "Out", FromName: value.FromName, ToAddrsEmail: ToAddr, Content: dd.Content, ContentHtml: ContentHTML, EmailTemplateID: dd.EmailTemplateID, Name: dd.Subject, PIDField: "EmailMarketingID" };
+
+                                //    $scope.EmailView.push(arr);
+                                //}
+                            }
+                        }
+
+                    }
+
+            };
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

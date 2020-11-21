@@ -1,0 +1,324 @@
+﻿@using AuthorizationFramework.Proxies
+@using risersoft.shared.portable
+@using risersoft.app.mxform.crm
+@using risersoft.shared.portable.Proxies
+@using risersoft.shared.web.Extensions
+@using Newtonsoft.Json
+
+@model frmConvertLeadOppModel
+@{
+    ViewData["Title"] = "Opportunity";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<style type="text/css">
+    .custom-group-button {
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+    }
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0rem 0rem 0.25rem;
+    }
+
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+
+
+    .customdiv {
+        width: 100%;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    select, textarea, input {
+        max-width: initial;
+    }
+
+    #dialogFilterUser, #dialogfilterTeam, #dialogCampaign, #dialogCustomer {
+        display: none;
+    }
+
+    #loading {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Lead To Opportunity</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Lead Source</label>
+                            <select class="form-control" name="ddlleadsource" disabled ng-model="LeadInfo.LeadSourceSelected" ng-options="source as source.DisplayText for source in LeadSource.ValueListItems track by source.DataValue"> </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Lead Source Description</label>
+                            <input type="text" class="form-control" ng-model="LeadInfo.LeadSourceDescrip" disabled />
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Reffered By</label>
+                            <input type="text" class="form-control" ng-model="LeadInfo.ReferedBY" disabled />
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">FirstName</label>
+                            <input type="text" class="form-control" ng-model="LeadInfo.FirstName" disabled />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Lastname</label>
+                            <input type="text" name="Lastname" class="form-control" ng-model="LeadInfo.LastName" disabled />
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Opportunity Name<span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="txtname" ng-model="Name" required ng-class="{true:'error'}[submitted()&& userform.txtname.$invalid]" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Customer Name<span style="color:red">*</span></label>
+                            <Select class="form-control" ng-model="NewCustIDSelected" ng-options="opp as opp.CustDescrip for opp in dsCombo.Cust track by opp.customerid"></Select>
+
+                        </div>
+                        <button type="button" class="btn btn-default" id="btnaccredirect" ng-click="redirect()">Add Customer</button>
+
+
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Type</label>
+                            <Select class="form-control" ng-model="OpportunityTypeSelected" ng-options="opp as opp.DisplayText for opp in Opportunity.ValueListItems track by opp.DataValue"></Select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Currency</label>
+                            <select class="form-control" name="ddlcurrency" ng-model="OpportunityInfo.CurrencySelected" ng-options="curr as curr.DisplayText for curr in Currency.ValueListItems track by curr.DataValue"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Amount<span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="amount" ng-model="Amount" required ng-class="{true:'error'}[submitted()&&userform.amount.$invalid]" />
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Date Closed <span style="color:red">*</span></label>
+                            <input type="text" class="form-control my-datepicker" name="dateclosed" ng-model="DateClosed" required ng-class="{true:'error'}[submitted()&& userform.dateclosed.$invalid]" />
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Next Step</label>
+                            <input type="text" class="form-control" name="nextstep" ng-model="NextStep" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Probability(%)</label>
+                            <input type="text" class="form-control" name="txtprobability" ng-model="Probability" />
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Sales Stage</label>
+                            <select class="form-control" name="ddlsalesstagename" ng-model="SalesStageSelected" ng-options="sta as sta.DisplayText for sta in Stage.ValueListItems track by sta.DataValue"> </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <label class="control-label labeltext">Description</label>
+                            <input type="text" class="form-control" name="description" ng-model="Description" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                @Html.Partial("_SavePanel")
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section botscripts{
+    <script type="text/javascript">
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+                $scope.model = result;
+                $scope.LeadInfo = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.Currency = $scope.model.ValueLists.Currency;
+                $scope.LeadSource = $scope.model.ValueLists.LeadSource;
+                $scope.Opportunity = $scope.model.ValueLists.Opportunity;
+                $scope.Stage = $scope.model.ValueLists.Stage;
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+                @Html.RenderLookup("LeadInfo", Model, Model.dsForm.Tables[0]);
+            }
+
+            $scope.redirect = function () {
+                $scope.PLfrmmode = ($scope.model.frmMode == 2 ? false : true);
+                if ($scope.model.frmMode == 1 && $scope.PLfrmmode) {
+                    $scope.info = $scope.OpportunityInfo;
+
+                    $scope.info.partytype = 'C';
+
+                    var base = '/App/Link' + location.search;
+                    var payload = { fKey: 'frmPartyMain', fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) } // fMode: 'acAddM',
+                    $.post(base, payload, function (result) {
+                        $scope.status = 'loaded';
+                        window.location = result;
+                    })
+                }
+                else {
+                    alert("Please Submit form Before Adding");
+                }
+            }
+
+            loadmodel($scope.model)
+
+            $scope.cleanupmodel = function (datamodel) {
+            };
+
+            $scope.calculatemodel = function () {
+                $scope.model.ClientParams.Name = $scope.Name;
+
+                $scope.model.ClientParams.Currency = $scope.Currency;
+                $scope.model.ClientParams.NewCustID = $scope.NewCustIDSelected;
+                $scope.model.ClientParams.OpportunityTypeSelected = $scope.OpportunityTypeSelected;
+                $scope.model.ClientParams.LeadSourceSelected = $scope.LeadInfo.LeadSourceSelected;
+                $scope.model.ClientParams.DateClosed = $scope.DateClosed;
+                $scope.model.ClientParams.NextStep = $scope.NextStep;
+                $scope.model.ClientParams.Probabilty = $scope.Probabilty;
+                $scope.model.ClientParams.SalesStage = $scope.SalesStageSelected;
+                $scope.model.ClientParams.Description = $scope.Description;
+            };
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

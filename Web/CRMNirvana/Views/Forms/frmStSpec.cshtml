@@ -1,0 +1,300 @@
+﻿@using risersoft.app.mxform
+@using risersoft.shared.web.Extensions
+
+@model frmStSpecModel
+@{
+    ViewData["Title"] = "frmStSpec";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="https://momentjs.com/downloads/moment.js"></script>
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    .table thead th {
+        color: #52caff;
+        vertical-align: bottom;
+        border-bottom: 1px solid #e6e8e8;
+    }
+
+    .table th {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: none;
+    }
+
+    .table td {
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+        vertical-align: top;
+        border-top: 1px solid #e6e8e8;
+    }
+
+    .table th .inptable {
+        margin-bottom: 0px !important;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    #btntender {
+        width: 19%;
+        float: right;
+        margin-right: 6px;
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #txttender {
+        width: 79% !important;
+        display: inline;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-right: none;
+        border-radius: 0.25rem;
+        background-color: white;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+    .custominline {
+        display: inline-block;
+        width: 21%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+        max-width: 540px;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Standard Spec</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label class="control-label labeltext">Specification No.</label>
+                    <input type="text" class="form-control" ng-model="Stspec.SpecNum" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">Part No.</label>
+                    <input type="text" class="form-control" ng-model="Stspec.Part" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext" style="width:100%;visibility:hidden">Amendment</label>
+                    <label class="input-group-addon" style="background-color:transparent;border:none;"><input type="checkbox" ng-model="Stspec.Amendment" />Amendment</label>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label class="control-label labeltext">Write As</label>
+                    <input type="text" class="form-control" ng-model="Stspec.WriteAs" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">Title</label>
+                    <input type="text" class="form-control" ng-model="Stspec.Title" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext" style="visibility:hidden;width:100%">Title</label>
+                    <input type="button" class="btn btn-default" value="Calculate" ng-click="Calculate()" />
+                </div>
+            </div>
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" @*ng-show="model.frmMode==1 && visbacktoform"*@ id="btnbacktoWorkorder" ng-click="backtoprev()" style="margin-bottom: 16px; color: #fff;background: #50a74f !important;border-color: #0c940b !important;" Class="btn btn-primary btnf">Go Back To Specs</button>
+                </div>
+                <div class="col-md-9">
+                    @Html.Partial("_SavePanel")
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section botscripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+            var loadmodel = function (result) {
+                $scope.model = result;
+                $scope.Stspec = $scope.model.dsForm.DT[0];
+            }
+
+            loadmodel($scope.model)
+
+            $scope.backtoprev = function () {
+                $scope.info = $scope.Stspec;
+                var base = '/App/Link' + location.search;
+                var payload = { fKey: 'frmSpecs2', fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) }
+
+                $.post(base, payload, function (result) {
+                    $scope.status = 'loaded';
+                    window.location = result;
+                });
+            }
+
+            $scope.Calculate = function () {
+                if ($scope.Stspec.Amendment) {
+                    $scope.Stspec.WriteAs = $scope.Stspec.SpecNum + "(Part " + $scope.Stspec.Part + " with latest amendments thereof)"
+                    //20 (Part 21 with latest amendments thereof)
+                }
+                else {
+                    $scope.Stspec.WriteAs = $scope.Stspec.SpecNum + "(Part " + $scope.Stspec.Part + ")"
+                    //55 (Part 22)
+                }
+            }
+            $scope.cleanupmodel = function (datamodel) {
+                //debugger;
+
+            };
+            $scope.calculatemodel = function () {
+                //empty function
+
+
+            };
+
+            //$scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+    <link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jqueryui")
+}
+
+
+
+
+
+

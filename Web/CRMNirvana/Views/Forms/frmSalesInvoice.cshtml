@@ -1,0 +1,776 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmSalesInvoiceModel
+@{
+    ViewData["Title"] = "Sale Invoice";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/bootree.js" type="text/javascript"></script>
+<script src="https://momentjs.com/downloads/moment.js"></script>
+<style type="text/css">
+    li {
+        list-style: none;
+    }
+
+        li > label {
+            margin-bottom: 0px !important;
+        }
+
+    .labeltext {
+        margin-bottom: 0px;
+    }
+
+
+    .table thead th {
+        color: #42addc;
+        vertical-align: bottom;
+        border: 1px solid #b0bbbb;
+        padding: 0.25rem;
+        background: #e2e2e2;
+        text-align: center;
+    }
+
+    .table th {
+        /*padding: 0.75rem;*/
+        vertical-align: top;
+        border-top: none;
+    }
+
+    .table td {
+        vertical-align: top;
+        border: 1px solid #b0bbbb;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    td input[type="text"], td input[type="checkbox"], td select {
+        height: 21px !important;
+    }
+
+    .table td {
+        padding: 0.15rem;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Invoice</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> BASIC</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Invoice No.</label>
+                                                <input type="text" class="form-control" ng-model="SI.InvoiceNum" disabled />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext"> Invoice Date</label>
+                                                <input type="text" class="form-control my-datepicker" disabled ng-model="SI.InvoiceDate" name="txtworkdate" style="max-width:540px !important;" required ng-class="{true: 'error'}[submitted() && userform.txtworkdate.$invalid]" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Order No.</label>
+                                                <input type="text" class="form-control" ng-model="SI.OrderNum" disabled />
+                                                @*  <select class="form-control" style="max-width:540px !important;" ng-model="SI.OrderNum" ng-options="div as div.DivisionName for div in dsCombo.Division track by div.Divisionid" name="ddldivision" required ng-class="{true: 'error'}[submitted() && userform.ddldivision.$invalid]"></select>*@
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext"> Order Date</label>
+                                                <input type="text" class="form-control my-datepicker" disabled ng-model="SI.OrderDate" name="txtworkdate" style="max-width:540px !important;" required ng-class="{true: 'error'}[submitted() && userform.txtworkdate.$invalid]" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Customer Name</label>
+                                                <select class="form-control" style="max-width:100% !important;" disabled ng-model="SI.CustomerIDSelected" ng-options="item as item.PartyName for item in dsCombo.Customer track by item.CustomerID"></select>
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Invoice Campus</label>
+                                                <select class="form-control" style="max-width:100% !important;" disabled ng-model="SI.CampusIDSelected" ng-options="item as item.DispName for item in dsCombo.Campus track by item.CampusID"></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Delivery From</label>
+                                                <select class="form-control" style="max-width:100% !important;" disabled ng-model="SI.DeliveryCampusIDSelected" ng-options="item as item.DispName for item in dsCombo.Campus track by item.CampusID"></select>
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Project Site</label>
+                                                <select class="form-control" style="max-width:540px !important;" ng-model="SI.ProjectCampusIDSelected" ng-options="item as item.DispName for item in dsCombo.Campus track by item.CampusID"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Status</label>
+                                                <select class="form-control" disabled style="max-width:540px !important;" ng-model="SI.StatusNumSelected" ng-options="item as item.StatusText for item in dsCombo.Status track by item.StatusNum"></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Total Amount</label>
+                                                <input type="text" class="form-control" disabled ng-model="SI.AmountTot" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Remarks</label>
+                                                <input type="text" class="form-control" ng-model="SI.Remark" />
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('documents')">Add Sales Order</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Penaly/Deduction-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionPD" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingPD">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionPD" href="#collapsePD" aria-expanded="true" aria-controls="collapsePD">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Penalty / Deduction </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapsePD" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingPD">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Penalty Bill No.</label>
+                                                    <input type="text" class="form-control" ng-model="SI.penaltynum" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Penalty Amount</label>
+                                                    <input type="text" class="form-control" ng-model="SI.penaltyamt" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Case Submission Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="SI.casesubmit" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Case Acceptance Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="SI.caseaccept" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Case Rejection Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="SI.casereject" />
+                                                </div>
+                                            </div>
+                                            <!--Deduction-->
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Deduction On Amount Of</label>
+                                                    <input type="text" class="form-control" ng-model="SI.DecuctText" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Deduction Amount</label>
+                                                    <input type="text" class="form-control" ng-model="SI.Deduction" />
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Challan Text</label>
+                                                    <input type="text" class="form-control" ng-model="SI.ChallanText" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Documents-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion10" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTen">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion10" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Documents<span style="color:#a20000; font-size:24px;" id="docs"></span> </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapseTen" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTen">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            @* <div class="col-md-1"></div>*@
+                                            <div class="col-md-12">
+                                                <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('documents')">Add Document</a>
+                                            </div>
+                                        </div>
+                                        <div ng-repeat="rows in documents">
+                                            <div class="row">
+
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Prefix</label>
+                                                    <input type="text" class="form-control" ng-model="rows.Prefix" style="max-width:540px" />
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Document </label>
+                                                    <select class="form-control" name="Name{{$index}}" ng-model="rows.DocNameIDSelected" style="max-width:540px" ng-options="doc as doc.DocName for doc in dsCombo.DOC track by doc.docnameid "></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Postfix</label>
+                                                    <input type="text" class="form-control" name="Postfix{{index}}" ng-model="rows.Postfix" style="max-width:540px" />
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">DocNumber</label>
+                                                    <input type="text" class="form-control" name="DocNumber{{index}}" ng-model="rows.DocNumber" style="max-width:540px" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Doc Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="rows.DocDate" style="max-width:540px" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Num Copies</label>
+                                                    <input type="text" class="form-control" name="NumCopies{{index}}" ng-model="rows.NumCopies" style="max-width:540px" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">DocDetails</label>
+                                                    <input type="text" class="form-control" name="DocDetails{{index}}" ng-model="rows.DocDetails" style="max-width:540px" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Status</label>
+                                                    <input type="text" class="form-control" ng-model="rows.StatusNum" style="max-width:540px" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Completion Letter</label>
+                                                    <input type="text" class="form-control" ng-model="rows.CompletionLetter" style="max-width:540px" />
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Completion Date</label>
+                                                    <input type="text" class="form-control my-datepicker" ng-model="rows.CompletionDate" style="max-width:540px" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Remark</label>
+                                                    <input type="text" class="form-control" ng-model="rows.Remark" style="max-width:540px" />
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'documents')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Payment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion8" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingEight">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion8" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Payment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseEight" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingEight">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <p>No Records Found.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Forms-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion7" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading7">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion7" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Forms</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse7" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading7">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('Forms')">Add Forms</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="row in Forms">
+                                        <div class="row">
+                                            <div class="col-md-1"> </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">STForm Num</label>
+                                                <input type="text" class="form-control" ng-model="row.STFormNum" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">STForm Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="row.STFormDate" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Form Give Take</label>
+                                                <input type="text" class="form-control" ng-model="row.FormGiveTake" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">STForm OK</label>
+                                                <input type="text" class="form-control" ng-model="row.STFormOK" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">STForm Value</label>
+                                                <input type="text" class="form-control" ng-model="row.STFormValue" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"> </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Remark</label>
+                                                <input type="text" class="form-control" ng-model="row.Remark" />
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:right" ng-click="delete($index,'Forms')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Account Assignment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionAcc" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingAcc">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionAcc" href="#collapseAcc" aria-expanded="true" aria-controls="collapseAcc">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Account Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseAcc" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingAcc">
+                            <div class="panel-body">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+
+                                            <!--Serial List-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapseSerial" aria-expanded="true" aria-controls="collapseSerial" style="border-bottom:1px solid #d6cfcf;padding:0px;">
+                                                    <label>SERIAL LIST</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapseSerial">
+                                                <div class="row">
+                                                    <p>No Records Found.</p>
+
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+
+
+                                            <!--Spare List-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapseSpare" aria-expanded="true" aria-controls="collapseSpare" style="border-bottom:1px solid #d6cfcf;padding:0px;">
+                                                    <label>SPARE LIST</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapseSpare">
+                                                <div class="row">
+                                                    <p>No Records Found.</p>
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+
+
+
+                                            <!--Service List-->
+                                            <div class="row">
+                                                <div class="col-md-12" data-toggle="collapse" href="#collapseService" aria-expanded="true" aria-controls="collapseService" style="border-bottom:1px solid #d6cfcf;padding:0px;">
+                                                    <label>SERVICE LIST</label>
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse show" id="collapseService">
+                                                <div class="row">
+                                                    <p>No Records Found.</p>
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Additional Assignment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionAdd" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingAdd">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionAdd" href="#collapseAdd" aria-expanded="true" aria-controls="collapseAdd">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Additional Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseAdd" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingAdd">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+
+                                        <!--Serial List-->
+                                        <div class="row">
+                                            <div class="col-md-12" data-toggle="collapse" href="#collapseSerial" aria-expanded="true" aria-controls="collapseSerial" style="border-bottom:1px solid #d6cfcf">
+                                                <label>SERIAL LIST</label>
+                                            </div>
+                                        </div>
+                                        <div class="panel-collapse collapse show" id="collapseSerial">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('documents')">Add New</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row"><hr /></div>
+
+
+                                        <!--Spare List-->
+                                        <div class="row">
+                                            <div class="col-md-12" data-toggle="collapse" href="#collapseSpare" aria-expanded="true" aria-controls="collapseSpare" style="border-bottom:1px solid #d6cfcf">
+                                                <label>SPARE LIST</label>
+                                            </div>
+                                        </div>
+                                        <div class="panel-collapse collapse show" id="collapseSpare">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('documents')">Add New</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row"><hr /></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+
+            <div class="row">
+
+                @Html.Partial("_SavePanel")
+
+            </div>
+        </div>
+        <div id="dialogCustomer">
+
+        </div>
+    </form>
+</div>
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+
+
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.SI = $scope.model.dsForm.DT[0];
+                $scope.fitting = $scope.model.dsForm.fitting;
+                $scope.ValueLists = $scope.model.ValueLists;
+                debugger;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.documents = $scope.model.GridViews.Doc.MainGrid.myDS.dt;
+                $scope.Forms = $scope.model.GridViews.Forms.MainGrid.myDS.dt;
+
+
+                @Html.RenderLookup("SI", Model, Model.dsForm.Tables(0))
+
+
+                if ($scope.model.dsForm.DT[0].InvoiceDate) {
+                    $scope.SI.InvoiceDate = new moment($scope.model.dsForm.DT[0].InvoiceDate).format("MM/DD/YYYY")
+
+                }
+                if ($scope.model.dsForm.DT[0].OrderDate) {
+                    $scope.SI.OrderDate = new moment($scope.model.dsForm.DT[0].OrderDate).format("MM/DD/YYYY")
+
+                }
+                else {
+                    $scope.SI.OrderDate = new moment(Date.now()).format("MM/DD/YYYY")
+                }
+
+            }
+
+            loadmodel($scope.model)
+
+
+            $scope.Add = function (val) {
+
+               $scope[val].push({});
+
+            }
+            $scope.delete = function (index, val) {
+
+                    $scope[val].splice(index, 1);
+            }
+
+
+
+            $scope.cleanupmodel = function (datamodel) {
+
+            };
+
+            $scope.calculatemodel = function () {
+                //debugger;
+
+            };
+
+            $scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

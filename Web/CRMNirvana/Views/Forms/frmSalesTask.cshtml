@@ -1,0 +1,453 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+@using Syncfusion.EJ2
+
+@model frmSalesTaskModel
+@{
+    ViewData["Title"] = "frmSalesTask";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/Content/jQueryUI-datetimepicker.js"></script>
+<link href="https://ej2.syncfusion.com/aspnetmvc/Content/styles/bootstrap4.css" rel="stylesheet" />
+<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+<link href="~/Content/component-chosen.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    var defaultRTE;
+    function created() {
+        defaultRTE = this
+    };
+</script>
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        /*border-radius: 0.25rem 0rem 0rem 0.25rem;*/
+        border-radius: 0.25rem;
+    }
+
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+
+
+    .customdiv {
+        width: 100%;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    select, textarea, input {
+        max-width: initial;
+    }
+
+    #dialogFilterUser {
+        display: none;
+    }
+
+    #dialogfilterTeam, #dialogCustomer {
+        display: none;
+    }
+
+    .custom-group-button {
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+    }
+
+    #btnAttachmentUpload {
+        margin-top: -12px;
+        height: 45px;
+        background-color: #2787db;
+        color: #fff;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <input type="hidden" id="fileStatus" />
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Task</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:20px;">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-3">
+                            <select class="form-control" ng-model="task.PIDFieldSelected" ng-options="pi.DataValue for pi in ValueLists.PIDField.ValueListItems track by pi.DataValue" disabled> </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" ng-model="task.PIDValueSelected" disabled ng-options="item.IDInfo for item in dsCombo.Parent track by item.IDValue"> </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label labeltext"> Subject<span style="color:red">*</span></label>
+                            <input type="text" class="form-control" ng-model="task.Name" name="subject" required ng-class="{true:'error'}[submitted()&&userform.subject.$invalid]" />
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Person</label>
+                            <select class="form-control" ng-model="task.PersonIDSelected" ng-options="pi.FullName for pi in dsCombo.Person track by pi.PersonID"></select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Priority<span style="color:red">*</span></label>
+                            <select class="form-control" ng-model="task.PrioritySelected" ng-options="pi.DataValue for pi in ValueLists.Priority.ValueListItems track by pi.DataValue" name="priority" required ng-class="{true:'error'}[submitted()&&userform.priority.$invalid]"></select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Status<span style="color:red">*</span></label>
+                            <select class="form-control" ng-model="task.StatusSelected" ng-options="pi.DataValue for pi in ValueLists.Status.ValueListItems track by pi.DataValue" name="status" required ng-class="{true:'error'}[submitted()&&userform.status.$invalid]"></select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="control-label labeltext">Review By</label>
+                            <select class="form-control" ng-model="task.ReviewUserIDSelected" ng-options="pi.UserName for pi in dsCombo.Review track by pi.UserID"></select>
+
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Start Date And Time</label>
+                            <input type="text" class="form-control my-datepicker" ng-model="task.SDate" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="control-label labeltext"> Due Date And Time</label>
+                            <input type="text" class="form-control my-datepicker" ng-model="task.DateDue" />
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.EJS().RichTextEditor("default").Created("created").Render()
+                            @Html.EJS().ScriptManager()
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!--Assignment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading2">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading2">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="User" checked /> User
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="Team" /> Team
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='User'">
+                                            <label class="control-label labeltext">User :</label><br />
+                                            <select id="multiple" name="task_mul" @*ng-change="clearfields(task.AssignUserIDSelected,'user')"*@ ng-model="task.AssignUserIDSelected" class="form-control form-control-chosen" ng-options="item.UserName for item in dsCombo.User track by item.UserID" data-placeholder="Please select..." multiple></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='Team'">
+                                            <label class="control-label labeltext">Team :</label><br />
+                                            <select id="single" name="task_sing" @*ng-change="clearfields(task.AssignTeamIDSelected,'team')"*@ ng-model="task.AssignTeamIDSelected" class="form-control form-control-chosen" ng-options="item.Name for item in dsCombo.Team track by item.TeamID" data-placeholder="Please select..."></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                @Html.Partial("_SavePanel")
+            </div>
+        </div>
+
+
+
+    </form>
+
+</div>
+
+
+@section botscripts{
+    <script type="text/javascript">
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+
+        $(document).ready(function () {
+            setInterval(function () {
+
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datetimepicker()
+                });
+            }, 10);
+
+
+            $('.form-control-chosen').chosen({
+                // Chosen options here
+                allow_single_deselect: false,
+                width: '100%'
+            });
+
+        });
+
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+            $scope.Selectedassig = 'User';
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.task = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+                $scope.Var = $scope.model.ValueLists.Var;
+                // debugger;
+                defaultRTE.value = $scope.task.ContentHTML == null ? "" : $scope.task.ContentHTML;
+
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+
+                $scope.GenerateDelPayload = function () {
+                    var payload = { EntityKey: 'task', ID: $scope.model.dsForm.DT[0].TaskID, AcceptWarning: false };
+                    return payload;
+                };
+
+
+                @Html.RenderLookup("task", Model, Model.dsForm.Tables(0))
+
+                $scope.task.PIDFieldSelected = $.grep($scope.ValueLists.PIDField.ValueListItems, function (item, index) { return item.DataValue == $scope.model.dsForm.DT[0].PIDField })[0];
+                $scope.task.PIDValueSelected = $.grep($scope.dsCombo.Parent, function (item, index) { return item.IDValue == $scope.model.dsForm.DT[0].PIDValue })[0];
+
+
+                $scope.insert = function () {
+
+                    if (defaultRTE.value) {
+                        defaultRTE.value = defaultRTE.value + '' + $scope.typedata;
+                    }
+                    else {
+                        defaultRTE.value = $scope.typedata;
+                    }
+                }
+
+                // Single And Multiple select-------
+                if (Array.isArray($scope.model.GridViews.Team.MainGrid.myDS.dt) && $scope.model.GridViews.Team.MainGrid.myDS.dt.length) {
+
+                    $scope.task.AssignUserIDSelected = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                }
+                else {
+
+                    //Selected Assigend User in Edit Mode
+                    $scope.task.AssignUserIDSelected = [$scope.task.AssignUserIDSelected];
+                }
+                $scope.task.AssignTeamIDSelected = [$scope.task.AssignTeamIDSelected];
+
+
+            }
+
+            loadmodel($scope.model)
+
+            $scope.clearfields = function (key) {
+
+
+                if (key == 'Team') {
+
+                    $scope.task.AssignUserIDSelected = [];
+                    $('#multiple').val([]);
+                    $('#multiple').trigger('chosen:updated');
+                    $scope.model.dsForm.DT[0].AssignTeamID = $scope.task.AssignTeamIDSelected.TeamID;
+
+                    $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                    $scope.model.dsForm.DT[0].AssignUserSetID = null
+                    $scope.model.dsForm.DT[0].AssignUserID = null
+                }
+                if (key == 'User') {
+                    $scope.task.AssignTeamIDSelected = null;
+                    $('#single').val([]);
+                    $('#single').trigger('chosen:updated');
+                    if ($scope.task.AssignUserIDSelected != null && $scope.task.AssignUserIDSelected != undefined) {
+                        var auLength = $scope.task.AssignUserIDSelected.length;
+                        if (auLength > 1) {
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            for (var i = 0; i < $scope.task.AssignUserIDSelected.length; i++) {
+
+                                $scope.model.GridViews.Team.MainGrid.myDS.dt.push({ UserID: $scope.task.AssignUserIDSelected[i].UserID, UserName: $scope.task.AssignUserIDSelected[i].UserName });
+
+                            }
+
+                            //$scope.Mess.AssignUserIDSelected = null;
+                            $scope.model.dsForm.DT[0].AssignUserID = null;
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                        else {
+                            // debugger;
+                            $scope.model.dsForm.DT[0].AssignUserID = $scope.task.AssignUserIDSelected[0].UserID;
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            $scope.model.dsForm.DT[0].AssignUserSetID = null
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+
+                        }
+
+                    }
+                }
+
+            }
+
+
+            $scope.cleanupmodel = function (datamodel) {
+
+            };
+
+            $scope.calculateAll = function () {
+                // debugger;
+                $scope.task.ContentHTML = window.btoa(defaultRTE.getHtml());
+                // $scope.EmailTemplate.ContentHtml = base64EncodeUnicode(defaultRTE.getHtml());
+                $scope.task.Content = defaultRTE.getText();
+            };
+            $scope.calculateAll()
+
+            $scope.calculatemodel = function () {
+                $scope.calculateAll();
+                var keyval = $scope.Selectedassig;
+                $scope.clearfields(keyval);
+
+            };
+
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

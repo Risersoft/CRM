@@ -1,0 +1,1638 @@
+﻿@using AuthorizationFramework.Proxies
+@using risersoft.shared.portable
+@using risersoft.app.mxform.crm
+@using risersoft.shared.portable.Proxies
+@using risersoft.shared.web.Extensions
+@using Newtonsoft.Json
+
+@model frmSalesOrderModel
+
+@{
+    ViewData["Title"] = "SalesOrder";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+
+<style type="text/css">
+    .table thead th {
+        color: #52caff;
+        vertical-align: bottom;
+        border-bottom: 1px solid #e6e8e8;
+    }
+
+    .table th {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: none;
+    }
+
+    .table td {
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+        vertical-align: top;
+        border-top: 1px solid #e6e8e8;
+    }
+
+    .table th .inptable {
+        margin-bottom: 0px !important;
+    }
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    #btntender {
+        width: 19%;
+        float: right;
+        margin-right: 6px;
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #txttender {
+        width: 79% !important;
+        display: inline;
+        width: 100%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-right: none;
+        border-radius: 0.25rem;
+        background-color: white;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+    .custominline {
+        display: inline-block;
+        width: 21%;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    #loading {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <input type="hidden" id="hdnData" />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Sales Order</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> BASIC</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext" for="ddlCustomer">Customer<span style="color:red">*</span></label>
+                                            <select class="form-control" id="ddlCustomer" name="ddlCustomer" ng-model="SalesInfo.CustomerIDSelected" ng-options="cust as cust.CustDescrip for cust in dsCombo.Cust track by cust.customerid" style="max-width:540px !important;" required ng-class="{true:'error'}[submitted()&&userform.ddlCustomer.$invalid]"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">LoI No.<span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" id="txtLoi" name="txtLoi" ng-model="SalesInfo.LoINum" style="max-width:540px !important;" required ng-class="{true:'error'}[submitted()&&userform.txtLoi.$invalid]" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Dated<span style="color:red">*</span></label>
+                                            <input type="text" name="datea" ng-model="SalesInfo.LoIDate" ng-change="bindhandleby(SalesInfo.LoIDate)" style="max-width:540px !important;" class="form-control my-datepicker" required ng-class="{true: 'error'}[submitted() && userform.datea.$invalid]" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Name Of Work</label>
+                                            <input type="text" class="form-control" ng-model="SalesInfo.WorkName" id="txtworkname" name="txtworkname" style="max-width:540px !important;" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Order No.</label>
+                                            <input type="text" class="form-control" style="max-width:540px !important;" id="txtOrder" name="txtOrder" ng-model="SalesInfo.PONum" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Dated</label>
+                                            <input type="text" name="datec" style="max-width:540px !important;" ng-model="SalesInfo.PODate" ng-change="bindProject(SalesInfo.PODate)" class="form-control my-datepicker" />
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext"> Offer Acceptance Subject To</label>
+                                            <input type="text" class="form-control" id="txtoffer" ng-model="SalesInfo.AcceptClauses" name="txtoffer" style="max-width:540px !important;" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext" for="ddlcompany">Company<span style="color:red">*</span></label>
+                                            <select class="form-control" style="max-width:540px !important;" id="ddlcompany" name="ddlcompany" ng-model="SalesInfo.CompanyIDSelected" ng-options="comp as comp.CompName for comp in dsCombo.Company track by comp.CompanyID" required ng-class="{true: 'error'}[submitted() && userform.ddlcompany.$invalid]"></select>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Division<span style="color:red">*</span></label>
+                                            <select class="form-control" id="ddldivision" style="max-width:540px !important;" ng-model="SalesInfo.DivisionIDSelected" ng-options="div as div.DivisionName for div in dsCombo.Division track by div.Divisionid" name="ddldivision" required ng-class="{true: 'error'}[submitted() && userform.ddldivision.$invalid]"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Tender Specn no.</label>
+                                            <input type="text" class="input-group-addon" id="txttender" name="txttender" style="width:78%!important;" ng-model="tender" readonly />
+                                            <button type="button" class="btn btn-default" id="btntender" style="max-width:540px !important;width:20%;background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="cusitem()">Select</button>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext" for="ddlHandledBy">Handled By<span style="color:red">*</span></label>
+                                            <select class="form-control" id="ddlHandledBy" style="max-width:540px !important;" ng-model="SalesInfo.HandledByIDSelected" ng-options="user as user.fullname for user in UserList track by user.UserID" name="ddlHandledBy" required ng-class="{true:'error'}[submitted()&&userform.ddlHandledBy.$invalid]"></select>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Region</label>
+                                            <select class="form-control" id="ddlRegion" style="max-width:540px !important;" name="ddlRegion" ng-model="SalesInfo.RegionIDSelected" ng-options="reg as reg.region for reg in dsCombo.Region track by reg.regionid"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext" for="ddlJointVenture">Joint Venture</label>
+                                            <select class="form-control" id="ddlJointVenture" name="ddlJointVenture" style="max-width:540px !important;" ng-model="SalesInfo.JVPartnerIDSelected" ng-options="vjp as vjp.partyname for vjp in dsCombo.VendorJP track by vjp.vendorid"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Project Name</label>
+                                            <select class="form-control" id="ddlProject" name="ddlProject" style="max-width:540px !important;" ng-model="SalesInfo.ProjectIDSelected" ng-options="pro as pro.ProjectName for pro in ProjectList track by pro.ProjectID"></select>
+                                            @*<select class="form-control" id="ddlProject" name="ddlProject" style="max-width:540px !important;" ng-model="SalesInfo.ProjectIDSelected" ng-options="pro as pro.ProjectName for pro in dsCombo.Project track by pro.ProjectID"></select>*@
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Work Unit Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionWork" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingWork">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionWork" href="#collapseWork" aria-expanded="true" aria-controls="collapseWork">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Work Unit</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseWork" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingWork">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="btnfn('SP')">
+                                                    Add SP
+                                                </button>
+                                                <button type="button" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="btnfn('RE')">
+                                                    Add RE
+                                                </button>
+                                                <button type="button" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="btnfn('PR')">
+                                                    Add PR
+                                                </button>
+                                                <button type="button" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="btnfn('SW')">
+                                                    Add SW
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row" ng-show="Workunit.length==0">
+                                                    <p>No Records Found.</p>
+                                                </div>
+                                                <div class="row" ng-hide="Workunit.length==0">
+                                                    <table class="table table-responsive">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>WOType</th>
+                                                                <th>WONum</th>
+                                                                <th>WODate</th>
+                                                                <th>ItemCode</th>
+                                                                <th>ItemName</th>
+                                                                <th>DescripWO</th>
+                                                                <th>TotalQty</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="row in model.GridViews.WO.MainGrid.myDS.dt">
+                                                                <td>{{row.WOType}}</td>
+                                                                <td>{{row.WONum}}</td>
+                                                                <td>{{row.WODate}}</td>
+                                                                <td>{{row.ItemCode}}</td>
+                                                                <td>{{row.ItemName}}</td>
+                                                                <td>{{row.DescripWO}}</td>
+                                                                <td>{{row.TotalQty}}</td>
+                                                                <td>
+                                                                    <a href="" style="z-index:35;position:relative;" ng-click="Edit($index,'Lead')"><span class="fa fa-edit" style="color: #d83e3b;"></span></a>
+                                                                    |
+                                                                    <a href="" style="z-index:35;position:relative;" ng-click="delete($index,'Lead')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Info Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTwo">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">   INFO</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <ddiv class="col-md-8">
+                                            <label class="control-label labeltext" for="ddlenduser">End User</label>
+                                        </ddiv>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="ddlenduser" name="ddlenduser" ng-model="SalesInfo.EndUserIDSelected" ng-options="party as party.partyname for party in dsCombo.Party track by party.partyid" style="max-width:540px !important;"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="button" class="btn btn-default" id="btnenduser" name="btnenduser" value="Same As Customer" ng-click="getCustname('EndUser')" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" />
+                                        </div>
+                                        @*<div class="col-md-3">
+                                                <label><input type="checkbox" name="chkenduser" id="chkenduser" style="width:20px;height:20px;vertical-align:middle;" /> &nbsp;Send Copy to End User</label>
+                                            </div>*@
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <ddiv class="col-md-8">
+                                            <label class="control-label labeltext" for="ddlconsultant">Consultant</label>
+                                        </ddiv>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="ddlconsultant" name="ddlconsultant" ng-model="SalesInfo.ConsultantIDSelected" ng-options="party as party.partyname for party in dsCombo.Party track by party.partyid" style="max-width:540px !important;"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="button" class="btn btn-default" id="btnconsultant" name="btnconsultant" value="Same As Customer" ng-click="getCustname('Consultant')" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" />
+                                        </div>
+                                        @*<div class="col-md-3">
+                                                <label><input type="checkbox" name="chkconsultant" id="chkconsultant" style="width:20px;height:20px;vertical-align:middle;" /> &nbsp;Send Copy to Consultant</label>
+                                            </div>*@
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <ddiv class="col-md-8">
+                                            <label class="control-label labeltext" for="ddlcontractor">Contractor</label>
+                                        </ddiv>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="ddlcontractor" name="ddlcontractor" ng-model="SalesInfo.ContractorIDSelected" ng-options="party as party.partyname for party in dsCombo.Party track by party.partyid" style="max-width:540px !important;"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="button" class="btn btn-default" id="btncontractor" name="btncontractor" value="Same As Customer" ng-click="getCustname('Contractor')" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" />
+                                        </div>
+                                        @*<div class="col-md-3">
+                                                <label><input type="checkbox" name="chkcontractor" id="chkcontractor" style="width:20px;height:20px;vertical-align:middle;" /> &nbsp;Send Copy to Contractor</label>
+                                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Contact Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingThree">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> CONTACT</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+                                            <label class="control-label labeltext">
+                                                Send Order Acceptance To
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+                                            <select class="form-control" style="max-width:540px !important;" ng-model="SalesInfo.SendAcceptIDSelected" ng-options="per as per.FullName for per in dsCombo.Persons track by per.perspartyid"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="button" class="btn btn default" value="Select" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+                                            <label class="control-label labeltext">
+                                                Send Document for Approval To
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+
+                                            <select class="form-control" style="max-width:540px !important;" ng-model="SalesInfo.SendApproveIDSelected" ng-options="per as per.FullName for per in dsCombo.Persons track by per.perspartyid"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="button" class="btn btn default" value="Select" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Inspection Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingFour">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">INSPECTION</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext" for="txtinspection">
+                                                Inspection
+                                            </label>
+                                            <input type="text" class="form-control" name="txtinspection" style="max-width:540px !important;" ng-model="SalesInfo.InsAuthName" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext" for="ddlauthority">Authority</label>
+                                            <select class="form-control" name="ddlauthority" style="max-width:540px !important;" ng-model="SalesInfo.InsAuthIDSelected" ng-options="party as party.partyname for party in dsCombo.Party track by party.partyid"></select>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext" for="ddlnotification">Notification Period</label>
+                                            <input type="text" class="form-control" name="ddlnotification" style="max-width:540px;" ng-model="SalesInfo.NotiPeriod" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext" for="txtinspectionfees">
+                                                Inspection Fees
+                                            </label>
+                                            <input type="text" class="form-control" name="txtinspectionfees" style="max-width:540px !important;" ng-model="SalesInfo.InspecFees" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+                                            <label><input type="checkbox" name="chkcustomformat" style="width:20px;height:20px;vertical-align:middle;" ng-model="SalesInfo.InspFormat" /> &nbsp;Custom Inspection Format</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-5">
+                                            <label><input type="checkbox" name="chkpaidbyus" style="width:20px;height:20px;vertical-align:middle;" ng-model="SalesInfo.DoWePayInspec" /> &nbsp;Paid By Us</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <label class="control-label labeltext">Send Inspection Call Copies To &nbsp;<a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);">Add</a></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Payments panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion5" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingFive">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion5" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">PAYMENTS</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingFive">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+                                            <label class="control-label labeltext" for="txtpayment">
+                                                Payment
+                                            </label>
+                                            <input type="text" class="form-control" name="txtpayment" style="max-width:540px !important;" ng-model="SalesInfo.PayAuthName" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label class="control-label labeltext" for="ddlpaymentauthority">Authority</label>
+                                            <select class="form-control" name="ddlpaymentauthority" style="max-width:540px !important;" ng-model="SalesInfo.PaymentAuthIDSelected" ng-options="party as party.partyname for party in dsCombo.Party track by party.partyid"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5">
+                                            <label><input type="checkbox" name="chktransportinsurance" style="width:20px;height:20px;vertical-align:middle;" ng-model="SalesInfo.ReqTransIns" /> &nbsp;Transport Insurance Required</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-5">
+                                            <label><input type="checkbox" name="chkcompanypaidbyus" style="width:20px;height:20px;vertical-align:middle;" ng-modal="SalesInfo.FreightByUs" /> &nbsp;Paid By Us</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Addrow('PaymentTerm')">Add Payment Terms</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="row1 in PaymentTerm">
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">perValue</label>
+                                                <input type="text" name="txtperVal{{$index}}" ng-model="row1.perValue" class="form-control" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Term1</label>
+                                                <input type="text" name="txtterm{{$index}}" value="% within" class="form-control" style="max-width:540px !important;" readonly />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Period Num</label>
+                                                <input type="text" name="txtnum{{$index}}" ng-model="row1.PeriodNum" class="form-control" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Period Type</label>
+                                                <select class="form-control" name="ddlorderstatus{{$index}}" ng-model="row1.PeriodTypeSelected" ng-options="order as order.DisplayText for order in Periodtyp track by order.DataValue" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Term2</label>
+                                                <input type="text" name="txtterm2{{$index}}" value="from" class="form-control" style="max-width:540px !important;" readonly />
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">OrderStatusNum</label>
+                                                <select type="text" class="form-control" name="ddlpayment{{$index}}" style="max-width:540px !important;" ng-model="row1.PaymentStageIDSelected" ng-options="mode as mode.stagedescrip for mode in PaymentStage track by mode.PaymentStageID"></select>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Payment Mode</label>
+                                                <select type="text" class="form-control" name="ddlpaymentmode{{$index}}" style="max-width:540px !important;" ng-model="row1.PayModeSelected" ng-options="mode as mode.descriptot for mode in PaymentMode track by mode.codeword"></select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="control-label labeltext">Remarks</label>
+                                                <input type="text" name="txtRemark{{$index}}" ng-model="row1.Remark" class="form-control" style="max-width:540px !important;" rows="2" />
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="javascript:void(0)" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'PaymentTerm')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Order Value-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionOrder" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingOrder">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionOrder" href="#collapseOrder" aria-expanded="true" aria-controls="collapseOrder">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Order Value</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseOrder" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOrder">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <label class="control-label labeltext" for="txtfreight">
+                                                Freight
+                                            </label>
+                                            <input type="text" class="form-control" name="txtfreight" style="max-width:540px !important;" disabled />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Total Value &nbsp;<sub>(Ex Works)</sub> <span style="color:red;">*</span> </label>
+                                            <input type="text" class="form-control" numbers-only name="txttotalvalue" id="totalvalue" style="max-width:540px;" ng-model="SalesInfo.TotalValue" readonly required ng-class="{true: 'error'}[submitted() && userform.txttotalvalue.$invalid]" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext" for="PVbase">PV Base Date</label>
+                                            <input type="text" name="datePV" ng-model="SalesInfo.PVBaseDate" style="max-width:540px !important;" class="form-control my-datepicker" />
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="control-label" style="visibility:hidden;">PV</label>
+                                            <label class="form-control input-group-addon" style="background: transparent;border: none;">
+                                                <input type="checkbox" name="chkhasPV" style="width:20px;height:20px;vertical-align:middle;" ng-model="SalesInfo.HasPV" disabled /> &nbsp;PV
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row hidden-sm hidden-xs">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <label class="form-control labeltext" style="border:none;background-color:transparent;margin-bottom: 0px !important;">Portion</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-control labeltext" style="border:none;background-color:transparent;margin-bottom: 0px !important;">PO Value</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-control labeltext" style="border:none;background-color:transparent;margin-bottom: 0px !important;">PV Value</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-control labeltext" style="border:none;background-color:transparent;margin-bottom: 0px !important;">PV</label>
+                                        </div>
+                                    </div>
+
+                                    <div ng-repeat="rows in SalesOrderValue ">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="form-control labeltext" style="border:none">{{rows.Portion}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="number" placeholder="Enter PO Value" name="povalue{{$index}}" class="form-control" ng-blur="SumValue()" ng-model="rows.POValue" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="number" placeholder="Enter PV value" name="pvvalue{{$index}}" class="form-control" ng-blur="SumValue()" ng-model="rows.PVValue" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select class="form-control" name="haspv{{$index}}" ng-model="rows.HasPV">
+                                                    <option value="">Select PV</option>
+                                                    <option value=true>Variable</option>
+                                                    <option value=false>Firm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Clauses Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion6" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingSix">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion6" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> CLAUSES</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseSix" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingSix">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3">
+                                            <label class="labeltext">
+                                                <input type="checkbox" name="chkcustomBG" id="chkcustomBG" style="width:20px;height:20px;vertical-align:middle;" ng-model="SalesInfo.BGFormat" /> &nbsp;Custom BG Format
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3">
+                                            <label class="labeltext"><input type="checkbox" name="chkBGforunit" id="chkBGforunit" style="width:20px;height:20px;vertical-align:middle;" ng-model="SalesInfo.BGperUnit" /> &nbsp;BG Required For Every Unit</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext" for="txtgurantee">Gurantee Period</label>
+                                            <input type="text" class="form-control" id="txtgurantee" name="txtgurantee" style="max-width:540px !important;" ng-model="SalesInfo.GPClause" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Excise Clause</label>
+                                            <input type="text" id="txtexcise" name="txtexcise" style="max-width:540px !important;" class="form-control" ng-model="SalesInfo.ExClause" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext" for="ddlsalestax">Sales Tax Clause</label>
+                                            <select class="form-control" id="ddlsalestax" style="max-width:540px !important;" name="ddlsalestax" ng-model="SalesInfo.STClauseSelected" ng-options="lst as lst.DisplayText for lst in STList track by lst.DisplayText"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top:15px;">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="labeltext"><input type="checkbox" ng-true-value="'Yes'" ng-false-value="'No'" ng-model="chkpenalty" name="chkpenalty" id="chkpenalty" style="width:20px;height:20px;vertical-align:middle;" /> &nbsp;Penalty Clause</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" ng-show="chkpenalty=='Yes'">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <input type="text" class="input-group-addon custominline" ng-model="SalesInfo.perPenalty" /> % per
+                                            <select class="input-group-addon custominline" name="ddlper" ng-model="SalesInfo.PenaltyPeriodTypeSelected" ng-options="period as period.descriptot for period in PenaltyPeriod track by period.codeword"></select> for a max of
+                                            <input type="text" class="input-group-addon custominline" ng-model="SalesInfo.perMaxPenalty" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Bank Gurantee-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion7" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading7">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion7" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Bank Gurantee<span style="color:#a20000; font-size:24px;" id="bg"></span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse7" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading7">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Addrow('BGRows')">Add Bank Gurantee</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="row in BGRows">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">BG Type<span style="color:red">*</span></label>
+                                                <select class="form-control" name="ddlbgtype{{$index}}" ng-model="row.BGTypeidSelected" ng-options="typ as typ.bgname for typ in dsCombo.BGType track by typ.BGTypeid" style="max-width:540px !important;" required ng-class="{true:'error'}[submitted()&&userform.ddlbgtype{{$index}}.$invalid]"></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">BG Status</label>
+                                                <select class="form-control" name="ddlbgstatus{{$index}}" ng-model="row.statusNumSelected" ng-options="typ as typ.statustext for typ in dsCombo.StatusBG track by typ.statusnum" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">BG Mode</label>
+                                                <select class="form-control" name="ddlbgmode{{$index}}" ng-model="row.BGModeSelected" ng-options="typ as typ.DisplayText for typ in BGMode track by typ.DisplayText" style="max-width:540px !important;"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11">
+                                                <label class="control-label labeltext">Clause 1</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-7">
+                                                <label class="input-group">
+                                                    <input type="text" class="input-group-addon" name="perValue{{$index}}" style="max-width:540px;width: 55%" ng-model="row.pervalue" /><label class="input-group-addon" style=" padding-top: 6px;border: none; background: transparent; padding: 0;"> %till</label>
+                                                    <input type="text" class="input-group-addon" name="pernum{{$index}}" style="max-width:540px;margin-left: 3px;width: 39%;" ng-model="row.periodnum" />
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control" style="max-width:540px;" ng-model="row.periodtypeSelected" ng-options="type.DisplayText for type in Ptype track by type.DataValue"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11">
+                                                <label class="control-label labeltext">Clause 2</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-7">
+                                                <label class="input-group">
+                                                    <input type="text" class="input-group-addon" name="perValue2{{$index}}" style="max-width:540px;width:55%" ng-model="row.pervalue2" />
+                                                    <label class="input-group-addon" style=" padding-top: 6px;border: none; background: transparent; padding: 0;"> %till</label>
+                                                    <input type="text" class="input-group-addon" name="pernum2{{$index}}" style="max-width:540px;margin-left:3px;width: 39%;" ng-model="row.periodnum2" />
+                                                </label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control" style="max-width:540px;" ng-model="row.periodtype2Selected" ng-options="type.DisplayText for type in Ptype track by type.DataValue"></select>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">BG Num</label>
+                                                <input type="text" class="form-control" style="max-width:540px;" ng-model="row.BGNum" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">BG Date</label>
+                                                <input type="text" class="form-control my-datepicker" style="max-width:540px;" ng-model="row.BGDate" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">BG Value</label>
+                                                <input type="text" class="form-control" style="max-width:540px;" ng-model="row.BGValue" />
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Claim Period</label>
+                                                <input type="text" class="form-control" style="max-width:540px;" ng-model="row.ClaimPeriod" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Valid Upto</label>
+                                                <input type="text" class="form-control my-datepicker" style="max-width:540px;" ng-model="row.ValidUpto" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Release Date</label>
+                                                <input type="text" class="form-control my-datepicker" style="max-width:540px;" ng-model="row.ReleaseDate" />
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Remarks</label>
+                                                <input ng-model="row.Remark" class="form-control" name="txtremarks{{$index}}" style="max-width:540px;resize:none" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:right" ng-click="delete($index,'BGRows')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row"><hr /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Document Required-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion8" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingEight">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion8" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> DOCUMENTS REQUIRED <span style="color:#a20000; font-size:24px;" id="doc"></span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseEight" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingEight">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Addrow('documentRows')">Add Document</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="row in documentRows">
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Document</label>
+                                                <select class="form-control" name="ddldoc{{$index}}" ng-model="row.DocNameIDSelected" ng-options="doc as doc.DocName for doc in Document track by doc.docnameid" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">On Order</label>
+                                                <select class="form-control" name="ddlonOrder{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.OnOrderSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Before Inspection</label>
+                                                <select class="form-control" name="ddlbeforeIns{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.BeforeInspecSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">After Inspection</label>
+                                                <select class="form-control" name="ddlafterIns{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.AfterInspecSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Before Dispatch</label>
+                                                <select class="form-control" name="ddlbeforeDis{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.BeforeDispSelected" style="max-width:540px !important;"></select>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">After Dispatch</label>
+                                                <select class="form-control" name="ddlafterDis{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.AfterDispSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">On Invoice</label>
+                                                <select class="form-control" name="ddlonInv{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.OnInvoiceSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Customer Format</label>
+                                                <select class="form-control" name="ddlcustf{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.CustFormatSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Is Approved</label>
+                                                <select class="form-control" name="ddlisApp{{$index}}" ng-options="bool as bool.name for bool in tfddl track by bool.value" ng-model="row.IsApproveSelected" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Is Recd</label>
+                                                <select class="form-control" name="ddlIsRecd{{$index}}" ng-model="row.IsRecdSelected" ng-options="bool as bool.name for bool in tfddl track by bool.value" style="max-width:540px !important;"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-6">
+                                                <label class="control-label labeltext">Remarks</label>
+                                                <textarea ng-model="row.Remarks" class="form-control" name="txtremarks{{$index}}" style="max-width:540px;resize:none" rows="2"></textarea>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:right" ng-click="delete($index,'documentRows')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row"><hr /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Commission Agent-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion9" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingNine">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion9" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Commission Agent <span style="color:#a20000; font-size:24px;" id="ca"></span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseNine" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingNine">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Commission Agent</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="ddlcommagent" style="max-width:540px !important;" ng-model="SalesInfo.CommAgentIDSelected" ng-options="agent as agent.partyname for agent in dsCombo.VendorCA track by agent.vendorid"></select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Addrow('commissionrows')">Add Payment Terms</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="rows2 in commissionrows">
+
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">perValue</label>
+                                                <input type="text" name="txtperVal{{$index}}" ng-model="rows2.perValue" class="form-control" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Term</label>
+                                                <input type="text" name="txtterm{{$index}}" value="% after" class="form-control" style="max-width:540px !important;" readonly />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Order Status Num</label>
+                                                <select class="form-control" name="ddlorderstatus{{$index}}" ng-model="rows2.OrderStatusNumSelected" ng-options="order as order.StageDescrip for order in OrderStatusNum track by order.paymentstageid" style="max-width:540px !important;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Payment Mode</label>
+                                                <select class="form-control" name="ddlpayment{{$index}}" style="max-width:540px !important;" ng-model="rows2.PayModeSelected" ng-options="mode as mode.descriptot for mode in PaymentMode track by mode.codeword"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">No.</label>
+                                                <input type="text" name="txtno{{$index}}" ng-model="rows2.PayText" class="form-control" style="max-width:540px !important;" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Paydate</label>
+                                                <input type="text" name="Paydate{{$index}}" ng-model="rows2.PayDate" class="form-control my-datepicker" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Amount</label>
+                                                <input type="text" name="txtamount{{$index}}" class="form-control" ng-model="rows2.Amount" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="control-label labeltext">Remarks</label>
+                                                <input type="text" name="txtRemark{{$index}}" ng-model="rows2.Remark" class="form-control" style="max-width:540px !important;" rows="2" />
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'commissionrows')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--S O Transport-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion10" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTen">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion10" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> S O Transport<span style="color:#a20000; font-size:24px;" id="trans"></span> </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseTen" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTen">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Addrow('soTransportrows')">Add S O Transport</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="rows in soTransportrows">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-5">
+                                                <label class="control-label labeltext">Transporter</label>
+                                                <select class="form-control" name="ddltransporter{{$index}}" ng-model="rows.TransporterIDSelected" ng-options="trns as trns.VendorName for trns in Transporter track by trns.VendorID" style="max-width:540px"></select>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <label class="control-label labeltext">Campus</label>
+                                                <select class="form-control" name="ddlSOcampus{{$index}}" ng-model="rows.CampusIDSelected" style="max-width:540px" ng-options="camp as camp.DispName for camp in Campus track by camp.CampusID "></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">From here</label>
+                                                <select class="form-control" name="SOFromhere{{$index}}" ng-model="rows.FromHereSelected" ng-options="bool as bool.name for bool in tfddl track by bool.value" style="max-width:540px;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Is Done</label>
+                                                <select class="form-control" name="SOIsdone{{$index}}" ng-model="rows.IsDoneSelected" ng-options="bool as bool.name for bool in tfddl track by bool.value" style="max-width:540px;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">TransDate</label>
+                                                <input type="text" style="max-width:100%" name="TransDate{{$index}}" ng-model="rows.TransDate" class="form-control my-datepicker" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Place</label>
+                                                <input type="text" style="max-width:100%" name="Place{{$index}}" ng-model="rows.Place" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Num Trans</label>
+                                                <input type="text" style="max-width:100%" name="NumTrans{{$index}}" ng-model="rows.NumTrans" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Is Insured</label>
+                                                <select class="form-control" name="SOIsInsured{{$index}}" ng-model="rows.IsInsuredSelected" ng-options="bool as bool.name for bool in tfddl track by bool.value" style="max-width:540px;"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Freight</label>
+                                                <input type="text" name="SOFreight{{$index}}" ng-model="rows.Freight" class="form-control" style="max-width:540px;" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-label labeltext">Did we pay?</label>
+
+                                                <select class="form-control" name="Didwepay{{$index}}" ng-model="rows.DidWePaySelected" ng-options="bool as bool.name for bool in tfddl track by bool.value" style="max-width:540px;"></select>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'soTransportrows')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                @Html.Partial("_SavePanel")
+
+            </div>
+
+
+        </div>
+        <div id="dialogCustomer">
+            @*<div ng-repeat="row in cust_dsCombo">
+                    <input id="cust_{{row.CustomerID}}" type="radio" ng-model="$parent.SelectedCustId" value="{{row.CustomerID}}" /> {{row.PartyName}}
+                </div>*@
+        </div>
+    </form>
+</div>
+
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+
+            //Delegate
+            $(document).delegate("#acMainGrid", "iggridcellclick", function (evt, ui) {
+
+                $('#acMainGrid').igGridSelection('selectRow', ui.rowIndex);
+                rui = ui;
+
+            });
+        });
+
+        rsApp.controller('FormController', function ($scope, $http, usSpinnerService) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.SalesInfo = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+
+                $scope.SalesOrderValue = $scope.model.GridViews.SOVal.MainGrid.myDS.dt;
+                debugger;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.Campus = $scope.model.GridViews.Trns.MainGrid.dsLookup.Table1;
+                $scope.Transporter = $scope.model.GridViews.Trns.MainGrid.dsLookup.Table0;
+                $scope.STList = $scope.model.ValueLists.STClause.ValueListItems;
+                $scope.Periodtyp = $scope.model.ValueLists.periodtype.ValueListItems;
+                $scope.PenaltyPeriod = $scope.model.dsCombo.PenaltyPeriodType; //PenaltyPeriodType
+                $scope.PaymentTerm = $scope.model.GridViews.SOPay.MainGrid.myDS.dt;
+                $scope.documentRows = $scope.model.GridViews.SODoc.MainGrid.myDS.dt;
+                $scope.commissionrows = $scope.model.GridViews.SOComm.MainGrid.myDS.dt;
+                $scope.soTransportrows = $scope.model.GridViews.Trns.MainGrid.myDS.dt;
+                $scope.PaymentMode = $scope.model.GridViews.SOComm.MainGrid.dsLookup.Table0;
+                $scope.OrderStatusNum = $scope.model.GridViews.SOComm.MainGrid.dsLookup.Table1;
+                $scope.Document = $scope.model.GridViews.SODoc.MainGrid.dsLookup.Table0;
+                $scope.PaymentStage = $scope.model.GridViews.SOPay.MainGrid.dsLookup.Table1;
+                $scope.Ptype = $scope.model.ValueLists.periodtype.ValueListItems;
+                $scope.BGMode = $scope.model.ValueLists.BGMode.ValueListItems;
+                $scope.BGRows = $scope.model.GridViews.BGCust.MainGrid.myDS.dt;
+                $scope.tfddl = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }]
+                $scope.Workunit = $scope.model.GridViews.WO.MainGrid.myDS.dt;
+                $scope.ProjectList = $scope.model.dsCombo.Project;
+
+                //if (Array.isArray($scope.model.DatasetCollection.enq) && $scope.model.DatasetCollection.enq.dt.length) {
+
+                //    //$scope.tenderdata = $scope.model.DatasetCollection.enq.dt;
+                //    //$scope.tender = $scope.tenderdata[0].enqrefnum + "dt." + $scope.tenderdata[0].enqdate;
+                //}
+
+                @Html.RenderLookup("SalesInfo", Model, Model.dsForm.Tables(0))
+
+
+                $.each($scope.BGRows, function (index, row) {
+                    row.BGTypeidSelected = $.grep($scope.dsCombo.BGType, function (item, index) { return item.BGTypeid === row.BGTypeid })[0];
+                    row.statusNumSelected = $.grep($scope.dsCombo.StatusBG, function (item, index) { return item.statusNum === row.statusNum })[0];
+                    row.BGModeSelected = $.grep($scope.BGMode, function (item, index) { return item.DisplayText == row.BGMode })[0];
+                    row.periodtypeSelected = $.grep($scope.Ptype, function (item, index) { return item.DataValue == row.periodtype })[0];
+                    row.periodtype2Selected = $.grep($scope.Ptype, function (item, index) { return item.DataValue == row.periodtype2 })[0];
+                });
+                $.each($scope.documentRows, function (index, row) {
+                    row.DocNameIDSelected = $.grep($scope.Document, function (item, index) { return item.docnameid === row.DocNameID })[0];
+                    row.OnOrderSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.OnOrder })[0];
+                    row.BeforeInspecSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.BeforeInspec })[0];
+                    row.AfterInspecSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.AfterInspec })[0];
+                    row.BeforeDispSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.BeforeDisp })[0];
+                    row.AfterDispSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.AfterDisp })[0];
+                    row.OnInvoiceSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.OnInvoice })[0];
+                    row.CustFormatSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.CustFormat })[0];
+                    row.IsApproveSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.IsApprove })[0];
+                    row.IsRecdSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.IsRecd })[0];
+                });
+                $.each($scope.commissionrows, function (index, row) {
+
+                    row.OrderStatusNumSelected = $.grep($scope.OrderStatusNum, function (item, index) { return item.paymentstageid === row.OrderStatusNum })[0];
+                    row.PayModeSelected = $.grep($scope.PaymentMode, function (item, index) { return item.codeword === row.PayMode })[0];
+                })
+                $.each($scope.soTransportrows, function (index, row) {
+                    row.TransporterIDSelected = $.grep($scope.Transporter, function (item, index) { return item.VendorID === row.TransporterID })[0];
+                    row.CampusIDSelected = $.grep($scope.Campus, function (item, index) { return item.CampusID === row.CampusID })[0];
+                    row.FromHereSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.FromHere })[0];
+                    row.IsDoneSelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.IsDone })[0];
+                    row.IsInsuredSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.IsInsured })[0];
+                    row.DidWePaySelected = $.grep($scope.tfddl, function (item, index) { return item.value == row.DidWePay })[0];
+
+                });
+                $.each($scope.PaymentTerm, function (index, row) {
+                    row.PeriodTypeSelected = $.grep($scope.Periodtyp, function (item, index) { return item.DataValue === row.PeriodType })[0];
+                    row.PaymentStageIDSelected = $.grep($scope.PaymentStage, function (item, index) { return item.PaymentStageID === row.PaymentStageID })[0];
+                    row.PayModeSelected = $.grep($scope.PaymentMode, function (item, index) { return item.codeword == row.PayMode })[0];
+                })
+
+
+            }
+
+            loadmodel($scope.model)
+
+            $scope.btnfn = function (val) {
+                $scope.SalesInfofrm = ($scope.model.frmMode == 2 ? false : true);
+                if ($scope.model.frmMode == 1 && $scope.SalesInfofrm) {
+                    $scope.info = $scope.SalesInfo;
+                    $scope.info.wotype = val;
+                    var base = '/App/Link' + location.search;
+                    var payload = { fKey: 'frmWO', fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) } // fMode: 'acAddM',
+                    // var payload = { fKey: 'frmEmp', fMode: 'acEditM', IDX: row.employeeid, rowData: JSON.stringify(row) }; // for edit
+                    $.post(base, payload, function (result) {
+                        $scope.status = 'loaded';
+                        window.location = result;
+                    })
+                }
+                else {
+                    alert("Please Submit form Before Adding Item");
+                }
+            }
+
+            // Same Name As Customer
+            $scope.getCustname = function (value) {
+
+                $scope.custname = $scope.SalesInfo.CustomerIDSelected;
+
+                if (value == "EndUser" && $scope.custname) {
+                    $scope.SalesInfo.EndUserIDSelected = $scope.custname;
+                }
+                else if (value == "Consultant" && $scope.custname) {
+                    $scope.SalesInfo.ConsultantIDSelected = $scope.custname;
+                }
+                else if (value == "Contractor" && $scope.custname) {
+
+                    $scope.SalesInfo.ContractorIDSelected = $scope.custname;
+                }
+
+            };
+
+            // Validation on HandledBy based on LoIDate and Joining n LeavingDate of User
+            $scope.bindhandleby = function (value) {
+                $scope.User = $scope.model.dsCombo.User;
+                $scope.vari = value;  //yyyy-MM-dd\\ value.SalesInfo.LoIDate;
+                $scope.UserList = $.grep($scope.User, function (item, i) {
+                    return ((item.JoinDate == null || new Date(item.JoinDate) <= new Date($scope.vari)) && (item.LeaveDate == null || new Date(item.LeaveDate) >= new Date($scope.vari)))
+                });
+            };
+
+            // Validation on Project name based on PODate and Project Completion date
+            $scope.bindProject = function (value) {
+                $scope.project = $scope.model.dsCombo.Project;
+                $scope.dt = value; //yyyy-MM-dd \\ value.SalesInfo.PODate;
+                $scope.ProjectList = $.grep($scope.project, function (item, i) {
+                    return ((item.CompletedOn == null || new Date(item.CompletedOn) >= new Date($scope.dt)))
+                })
+            }
+            $scope.bindhandleby($scope.SalesInfo.LoIDate)
+            $scope.bindProject($scope.SalesInfo.PODate)
+            //Sum of POValue And PVValue
+            $scope.SumValue = function () {
+                var sum = 0;
+                $.each($scope.SalesOrderValue, function (index, rows) {
+                    if (rows.POValue)
+                        sum = sum + parseFloat(rows.POValue);
+                    if (rows.PVValue)
+                        sum = sum + parseFloat(rows.PVValue);
+                });
+                var tot = sum.toFixed(2);
+               // $('#totalvalue').val(tot);
+                $scope.SalesInfo.TotalValue = tot;
+            }
+
+            //Add new row in ng-repeat
+            $scope.Addrow = function (val) {
+               // debugger;
+                $scope[val].push({});
+            }
+            //Delete row from ng-repeat
+            $scope.delete = function (index, val) {
+                $scope[val].splice(index, 1);
+            }
+            $scope.convert = function (str) {
+                var shortMonthName = new Intl.DateTimeFormat("en-US", { month: "short" }).format;
+                var date = new Date(str),
+                    mnth = shortMonthName(date),
+                    day = ("0" + date.getDate()).slice(-2);
+                return [day, mnth, date.getFullYear()].join(" ");
+            }
+
+            // Dynamic value(model) Modal Popup generateparamsmodel
+            $scope.cusitem = function (dId, dWidth) {
+                $scope.IsInitializing = true;
+                $scope.result = '';
+                var payload = {}; // not required here
+                var url = '/frmSalesOrder/ParamsModel' + location.search;
+                payload = JSON.stringify(payload);
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                var payloaddata = { key: "btnseltenderno", Params: payload, __RequestVerificationToken: token };
+                $.post(url, payloaddata, function (result) {
+                    $("#dialogCustomer").html(result);
+                 // $scope.openDialog(dId, dWidth, "SalesOrder", payloaddata, '.ui-iggrid-selectedcell.ui-state-active');
+
+                    $("#dialogCustomer").dialog({
+                        delegate: ".ui-iggrid-selectedcell.ui-state-active",
+                        autoOpen: false,
+                        modal: true,
+                        preventSelect: false,
+                        width: 1100,
+                        height: 600,
+                        overflow: 'scroll',
+                        buttons: [
+                            {
+                                text: "Save",
+                                click: function (event, ui) {
+                                    //debugger;
+                                    var arrkey = new Array();
+                                    var arrvalue = new Array();
+                                    for (var i = 0; i < rui.owner.options.columns.length; i++) {
+                                        var colKey = rui.owner.options.columns[i].key;
+                                        arrkey[i] = colKey;
+                                        arrvalue[i] = $("#acMainGrid").igGrid("getCellValue", rui.rowIndex, colKey);
+                                    }
+                                    var myInput = $("#txttender");
+                                    $('#txttender').val(arrvalue[1] + " Dt. " + $scope.convert(arrvalue[2]));
+                                    $scope.model.dsForm.DT[0].SalesEnqID = arrvalue[0];
+                                    myInput.trigger('input');
+
+                                    $(this).dialog("close");
+                                }
+                            },
+                            {
+                                text: "Cancel",
+                                click: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        ]
+                    });
+                    $("#dialogCustomer").dialog("open");
+                });
+
+            }
+            $scope.showdata = function () {
+                var arrvalue =$('#hdnData').val().split(',');
+                var myInput = $("#txttender");
+
+                $('#txttender').val(arrvalue[1] + " Dt. " + $scope.convert(arrvalue[2]));
+                $scope.model.dsForm.DT[0].SalesEnqID = arrvalue[0];
+                myInput.trigger('input');
+            }
+
+
+            $scope.cleanupmodel = function (datamodel) {
+                //debugger;
+            };
+
+            $scope.calculatemodel = function () {
+                if ($scope.documentRows.length !== 0) {
+                    var txt = "*";
+                    $('#doc').text(txt);
+                }
+                else {
+                    $('#doc').text('');
+                }
+                if ($scope.BGRows.length !== 0) {
+                    var txt = "*";
+                    $('#bg').text(txt);
+                }
+                else {
+                    $('#bg').text('');
+                }
+                if ($scope.commissionrows.length !== 0) {
+                    var txt = "*";
+                    $('#ca').text(txt);
+                }
+                else {
+                    $('#ca').text('');
+                }
+
+                if ($scope.soTransportrows.length !== 0) {
+                    var txt = "*";
+                    $('#trans').text(txt);
+                }
+                else {
+                    $('#trans').text('');
+                }
+
+                if ($scope.PaymentTerm.length !== 0) {
+                    var txt = "*";
+                    $('#pay').text(txt);
+                }
+                else {
+                    $('#pay').text('');
+                }
+            };
+
+            $scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

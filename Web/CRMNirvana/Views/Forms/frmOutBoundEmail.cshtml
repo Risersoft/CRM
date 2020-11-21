@@ -1,0 +1,404 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmOutBoundEmailModel
+@{
+    ViewData["Title"] = "OutBound Email";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link href="~/Content/component-chosen.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0rem 0rem 0.25rem;
+    }
+
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+
+
+    .customdiv {
+        width: 100%;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    #dialogFilterUser {
+        display: none;
+    }
+
+    #dialogfilterTeam {
+        display: none;
+    }
+
+    #dialogfilterMultiple {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">OutBound Email</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Outboundemail basic-->
+
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label class="control-label labeltext">Name</label>
+                    <input type="text" class="form-control" name="name" ng-model="Outboundemail.Name" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">Type</label>
+                    <select class="form-control" name="Type" ng-model="Outboundemail.TypeSelected" ng-options="typ as typ.DisplayText for typ in Type.ValueListItems track by typ.DataValue"></select>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">Email Provider</label>
+                    <select class="form-control" name="MailSmtpType" ng-model="Outboundemail.MailSmtpTypeSelected" ng-options="provider as provider.DisplayText for provider in Provider.ValueListItems track by provider.DataValue"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label class="control-label labeltext">SMTP Mail Server<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" name="MailSmtpServer" ng-model="Outboundemail.MailSmtpServer" required ng-class="{true:'error'}[submitted() && userform.MailSmtpServer.$invalid]" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">SMTP Port<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" name="MailSmtpPort" numbers-only ng-model="Outboundemail.MailSmtpPort" required ng-class="{true:'error'}[submitted() && userform.MailSmtpPort.$invalid]" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">Email Address<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" name="emailaddress" ng-model="Outboundemail.MailSmtpUser" required ng-class="{true:'error'}[submitted() && userform.emailaddress.$invalid]" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label class="control-label labeltext">Password<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" name="pass" ng-model="Outboundemail.MailSmtpPass" required ng-class="{true:'error'}[submitted() && userform.pass.$invalid]" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">From Name<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" name="Fromname" ng-model="Outboundemail.FromName" required ng-class="{true:'error'}[submitted() && userform.Fromname.$invalid]" />
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">From Address<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" name="Fromaddress" ng-model="Outboundemail.FromAddr" required ng-class="{true:'error'}[submitted() && userform.Fromaddress.$invalid]" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label class="control-label labeltext" style="visibility:hidden"></label>
+                    <label class="form-control input-group-addon labeltext" style="background: transparent;border: none;padding-left:0px;padding: 0px;">
+                        <input type="checkbox" name="chksmtpreq" style="width:20px;height:20px;vertical-align:middle;" ng-model="Outboundemail.MailSmtputhReq" /> &nbsp;Mail SMTPuthReq
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label labeltext">Mail SMTP SSL</label>
+                    <input type="text" class="form-control" numbers-only name="smtpssl" ng-model="Outboundemail.MailSmtpssl" />
+                </div>
+            </div>
+
+            <!--Assignment-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading2">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading2">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="User" checked /> User
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="Team" /> Team
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='User'">
+                                            <label class="control-label labeltext">User :</label><br />
+                                            <select id="multiple" name="outemail_mul" @*ng-change="clearfields(ouboundmaildata,'user')"*@ ng-model="Outboundemail.UserIDSelected" class="form-control form-control-chosen" ng-options="item.UserName for item in dsCombo.User track by item.UserID" data-placeholder="Please select..." multiple></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='Team'">
+                                            <label class="control-label labeltext">Team :</label><br />
+                                            <select id="single" name="outemail_sin" @*ng-change="clearfields(Outboundemail.AssignTeamIDSelected,'team')"*@ ng-model="Outboundemail.AssignTeamIDSelected" class="form-control form-control-chosen" ng-options="item.Name for item in dsCombo.Team track by item.TeamID" data-placeholder="Please select..."></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+            <div class="row">
+                @Html.Partial("_SavePanel")
+
+            </div>
+
+        </div>
+        <!--My Code-->
+
+        <div id="dialogFilterUser">
+            <div ng-repeat="row in user_dsCombo">
+                <input id="rbCustomer_{{row.UserID}}" type="radio" ng-model="$parent.SelectedUserId" value="{{row.UserID}}" /> {{row.UserName}}
+            </div>
+        </div>
+        <div id="dialogfilterTeam">
+            <div ng-repeat="row in team_dsCombo">
+                <input id="team_{{row.TeamID}}" type="radio" ng-model="$parent.SelectedTeamId" value="{{row.TeamID}}" />{{row.Name}}
+            </div>
+        </div>
+        <div id="dialogfilterMultiple">
+            <div ng-repeat="row in userlist_dsCombo">
+                <input type="checkbox" ng-model="row.SelectedList" name="chkuser_{{$index}}" />{{row.UserName}}
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+            $('.form-control-chosen').chosen({
+                // Chosen options here
+                allow_single_deselect: false,
+                width: '100%'
+            });
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.Outboundemail = $scope.model.dsForm.DT[0];
+                $scope.ValueLists = $scope.model.ValueLists;
+                $scope.UserlistTeam = [];
+               //debugger;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.Provider = $scope.model.ValueLists.Provider;
+                $scope.Type = $scope.model.ValueLists.Type;
+                $scope.User = $scope.model.dsCombo.User;
+
+                //For delete button
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+
+                $scope.GenerateDelPayload = function () {
+                    var payload = { EntityKey: 'OutBoundEmail', ID: $scope.model.dsForm.DT[0].OutBoundEmailID, AcceptWarning: false };
+                    return payload;
+                };
+
+                //$scope.tfddl = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }]
+                @Html.RenderLookup("Outboundemail", Model, Model.dsForm.Tables[0]);
+
+                       // Single And Multiple select-------
+                if (Array.isArray($scope.model.GridViews.Team.MainGrid.myDS.dt) && $scope.model.GridViews.Team.MainGrid.myDS.dt.length) {
+                   // $scope.Outboundemail.UserIDSelected = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                    $scope.ouboundmaildata = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                }
+                else {
+                    $scope.ouboundmaildata = [$scope.Outboundemail.UserID];
+                }
+
+                $scope.Outboundemail.AssignTeamIDSelected = [$scope.Outboundemail.AssignTeamIDSelected];
+            }
+
+            loadmodel($scope.model)
+
+            $scope.clearfields = function (key) {
+                if (key == 'Team') {
+                    $scope.Outboundemail.UserIDSelected = [];
+                    $('#multiple').val([]);
+                    $('#multiple').trigger('chosen:updated');
+                    $scope.model.dsForm.DT[0].AssignTeamID = $scope.Outboundemail.AssignTeamIDSelected.TeamID;
+
+                    $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                    $scope.model.dsForm.DT[0].AssignUserSetID = null
+                    $scope.model.dsForm.DT[0].UserID = null
+                }
+                if (key == 'User') {
+                    $scope.Outboundemail.AssignTeamIDSelected = null;
+                    $('#single').val([]);
+                    $('#single').trigger('chosen:updated');
+                    if ($scope.Outboundemail.UserIDSelected != null && $scope.Outboundemail.UserIDSelected != undefined) {
+                        var auLength = $scope.Outboundemail.UserIDSelected.length;
+                        if (auLength > 1) {
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            for (var i = 0; i < $scope.Outboundemail.UserIDSelected.length; i++) {
+                                $scope.model.GridViews.Team.MainGrid.myDS.dt.push({ UserID: $scope.Outboundemail.UserIDSelected[i].UserID, UserName: $scope.Outboundemail.UserIDSelected[i].UserName });
+                            }
+                            $scope.model.dsForm.DT[0].UserID = null;
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                        else {
+                            $scope.model.dsForm.DT[0].UserID = $scope.Outboundemail.UserIDSelected[0].UserID;
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            $scope.model.dsForm.DT[0].AssignUserSetID = null
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                    }
+                }
+            }
+
+            $scope.cleanupmodel = function (datamodel) {
+                //debugger;
+                //datamodel.GridViews.SOVal.MainGrid.myDS.dt = [];
+            };
+
+            $scope.calculatemodel = function () {
+                var key = $scope.Selectedassig;
+                $scope.clearfields(key);
+            };
+
+            //$scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+
+

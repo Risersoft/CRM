@@ -1,0 +1,567 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmCampaignModel
+@{
+    ViewData["Title"] = "Campaign";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link href="~/Content/component-chosen.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+
+<style type="text/css">
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0rem 0rem 0.25rem;
+    }
+
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+
+
+    .customdiv {
+        width: 100%;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    label {
+        margin-bottom: 0.1rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    select, textarea, input {
+        max-width: initial;
+    }
+
+    #dialogFilterUser {
+        display: none;
+    }
+
+    #dialogfilterTeam, #dialogCustomer {
+        display: none;
+    }
+
+    .custom-group-button {
+        background-color: rgba(212, 212, 212, 0.38);
+        border: 1px solid rgba(111, 105, 105, 0.38);
+    }
+
+    #loading {
+        display: none;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">Campaign</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Campaign Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Basic</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Name<span style="color:red">*</span></label>
+                                            <input type="text" class="form-control" name="txtname" ng-model="Campaign.Name" required ng-class="{true:'error'}[submitted() && userform.txtname.$invalid]" />
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Status<span style="color:red">*</span></label>
+                                            <select class="form-control" ng-model="Campaign.StatusSelected" ng-options="sts.DisplayText for sts in Status.ValueListItems track by sts.DataValue" name="ddlstatus" required ng-class="{true:'error'}[submitted() && userform.ddlstatus.$invalid]"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Start Date</label>
+                                            <input type="text" class="form-control my-datepicker" ng-model="Campaign.SDate" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">End Date<span style="color:red">*</span></label>
+                                            <input type="text" class="form-control my-datepicker" ng-model="Campaign.EDate" name="edate" required ng-class="{true:'error'}[submitted() && userform.edate.$invalid]" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Campaign Type<span style="color:red">*</span></label>
+                                            <select class="form-control" ng-model="Campaign.CampaignTypeSelected" ng-options="camp.DisplayText for camp in CampaignType.ValueListItems track by camp.DataValue" name="camp" required ng-class="{true:'error'}[submitted() && userform.camp.$invalid]"></select>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Currency<span style="color:red">*</span></label>
+                                            <select class="form-control" ng-model="Campaign.CurrencyCodeSelected" ng-options="curr.DisplayText for curr in CurrencyCode.ValueListItems track by curr.DataValue" name="currency" required ng-class="{true:'error'}[submitted() && userform.currency.$invalid]"></select>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Budget</label>
+                                            <input type="text" class="form-control" numbers-only ng-model="Campaign.Budget" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Expected Revenue</label>
+                                            <input type="text" class="form-control" numbers-only ng-model="Campaign.ExpectedRevenue" />
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Impressions</label>
+                                            <input type="text" class="form-control" numbers-only ng-model="Campaign.Impression" />
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Actual Cost</label>
+                                            <input type="text" class="form-control" numbers-only ng-model="Campaign.ActualCost" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Expected Cost</label>
+                                            <input type="text" class="form-control" numbers-only ng-model="Campaign.ExpectedCost" />
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Refer URL</label>
+                                            <input type="text" class="form-control" ng-model="Campaign.ReferURL" />
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Tracker Text</label>
+                                            <input type="text" class="form-control" ng-model="Campaign.TrackerText" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Objective</label>
+                                            <input type="text" class="form-control" ng-model="Campaign.Objective" />
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Content</label>
+                                            <input type="text" class="form-control" ng-model="Campaign.Content" />
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading2">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Assignment</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading2">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="User" checked /> User
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" ng-model="Selectedassig" name="rdoassin" value="Team" /> Team
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='User'">
+                                            <label class="control-label labeltext">User :</label><br />
+                                            <select id="multiple" name="camp_mul" @*ng-change="clearfields(Campaign.AssignUserIDSelected,'user')"*@ ng-model="Campaign.AssignUserIDSelected" class="form-control form-control-chosen" ng-options="item.UserName for item in dsCombo.User track by item.UserID" data-placeholder="Please select..." multiple></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-sm-10" ng-show="Selectedassig=='Team'">
+                                            <label class="control-label labeltext">Team :</label><br />
+                                            <select id="single" name="camp_sin" @*ng-change="clearfields(Campaign.AssignTeamIDSelected,'team')"*@ ng-model="Campaign.AssignTeamIDSelected" class="form-control form-control-chosen" ng-options="item.Name for item in dsCombo.Team track by item.TeamID" data-placeholder="Please select..."></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading4">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Prospect</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading4">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <input type="button" value="Add Prospects" class="btn btn-default" ng-click="cusitem(Prospect.ProspectListID)" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" />
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-hide="Prospect.length==0">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Description</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">UserSetName</label>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                    <div id="pro" ng-repeat="row in model.GridViews.Prospect.MainGrid.myDS.dt">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-3">
+                                                <label>{{row.Name}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>{{row.Description}}</label>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>{{row.UserSetName}}</label>
+                                            </div>
+                                            <div class="col-md-1">
+                                                @*<a href="javascript:void(0)"><i class="fa fa-trash" ng-click="del_Pros($index)"></i></a>*@
+                                                <a href="javascript:void(0)" style="z-index:35;position:relative;float:right" ng-click="del_Pros($index)"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Button Div-->
+            <div class="row"><hr /></div>
+
+            <div class="row">
+                @Html.Partial("_SavePanel")
+            </div>
+        </div>
+
+        <div id="dialogCustomer">
+        </div>
+    </form>
+</div>
+
+@section botscripts{
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+            // for multiple select dropdown
+            $('.form-control-chosen').chosen({
+                // Chosen options here
+                allow_single_deselect: false,
+                width: '100%'
+            });
+            //Delegate
+        });
+
+        rsApp.controller('FormController', function ($scope, $http, usSpinnerService) {
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+                $scope.model = result;
+                $scope.Campaign = $scope.model.dsForm.DT[0];
+
+                $scope.ValueLists = $scope.model.ValueLists;
+                $scope.Status = $scope.model.ValueLists.Status;
+                $scope.CurrencyCode = $scope.model.ValueLists.CurrencyCode;
+                $scope.CampaignType = $scope.model.ValueLists.CampaignType;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.visdel = ($scope.frmMode == 2 ? false : true);
+                $scope.Prospect = $scope.model.GridViews.Prospect.MainGrid.myDS.dt;
+                $scope.GenerateDelPayload = function () {
+                    var payload = { EntityKey: 'Campaign', ID: $scope.model.dsForm.DT[0].CampaignID, AcceptWarning: false };
+                    return payload;
+                };
+
+                @Html.RenderLookup("Campaign", Model, Model.dsForm.Tables(0))
+
+                // Single And Multiple select-------
+                if (Array.isArray($scope.model.GridViews.Team.MainGrid.myDS.dt) && $scope.model.GridViews.Team.MainGrid.myDS.dt.length) {
+                   $scope.Campaign.AssignUserIDSelected = $scope.model.GridViews.Team.MainGrid.myDS.dt;
+                }
+                else {
+                    //Selected Assigend User in Edit Mode
+                    $scope.Campaign.AssignUserIDSelected = [$scope.Campaign.AssignUserIDSelected];
+                }
+                $scope.Campaign.AssignTeamIDSelected = [$scope.Campaign.AssignTeamIDSelected];
+
+                $scope.cusitem = function (val) {
+                    if (val) {
+                        var idval = val;
+                    }
+                    else {
+                        var idval = 0;
+                    }
+                    $scope.IsInitializing = true;
+                    $scope.result = '';
+                    var payload = { ProsIDcsv: idval }; // not required here
+                    var url = '/frmCampaign/ParamsModel' + location.search;
+                    payload = JSON.stringify(payload);
+                    var token = $('input[name="__RequestVerificationToken"]').val();
+                    var payloaddata = { key: "prospect", Params: payload, __RequestVerificationToken: token };
+                    $.post(url, payloaddata, function (result) {
+                        $("#dialogCustomer").html(result);
+                        $("#dialogCustomer").dialog({
+
+                            autoOpen: false,
+                            modal: true,
+                            preventSelect: false,
+                            width: 1100,
+                            height: 600,
+                            overflow: 'scroll',
+                            buttons: [
+                                {
+                                    text: "Save",
+                                    click: function (event, ui) {
+
+                                        var rowData = $("#acMainGrid").igGridSelection("selectedRows");
+                                        var allData = rui.grid.tmpDataSource.Records;
+
+                                        for (var i = 0; i < rowData.length; i++) {
+                                            //arrvalue[i] = $.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0];
+                                            $scope.Prospect.push($.grep(allData, function (item, index) { return item.ig_pk == rowData[i].id })[0]);
+
+
+                                        }
+                                        $scope.$apply();
+
+                                        $(this).dialog("close");
+                                    }
+                                },
+                                {
+                                    text: "Cancel",
+                                    click: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            ]
+                        });
+                        $("#dialogCustomer").dialog("open");
+                    });
+                }
+
+                $scope.del_Pros = function (index) {
+                   // debugger;
+                    $scope.Prospect.splice(index, 1);
+                }
+            }
+
+            loadmodel($scope.model)
+
+            $scope.clearfields = function (key) {
+                if (key == 'Team') {
+                    $scope.Campaign.AssignUserIDSelected = [];
+                    $('#multiple').val([]);
+                    $('#multiple').trigger('chosen:updated');
+                    $scope.model.dsForm.DT[0].AssignTeamID = $scope.Campaign.AssignTeamIDSelected.TeamID;
+
+                    $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                    $scope.model.dsForm.DT[0].AssignUserSetID = null
+                    $scope.model.dsForm.DT[0].AssignUserID = null
+                }
+                if (key == 'User') {
+                    $scope.Campaign.AssignTeamIDSelected = null;
+                    $('#single').val([]);
+                    $('#single').trigger('chosen:updated');
+                    if ($scope.Campaign.AssignUserIDSelected != null && $scope.Campaign.AssignUserIDSelected != undefined) {
+                        var auLength = $scope.Campaign.AssignUserIDSelected.length;
+                        if (auLength > 1) {
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            for (var i = 0; i < $scope.Campaign.AssignUserIDSelected.length; i++) {
+
+                                $scope.model.GridViews.Team.MainGrid.myDS.dt.push({ UserID: $scope.Campaign.AssignUserIDSelected[i].UserID, UserName: $scope.Campaign.AssignUserIDSelected[i].UserName });
+
+                            }
+
+                            $scope.model.dsForm.DT[0].AssignUserID = null;
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                        else {
+                            // debugger;
+                            $scope.model.dsForm.DT[0].AssignUserID = $scope.Campaign.AssignUserIDSelected[0].UserID;
+                            $scope.model.GridViews.Team.MainGrid.myDS.dt = [];
+                            $scope.model.dsForm.DT[0].AssignUserSetID = null
+                            $scope.model.dsForm.DT[0].AssignTeamID = null;
+                        }
+                    }
+                }
+            }
+
+            $scope.cleanupmodel = function (datamodel) { };
+
+            $scope.calculatemodel = function () {
+                //adding PIDField in Prospect
+                var keyval = $scope.Selectedassig;
+                $scope.clearfields(keyval);
+
+                for (var i = 0; i < $scope.Prospect.length; i++) {
+                    $scope.Prospect[i].PIDField = 'CampaignID';
+                }
+            };
+
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+}
+
+
+
+
+
+

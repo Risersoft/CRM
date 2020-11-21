@@ -1,0 +1,1799 @@
+﻿@using risersoft.app.mxform.crm
+@using risersoft.shared.web.Extensions
+
+@model frmWOModel
+@{
+    ViewData["Title"] = "frmWO";
+    Layout = "~/Views/Shared/_FrameworkLayout.vbhtml";
+    var modelJson = Model.SerializeJson();
+}
+
+<link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/bootree.js" type="text/javascript"></script>
+
+<style type="text/css">
+    li {
+        list-style: none;
+    }
+
+        li > label {
+            margin-bottom: 0px !important;
+        }
+
+    .labeltext {
+        margin-bottom: 0px;
+    }
+
+    /*.table thead th {
+        color: #52caff;
+        vertical-align: bottom;
+        border-bottom: 1px solid #e6e8e8;
+    }*/
+    .table thead th {
+        color: #42addc;
+        vertical-align: bottom;
+        border: 1px solid #b0bbbb;
+        padding: 0.25rem;
+        background: #e2e2e2;
+        text-align: center;
+    }
+
+    .table th {
+        /*padding: 0.75rem;*/
+        vertical-align: top;
+        border-top: none;
+    }
+
+    .table td {
+        /*padding-bottom: 10px !important;
+        padding-top: 10px !important;*/
+        vertical-align: top;
+        /*border-top: 1px solid #e6e8e8;*/
+        border: 1px solid #b0bbbb;
+        /*width: 60px;*/
+    }
+
+
+    /*.table th .inptable {
+        margin-bottom: 0px !important;
+    }*/
+
+    .panel-heading {
+        background-color: #1b7cd0;
+        height: 40px;
+    }
+
+    .panel-body {
+        margin-top: 20px;
+    }
+
+    .panel-title a {
+        color: #fff !important;
+    }
+
+    .panel-heading {
+        padding: 0;
+        border: 0;
+        display: block;
+        padding: 7px 15px 7px 0px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+        .panel-heading a:before {
+            font-family: 'Glyphicons Halflings';
+            content: "\e114";
+            float: right;
+            transition: all 0.5s;
+            margin-right: 10px;
+        }
+
+        .panel-heading.active a:before {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+    .customdiv {
+        width: 100%;
+    }
+
+    .table-responsive {
+        display: inline-table;
+    }
+
+
+    .form-control {
+        margin-bottom: 10px !important;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+
+    .input-group-addon {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    td input[type="text"], td input[type="checkbox"], td select {
+        height: 21px !important;
+    }
+
+    .table td {
+        padding: 0.15rem;
+    }
+</style>
+
+<div class="container cbackground">
+    <form action="" method="post" name="userform" ng-controller="FormController">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" id="model_json" value='@Html.Raw(modelJson)' />
+        <div Class="form-horizontal">
+            <div class="container" style="padding-top: 15px;padding-bottom: 15px;">
+                <div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11" style="padding-left:0px;">
+                            <h4 style="color:#1c66a7">{{Title}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Basic Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion" role="tablist" aria-multiselectable="true">
+                        <!--panel header-->
+                        <div class="panel-heading active" role="tab" id="headingOne">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> BASIC</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Panel Body-->
+                        <div id="collapseOne" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Sales Order Item Type<span style="color:red">*</span></label>
+                                                <select class="form-control" name="ddlorder" ng-model="WO.WOTypeSelected" ng-options="typ as typ.descriptot for typ in dsCombo.wotype track by typ.codeword" style="max-width:540px !important;" required ng-class="{true:'error'}[submitted()&&userform.ddlorder.$invalid]" disabled></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Division<span style="color:red">*</span></label>
+                                                <select class="form-control" id="ddldivision" style="max-width:540px !important;" ng-model="WO.DivisionIDSelected" ng-options="div as div.DivisionName for div in dsCombo.Division track by div.Divisionid" name="ddldivision" required ng-class="{true: 'error'}[submitted() && userform.ddldivision.$invalid]"></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Spare Order No.<span style="color:red">*</span></label>
+                                                <input type="text" class="form-control" name="txtwonum" ng-model="WO.WONum" style="max-width:540px !important;" required ng-class="{true:'error'}[submitted()&&userform.txtwonum.$invalid]" />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext"> SP.O. Date<span style="color:red">*</span></label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="WO.WODate" name="txtworkdate" style="max-width:540px !important;" required ng-class="{true: 'error'}[submitted() && userform.txtworkdate.$invalid]" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Item Code<span style="color:red">*</span></label>
+                                                <select class="form-control" id="ddlitemcode" style="max-width:540px !important;" ng-change="changeitem('name',WO.ItemIDSelected)" ng-model="WO.ItemIDSelected" ng-options="item as item.itemcode for item in dsCombo.Items track by item.itemid" name="ddlitem" required ng-class="{true: 'error'}[submitted() && userform.ddlitem.$invalid]"></select>
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Item Name</label>
+                                                <select class="form-control" id="ddlItemname" style="max-width:540px !important;" ng-model="Itemname" ng-change="changeitem('code',Itemname)" @*ng-model="WO.DescripTechSelected"*@ ng-options="item as item.itemname for item in dsCombo.Items track by item.itemcode"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" ng-if="WO.WOTypeSelected.codeword=='RE'">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">BOQ Num</label>
+                                                <input type="text" class="form-control" ng-model="WO.BOQNum" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Total Qty</label>
+                                                <label class="input-group">
+                                                    <input type="text" class="input-group-addon" ng-model="WO.TotalQty" style="width:48%;margin-right:8px;" />
+                                                    <select class="input-group-addon" style="width:48%"></select>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Total Qty2</label>
+                                                <label class="input-group">
+                                                    <input type="text" class="input-group-addon" ng-model="WO.TotalQty2" style="width:48%;margin-right:8px;" />
+                                                    <select class="input-group-addon" style="width:48%"></select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">HSN No.<span style="color:red">*</span></label>
+                                                <label class="input-group">
+                                                    <select class="input-group-addon" id="ddlHsn_Sc" style="width:75%" ng-model="WO.Hsn_ScSelected" ng-options="hsn as hsn.Description for hsn in dsCombo.HsnSac track by hsn.Code" name="ddlhsn" required ng-class="{true: 'error'}[submitted() && userform.ddlhsn.$invalid]"></select>
+                                                    <input type="button" class="input-group-addon btn btn-default" value="Add" style="background-color: rgba(212, 212, 212, 0.38); border: 1px solid rgba(111, 105, 105, 0.38);" ng-click="redirectToHsn()" />
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Project Name</label>
+                                                <input type="text" class="form-control" id="txtprojname" ng-model="WO.ProjectName" name="txtprojname" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Handled By Unit<span style="color:red">*</span></label>
+                                                <select class="form-control" style="max-width:540px !important;" name="ddlHandledByUnit" ng-model="WO.MatDepIDSelected" ng-options="dep as dep.depname for dep in dsCombo.Deps track by dep.matdepid" required ng-class="{true: 'error'}[submitted() && userform.ddlHandledByUnit.$invalid]"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Production File Date</label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="WO.Prodfiledate" name="prodfile" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Status<span style="color:red">*</span></label>
+                                                <select class="form-control" style="max-width:540px !important;" ng-model="WO.StatusNumSelected" ng-options="stat as stat.statustext for stat in dsCombo.Status track by stat.statusnum" name="ddlstatus" required ng-class="{true: 'error'}[submitted() && userform.ddlstatus.$invalid]"></select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Completed On<span style="color:red">*</span></label>
+                                                <input type="text" class="form-control my-datepicker" ng-model="WO.CompletedOn" name="completedon" style="max-width:540px !important;" required ng-class="{true: 'error'}[submitted() && userform.completedon.$invalid]" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Product Code</label>
+                                                <input type="text" class="form-control" ng-model="WO.ProductCode" name="prodcode" style="max-width:540px !important;" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Invoice Description</label>
+                                                <input type="text" class="form-control" ng-model="WO.InvDescrip" name="InvDes" style="max-width:540px !important;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row" style="margin-top: 20px;">
+                                            <div class="col-md-10">
+                                                <label>
+                                                    <input type="checkbox" ng-model="WO.IsInsured" style="width:20px;height:20px;vertical-align:middle;" /> &nbsp;Supply Is Insured
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='RE'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.RepInspStage" /> &nbsp;Require stage inspection
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='RE'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.RepInspJoint" /> &nbsp;Require joint inspection
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.ApproveDwG" /> &nbsp;Approval of drawing
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.ApproveGTP" /> &nbsp;Approval of GTP
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.ApproveQAP" /> &nbsp;Approval of QAP
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.ApproveTTR" /> &nbsp;Type test reports
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.InspecStaGe" /> &nbsp;Stage Inspection
+                                                </label>
+                                            </div>
+                                            <div class="col-md-10" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                                                <label>
+                                                    <input type="checkbox" style="width:20px;height:20px;vertical-align:middle;" ng-model="WO.InspecFinal" /> &nbsp;Final Inspection
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Parameters Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion2" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTwo">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Parameters</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Fitting-->
+            <div class="row" ng-if="WO.WOTypeSelected.codeword=='SW'">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionfitting" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingfitting">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionfitting" href="#collapsefitting" aria-expanded="true" aria-controls="collapsefitting">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Fitting</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapsefitting" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingfitting">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="panel">
+                                                        <div class="panel-header" style="text-align:center"><label class="labeltext">Standard Fittings</label></div>
+                                                        <div class="panel-body">
+                                                            <ul>
+                                                                @*<li ng-repeat="fit in fitting | filter:{isstandard == true}">*@
+                                                                <li ng-repeat="fit in standard">
+                                                                    <label><input type="checkbox" value="{{fit.fittingid}}" class="standardfitting" /> {{fit.fittingname}}</label>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <input type="button" value=">>" class="btn btn-default" style="border: 1px solid #9e9b9b; margin-top: 166px; background: #d6d3d3;" ng-click="standardtoadditional()" />
+                                                    <input type="button" value="<<" class="btn btn-default" style="border: 1px solid #9e9b9b; margin-top: 20px; background: #d6d3d3;" ng-click="additionaltostandard()" />
+                                                    <input type="button" value="All" class="btn btn-default" style="border: 1px solid #9e9b9b; margin-top: 20px; background: #d6d3d3;" ng-click="selectallstandard()" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="panel">
+                                                        <div class="panel-header" style="text-align:center"><label class="labeltext">Additional Fittings</label></div>
+                                                        <div class="panel-body">
+                                                            <ul>
+                                                                <li ng-repeat="fit in Additional">
+                                                                    @*<li ng-repeat="fit in fitting | filter:{isstandard == false}">*@
+                                                                    <label><input type="checkbox" value="{{fit.fittingid}}" class="additionalfitting" /> {{fit.fittingname}}</label>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Rate List Panel-->
+            <div class="row" ng-if="WO.WOTypeSelected.codeword=='RE'">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionRate" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingRate">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionRate" href="#collapseRate" aria-expanded="true" aria-controls="collapseRate">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Rate List</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseRate" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingRate">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Sites Panel-->
+            <div class="row" ng-if="WO.WOTypeSelected.codeword=='PR'">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionSites" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingSites">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionSites" href="#collapseSites" aria-expanded="true" aria-controls="collapseSites">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Sites</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapseSites" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingSites">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="button" class="form-control btn btn-default" value="Add Campus" style="background-color: rgba(212, 212, 212, 0.38); border: 1px solid rgba(111, 105, 105, 0.38);" ng-click="redirectToCampus()" />
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row" ng-show="Sites.length==0">
+                                                    <p>No Records Found.</p>
+                                                </div>
+                                                <div class="row" ng-hide="Sites.length==0">
+                                                    <table class="table table-responsive">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Display Name</th>
+                                                                <th>Campus Type</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="row in model.GridViews.Campus.MainGrid.myDS.dt">
+                                                                <td>{{row.DispName}}</td>
+                                                                <td>{{row.CampusType}}</td>
+
+                                                                <td>
+                                                                    <a href="" style="z-index:35;position:relative;" ng-click="Edit($index,'Lead')"><span class="fa fa-edit" style="color: #d83e3b;"></span></a>
+                                                                    |
+                                                                    <a href="" style="z-index:35;position:relative;" ng-click="delete($index,'Lead')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Charges Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion3" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingThree">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> CHARGES</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Unit Price(ex-works)</label>
+                                            <input type="text" class="form-control" ng-model="WO.UnitPrice" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Freight Per Unit</label>
+                                            <input type="text" class="form-control" ng-model="WO.Freight" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">Gurantee Period Clause</label>
+                                            <textarea class="form-control" ng-model="WO.GPClauseWO" rows="1"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                <input type="checkbox" ng-model="WO.SuperApp" style="width:20px;height:20px;vertical-align:middle;" />  &nbsp;Supervision Charges
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="input-group">
+                                                <input type="text" class="input-group-addon" ng-model="WO.SuperCharges" style="width:72%" /> &nbsp;
+                                                <select class="input-group-addon" style="width:26%" ng-model="WO.SuperChTypeSelected" ng-options="super.DisplayText for super in superchtype track by super.DisplayText"> </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                <input type="checkbox" ng-model="WO.StackingApp" style="width:20px;height:20px;vertical-align:middle;" />  &nbsp;Stacking and unloading charges
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="input-group">
+
+                                                <input type="text" class="input-group-addon" ng-model="WO.StackingCharges" style="width:72%" />  &nbsp;per Unit
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                <input type="checkbox" ng-model="WO.TPIApp" style="width:20px;height:20px;vertical-align:middle;" /> &nbsp;Third party inspection Charges
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="input-group">
+                                                <input type="text" ng-model="WO.TPICharges" class="input-group-addon" style="width:72%" /> &nbsp; per Unit
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Delivery Clause Panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion4" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingFour">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion4" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Delivery Clause</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingFour">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Delivery clause</label>
+                                            <select class="form-control" ng-model="ddldeliveryclausetype">
+                                                <option>None</option>
+                                                <option>Simple</option>
+                                                <option>Complex</option>
+                                                <option>Custom</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" ng-if="ddldeliveryclausetype=='Simple'">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10" style="background-color:#fff">
+                                            <label style="margin-top:10px;">
+                                                <input type="text" class="input-group-addon" />
+                                                <select class="input-group-addon" ng-model="pt" ng-options="per.DisplayText for per in periodtype track by per.DataValue"></select> &nbsp; From &nbsp;
+                                                <select class="input-group-addon" ng-model="cc" ng-options="per.StageDescrip for per in dsCombo.PaymentStage track by per.PaymentStageID"></select>
+
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" ng-if="ddldeliveryclausetype=='Complex'">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10" style="background-color:#fff">
+                                            <label style="margin-top:10px;">
+                                                &nbsp;Commencement in &nbsp;
+
+                                                <input type="text" class="input-group-addon" style="margin-bottom:10px;" />
+                                                <select class="input-group-addon" style="margin-bottom:10px;" ng-model="cpmpt" ng-options="per.DisplayText for per in periodtype track by per.DataValue"></select>
+
+                                                &nbsp;with atleast
+
+                                                <input type="text" class="input-group-addon" style="margin-bottom:10px;" />
+                                                <select class="input-group-addon" style="margin-bottom:10px;" ng-model="complexnum" ng-options="num.DisplayText for num in numtype track by num.DataValue"></></select>
+
+                                                &nbsp;of the ordered quantity
+                                                &nbsp; from &nbsp;
+
+                                                <select class="input-group-addon" style="margin-bottom:10px;" ng-model="complex" ng-options="per.StageDescrip for per in dsCombo.PaymentStage track by per.PaymentStageID"></></select>
+
+                                                &nbsp; and completion at &nbsp;
+
+                                                <input type="text" class="input-group-addon" style="margin-bottom:10px;" />
+                                                <select class="input-group-addon" style="margin-bottom:10px;" ng-model="complexnum2" ng-options="num.DisplayText for num in numtype track by num.DataValue"></></select>
+
+                                                &nbsp; per &nbsp;
+
+                                                <input type="text" class="input-group-addon" style="margin-bottom:10px;" />
+                                                <select class="input-group-addon" style="margin-bottom:10px;" ng-model="complexpt" ng-options="per.DisplayText for per in periodtype track by per.DataValue"></></select>
+
+                                                &nbsp;thereafter
+                                            </label>
+                                            @*<label>
+                                                    &nbsp;with atleast
+                                                    <input type="text" class="input-group-addon" />
+                                                    <select class="input-group-addon"></select>
+                                                    &nbsp;of the ordered quantity
+                                                </label>*@
+                                            @*<label> &nbsp; from &nbsp;
+                                                    <select class="input-group-addon"></select>
+                                                </label>*@
+                                            @*<label>&nbsp; and completion at &nbsp;
+                                                    <input type="text" class="input-group-addon" />
+                                                    <select class="input-group-addon"></select>
+                                                </label>*@
+                                            @*<label>
+                                                    per &nbsp;
+                                                    <input type="text" class="input-group-addon" />
+                                                    <select class="input-group-addon"></select>
+                                                    &nbsp;thereafter
+                                                </label>*@
+                                        </div>
+
+                                    </div>
+                                    <div class="row" ng-if="ddldeliveryclausetype=='Custom'">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10" style="background-color:#fff">
+                                            <textarea class="form-control" style="max-width:100%;margin-top:10px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <input type="button" class="btn btn-default" value="Add Delivery Schedule" ng-click="Add('DelSched')" style=" background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-top: 25px;" />
+
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-repeat="row in DelSched">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <label class="control-label labeltext">Qty</label>
+                                            <input type="text" class="form-control" ng-model="row.Qty" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="control-label labeltext">DueDate</label>
+                                            <input type="text" class="form-control my-datepicker" ng-model="row.DueDate" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'DelSched')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Consignee panel-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion5" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingFive">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion5" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Consignee</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingFive">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <label class="control-label labeltext">Consignee(bill to)</label>
+                                            <textarea class="form-control" style="max-width:100%;margin-top:10px;" ng-model="WO.ConsigneePrefix"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <select class="form-control" style="max-width:100%;margin-top:10px;" ng-model="WO.ConsigneeIDSelected" ng-options="part.partyname for part in dsCombo.Party track by part.partyid "></select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <label class="control-label labeltext">Ship to</label>
+
+                                            <textarea class="form-control" style="max-width:100%;margin-top:10px;" ng-model="WO.DeliveryTo"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Clarifications Value-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordionOrder" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingOrder">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordionOrder" href="#collapseOrder" aria-expanded="true" aria-controls="collapseOrder">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Clarifications</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseOrder" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingOrder">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-10">
+                                            <label class="control-label labeltext">Customer/Our specifications Enclosed</label>
+                                            <textarea class="form-control" style="max-width:100%" ng-model="WO.EnclSpec"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-10">
+                                            <label class="control-label labeltext">Technical clarifications required , If any</label>
+                                            <textarea class="form-control" style="max-width:100%" ng-model="WO.ClarifyTech"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-10">
+                                            <label class="control-label labeltext">Commercial clarifications required , If any</label>
+                                            <textarea class="form-control" style="max-width:100%" ng-model="WO.ClarifyComm"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-10">
+                                            <label class="control-label labeltext">Remarks</label>
+                                            <textarea class="form-control" style="max-width:100%" ng-model="WO.Remark"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Spares Panel-->
+            <div class="row" ng-hide="WO.WOTypeSelected.codeword=='RE'">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion6" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingSix">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion6" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Spares</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div id="collapseSix" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingSix">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Add Sibling</button>
+                                            <button type="button" class="btn btn-default" ng-click="AddChild($index)" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Add Child</button>
+                                            <button type="button" class="btn btn-primary" ng-click="delete($index,'Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Delete</button>
+                                            <button type="button" class="btn btn-default" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Move Up</button>
+                                            <button type="button" class="btn btn-default" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Move Down</button>
+                                            <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Indent</button>
+                                            <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-right: 10px;">Outdent</button>
+
+                                            @*<a href=""  style="z-index:35;position:relative;margin-top:30px;float:left;" ng-click="delete($index,'Spare')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                <button type="button" class="btn btn-default" ng-click="AddChild($index)" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-left: 10px;margin-top:25px;"></button>
+                                                <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-left: 10px;margin-top:25px;"></button>
+                                                <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-left: 10px;margin-top:25px;"></button>*@
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                    <div id="tree"></div>
+                                    <div class="clearfix" style="margin-top:10px;"></div>
+                                    @*<input type="hidden" id="childcount_forParent_{{$index}}" value="1" />*@
+                                    <table id="tblSpare" class="table table-responsive" ng-show="Spare.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 12px;">BOQ Num</th>
+                                                <th style="font-size: 12px;">Full BOQ</th>
+                                                <th style="font-size: 12px;">Product Code</th>
+                                                <th style="font-size: 12px;">Spare Name</th>
+                                                <th style="font-size: 12px;">Invoice Suffix</th>
+                                                <th style="font-size: 12px;">Transtype</th>
+                                                <th style="font-size: 12px;">HSN Code</th>
+                                                <th style="font-size: 12px;">Qty BOQ</th>
+                                                <th style="font-size: 12px;">Qty Actual</th>
+                                                <th style="font-size: 12px;">Billed Qty</th>
+                                                <th style="font-size: 12px;">Unit Name</th>
+                                                <th style="font-size: 12px;">Unit Price</th>
+                                                <th style="font-size: 12px;">Freight</th>
+                                                <th style="font-size: 12px;">Total Wt</th>
+                                                <th style="font-size: 12px;">Billing</th>
+                                                <th style="font-size: 12px;">Billing Type</th>
+                                                <th style="font-size: 12px;">Supply type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in Spare | orderBy : 'SOparentid'">
+                                                <td>
+                                                    <input type="hidden" ng-model="row.SOparentid" value="{{$index}}" id="parentid_{{$index}}" />
+                                                    @* <input type="hidden" value="" id="parentid_{{$index}}" />*@
+                                                    <input type="text" class="form-control" name="boqnum_{{$index}}" id="boqnum_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.BOQNum" />
+                                                </td>
+                                                <td><input type="text" class="form-control" name="fullboq_{{$index}}" id="fullboq_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.FullBOQNum" /></td>
+                                                <td><input type="text" class="form-control" name="productcode_{{$index}}" id="productcode_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.ProductCode" /></td>
+                                                <td><input type="text" class="form-control" name="sparename_{{$index}}" id="sparename_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.SpareName" /></td>
+                                                <td><input type="text" class="form-control" name="invoicesuffix_{{$index}}" id="invoicesuffix_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.InvoiceSuffix" /></td>
+                                                <td>
+                                                    <select class="form-control" name="transtype_{{$index}}" ng-model="row.TransType">
+                                                        <option value=""></option>
+                                                        <option value="ST">ST</option>
+                                                        <option value="FG">FG</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select class="form-control" name="hsncode_{{$index}}" ng-model="row.Hsn_Sc" ng-options="hsn as hsn.Column1 for hsn in HSN track by hsn.Code"></select>
+                                                </td>
+                                                <td><input type="text" class="form-control" name="qtyboq_{{$index}}" id="qtyboq_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.QtyBOQ" /></td>
+                                                <td><input type="text" class="form-control" name="qtyactual_{{$index}}" id="qtyactual_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.Qty" /></td>
+                                                <td><input type="text" class="form-control" name="billedqty_{{$index}}" id="billedqty_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.BilledQty" /></td>
+                                                <td>
+                                                    <select class="form-control" name="unitname_{{$index}}" ng-model="row.UnitName" ng-options="unit as unit.UnitName for unit in Unit track by unit.ItemUnitID"></select>
+                                                </td>
+                                                <td><input type="text" class="form-control" name="unitprice_{{$index}}" id="unitprice_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.UnitPrice" /></td>
+                                                <td><input type="text" class="form-control" name="freight_{{$index}}" id="freight_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.Freight" /></td>
+                                                <td><input type="text" class="form-control" name="totalwt_{{$index}}" id="totalwt_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.TotalWt" /></td>
+                                                <td>
+                                                    <select class="form-control" name="billinglot_{{$index}}" ng-model="row.BillingLot">
+                                                        <option value=""></option>
+                                                        <option value="0">Qty</option>
+                                                        <option value="1">Lot</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="billingtype_{{$index}}" ng-model="row.IsNotBilled">
+                                                        <option value=""></option>
+                                                        <option value=false>Billed</option>
+                                                        <option value=true>Not Billed</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="supplytype_{{$index}}" ng-model="row.MainSupplyPart">
+                                                        <option value=""></option>
+                                                        <option value="false">Seperate</option>
+                                                        <option value=true>Part Of Main</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    @*<div ng-repeat="row in Spare | orderBy : 'FullBOQNum'">
+                                            <div class="row">
+                                                <div class="col-md-1"><input type="hidden" value="" id="parentid_{{index}}" /></div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">BOQ Num </label>
+                                                    <input type="text" class="form-control" name="boqnum_{{$index}}" id="boqnum_{{$index}}" ng-blur="appendFull(this,$index)" ng-model="row.BOQNum" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Full BOQ</label>
+                                                    <input type="text" class="form-control" name="fullboq_{{$index}}" id="fullboq_{{$index}}" ng-model="row.FullBOQNum" disabled />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Product Code </label>
+                                                    <input type="text" class="form-control" name="productcode_{{$index}}" ng-model="row.ProductCode" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Spare Name</label>
+                                                    <input type="text" class="form-control" name="sparename_{{$index}}" ng-model="row.SpareName" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Invoice Suffix </label>
+                                                    <input type="text" class="form-control" name="invoicesuffix_{{$index}}" ng-model="row.InvoiceSuffix" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Transtype</label>
+                                                    <select class="form-control" name="transtype_{{$index}}" ng-model="row.TransType"></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Valuation class</label>
+                                                    <select class="form-control" name="valuationclass_{{$index}}" ng-model="row.ValuationClass"></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">HSN Code</label>
+                                                    <select class="form-control" name="hsncode_{{$index}}" ng-model="row.Hsn_Sc"></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Qty BOQ</label>
+                                                    <input type="text" class="form-control" name="qtyboq_{{$index}}" ng-model="row.QtyBOQ" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Qty actual </label>
+                                                    <input type="text" class="form-control" name="qtyactual_{{$index}}" ng-model="row.Qty" />
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Billed Qty </label>
+                                                    <input type="text" class="form-control" name="billedqty_{{$index}}" ng-model="row.BillingLot" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Unit name</label>
+                                                    <select class="form-control" name="unitname_{{$index}}" ng-model="row.UnitName"></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Unit Price </label>
+                                                    <input type="text" class="form-control" name="unitprice_{{$index}}" ng-model="row.UnitPrice" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Freight</label>
+                                                    <input type="text" class="form-control" name="freight_{{$index}}" ng-model="row.Freight" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Total Wt </label>
+                                                    <input type="text" class="form-control" name="totalwt_{{$index}}" ng-model="row.TotalWt" />
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Billing Type </label>
+                                                    <select class="form-control" name="billingtype_{{$index}}" ng-model="row.IsNotBilled"> </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="control-label labeltext">Supply type</label>
+                                                    <select class="form-control" name="supplytype_{{$index}}" ng-model="row.MainSupplyPart"></select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="hidden" id="childcount_forParent_{{$index}}" value="1" />
+                                                    <a href=""  style="z-index:35;position:relative;margin-top:30px;float:left;" ng-click="delete($index,'Spare')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                    <button type="button" class="btn btn-default" ng-click="AddChild($index)" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-left: 10px;margin-top:25px;">Add Child</button>
+                                                    <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-left: 10px;margin-top:25px;">Indent</button>
+                                                    <button type="button" class="btn btn-default" ng-click="Add('Spare')" style="background-color: rgba(212, 212, 212, 0.38);border: 1px solid rgba(111, 105, 105, 0.38);margin-left: 10px;margin-top:25px;">Outdent</button>
+                                                </div>
+                                            </div>
+
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+            <!--Services Panel-->
+            <div class="row" ng-hide="WO.WOTypeSelected.codeword=='RE'">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion7" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="heading7">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion7" href="#collapse7" aria-expanded="true" aria-controls="collapse7">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Services <span style="color:#a20000; font-size:24px;" id="bg"></span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapse7" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading7">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('Services')">Add Services</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="row in Services">
+                                        <div class="row">
+                                            <div class="col-md-1"> </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">BOQ Num</label>
+                                                <input type="text" class="form-control" ng-model="row.BOQ" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Full BOQ</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Product Code</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Service Name</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Invoice Suffix</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"> </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Service Type</label>
+                                                <select class="form-control"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Valuation Class</label>
+                                                <select class="form-control"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">HSN Code</label>
+                                                <select class="form-control"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Qty BOQ</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Qty Actual Suffix</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-1"> </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Billed Qty</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Unit Name</label>
+                                                <select class="form-control"></select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="control-text labeltext">Unit Price</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="col-md-1">
+                                                    <a href="" style="z-index:35;position:relative;margin-top:38px;float:right" ng-click="delete($index,'Services')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div ng-repeat="row in Services">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">BG Type<span style="color:red">*</span></label>
+                                                    <select class="form-control" name="ddlbgtype{{$index}}" ng-model="row.BGTypeidSelected" ng-options="typ as typ.bgname for typ in dsCombo.BGType track by typ.BGTypeid" style="max-width:540px !important;" required ng-class="{true:'error'}[submitted()&&userform.ddlbgtype{{$index}}.$invalid]"></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">BG Status</label>
+                                                    <select class="form-control" name="ddlbgstatus{{$index}}" ng-model="row.statusNumSelected" ng-options="typ as typ.statustext for typ in dsCombo.StatusBG track by typ.statusnum" style="max-width:540px !important;"></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">BG Mode</label>
+                                                    <select class="form-control" name="ddlbgmode{{$index}}" ng-model="row.BGModeSelected" ng-options="typ as typ.DisplayText for typ in BGMode track by typ.DisplayText" style="max-width:540px !important;"></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-11">
+                                                    <label class="control-label labeltext">Clause 1</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-7">
+                                                    <label class="input-group">
+                                                        <input type="text" class="input-group-addon" name="perValue{{$index}}" style="max-width:540px;width: 55%" ng-model="row.pervalue" /><label class="input-group-addon" style=" padding-top: 6px;border: none; background: transparent; padding: 0;"> %till</label>
+                                                        <input type="text" class="input-group-addon" name="pernum{{$index}}" style="max-width:540px;margin-left: 3px;width: 39%;" ng-model="row.periodnum" />
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select class="form-control" style="max-width:540px;" ng-model="row.periodtypeSelected" ng-options="type.DisplayText for type in Ptype track by type.DataValue"></select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-11">
+                                                    <label class="control-label labeltext">Clause 2</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-7">
+                                                    <label class="input-group">
+                                                        <input type="text" class="input-group-addon" name="perValue2{{$index}}" style="max-width:540px;width:55%" ng-model="row.pervalue2" />
+                                                        <label class="input-group-addon" style=" padding-top: 6px;border: none; background: transparent; padding: 0;"> %till</label>
+                                                        <input type="text" class="input-group-addon" name="pernum2{{$index}}" style="max-width:540px;margin-left:3px;width: 39%;" ng-model="row.periodnum2" />
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select class="form-control" style="max-width:540px;" ng-model="row.periodtype2Selected" ng-options="type.DisplayText for type in Ptype track by type.DataValue"></select>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">BG Num</label>
+                                                    <input type="text" class="form-control" style="max-width:540px;" ng-model="row.BGNum" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">BG Date</label>
+                                                    <input type="text" class="form-control my-datepicker" style="max-width:540px;" ng-model="row.BGDate" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">BG Value</label>
+                                                    <input type="text" class="form-control" style="max-width:540px;" ng-model="row.BGValue" />
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Claim Period</label>
+                                                    <input type="text" class="form-control" style="max-width:540px;" ng-model="row.ClaimPeriod" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Valid Upto</label>
+                                                    <input type="text" class="form-control my-datepicker" style="max-width:540px;" ng-model="row.ValidUpto" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label labeltext">Release Date</label>
+                                                    <input type="text" class="form-control my-datepicker" style="max-width:540px;" ng-model="row.ReleaseDate" />
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label labeltext">Remarks</label>
+                                                    <input ng-model="row.Remark" class="form-control" name="txtremarks{{$index}}" style="max-width:540px;resize:none" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-1">
+                                                        <a href=""  style="z-index:35;position:relative;margin-top:38px;float:right" ng-click="delete($index,'BGRows')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row"><hr /></div>
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Serial Nos. View Panel-->
+            @*<div class="row" ng-if="WO.WOTypeSelected.codeword=='SW' || WO.WOTypeSelected.codeword=='RE'">
+                    <div class="customdiv">
+                        <div class="panel panel-default" id="accordion8" role="tablist" aria-multiselectable="true">
+                            <div class="panel-heading active" role="tab" id="headingEight">
+                                <div class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion8" href="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-11" style="padding-left:25px;"> Serial Nos. <span style="color:#a20000; font-size:24px;"></span></div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div id="collapseEight" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingEight">
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><hr /></div>
+                    </div>
+                </div>*@
+
+            <!--Type TestsPanel -->
+            <div class="row" ng-if="WO.WOTypeSelected.codeword=='SW' || WO.WOTypeSelected.codeword=='RE'">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion9" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingNine">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion9" href="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;">Type Test <span style="color:#a20000; font-size:24px;" id="ca"></span></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapseNine" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingNine">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        @*<div class="col-md-4">
+                                                <label class="control-label labeltext">Type Tests</label>
+                                            </div>*@
+                                    </div>
+                                    <div class="row">
+                                        <table class="table table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sys Inc</th>
+                                                    <th hidden>id</th>
+                                                    <th>Cat</th>
+                                                    <th>Test</th>
+                                                    <th>Quantum</th>
+                                                    <th>Charges</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>DoWePay</th>
+                                                    <th>AcceptRep</th>
+                                                    <th>CustWitness</th>
+                                                    <th>Failed</th>
+                                                    <th>Waived</th>
+                                                    <th>Serial</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="rows2 in TestType">
+                                                    <td style="text-align:center;width:35px;"><input type="checkbox" class="chktt" ng-model="rows2.sysincl" ng-click="chkTypeTest($index)" style="width:15px;height:15px;" /></td>
+                                                    <td style="width:60px;" hidden><input type="text" ng-model="rows2.TypeTestID" style="visibility:hidden;" /></td>
+                                                    <td style="width:60px;">
+                                                        <input type="text" ng-model="rows2.strtypespecaddl" disabled name="typespecaddl{{$index}}" style="width:auto;max-width:60px;font-size:13px;" />
+                                                    </td>
+                                                    <td style="width:60px;">
+                                                        <input type="text" ng-model="rows2.testname" name="testname{{$index}}" disabled style="width:auto;max-width:inherit" />
+                                                    </td>
+                                                    <td style="width:60px;">
+                                                        <select ng-model="rows2.ForOneUnitSelected" name="foroneunit{{$index}}" class="customdis{{$index}}" disabled style="width:auto;max-width:85px;" ng-options="bool as bool.name for bool in foroneun track by bool.value"></select>
+                                                    </td>
+                                                    <td style="width:50px;"> <input type="text" ng-model="rows2.Charges" name="charges{{$index}}" class="customdis{{$index}}" disabled style="width:60px" /></td>
+                                                    <td style="width:50px;"> <input type="text" ng-model="rows2.TTType" name="tttype{{$index}}" class="customdis{{$index}}" disabled style="width:60px" /> </td>
+                                                    <td style="width:50px;"> <input type="text" ng-model="rows2.TestDate" name="testdate{{$index}}" class="my-datepicker customdis{{$index}}" disabled style="width:85px" /> </td>
+                                                    <td style="width:60px;"> <select ng-model="rows2.DoWePaySelected" name="dowepay{{$index}}" class="customdis{{$index}}" disabled ng-options="bool as bool.name for bool in tfddl track by bool.value" style="width:100%"></select> </td>
+                                                    <td style="width:60px;"> <select ng-model="rows2.AcceptReportSelected" name="acceptreport{{$index}}" class="customdis{{$index}}" disabled ng-options="bool as bool.name for bool in tfddl track by bool.value" style="width:100%"></select>  </td>
+                                                    <td style="width:60px;"> <select ng-model="rows2.CustWitnessSelected" name="custwitness{{$index}}" class="customdis{{$index}}" disabled ng-options="bool as bool.name for bool in tfddl track by bool.value" style="width:100%"></select>  </td>
+                                                    <td style="width:60px;"> <select ng-model="rows2.FailedSelected" name="failed{{$index}}" class="customdis{{$index}}" disabled ng-options="bool as bool.name for bool in tfddl track by bool.value" style="width:100%"></select></td>
+                                                    <td style="width:60px;"> <select ng-model="rows2.WaivedSelected" name="waived{{$index}}" class="customdis{{$index}}" disabled ng-options="bool as bool.name for bool in tfddl track by bool.value" style="width:100%"></select></td>
+                                                    <td> <select ng-model="rows2.ProdSerialIDSelected" name="prodserial{{$index}}" class="customdis{{$index}}" disabled ng-options="pro as pro.prodserialnum for pro in productser track by pro.prodserialid" style="width:100%"></select></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @*<div ng-repeat="rows2 in tt">
+                                            <div class="row" style="margin-bottom:10px;">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-11">
+                                                    <input type="checkbox"style="width:20px;height:20px;"/>
+                                                    <input type="text" ng-model="rows2.strtypespecaddl" style="width:auto;max-width:60px" />
+                                                    <input type="text" ng-model="rows2.testname" style="width:auto;max-width:inherit" />
+                                                    <select ng-model="rows2.ForOneUnitSelected" style="width:auto;max-width:85px;height:32px;" ng-options="bool as bool.name for bool in foroneun track by bool.value">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+            <!--Documents-->
+            <div class="row">
+                <div class="customdiv">
+                    <div class="panel panel-default" id="accordion10" role="tablist" aria-multiselectable="true">
+                        <div class="panel-heading active" role="tab" id="headingTen">
+                            <div class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion10" href="#collapseTen" aria-expanded="true" aria-controls="collapseTen">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-11" style="padding-left:25px;"> Documents<span style="color:#a20000; font-size:24px;" id="docs"></span> </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div id="collapseTen" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTen">
+                            <div class="panel-body">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <a href="" class="btn btn-default" style="background-color:rgba(212, 212, 212, 0.38);border:1px solid rgba(111, 105, 105, 0.38);" ng-click="Add('documents')">Add Document</a>
+                                        </div>
+                                    </div>
+                                    <div ng-repeat="rows in documents">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Prefix</label>
+                                                <input type="text" class="form-control" name="Prefix{{index}}" ng-model="rows.Prefix" style="max-width:540px" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Name</label>
+                                                <select class="form-control" name="Name{{$index}}" ng-model="rows.docnameidSelected" style="max-width:540px" ng-options="doc as doc.Docname for doc in documentopt track by doc.docnameid "></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">Postfix</label>
+                                                <input type="text" class="form-control" name="Postfix{{index}}" ng-model="rows.Postfix" style="max-width:540px" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4">
+                                                <label class="control-label labeltext">Num Copies</label>
+                                                <input type="text" class="form-control" name="NumCopies{{index}}" ng-model="rows.NumCopies" style="max-width:540px" />
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">DocNumber</label>
+                                                <input type="text" class="form-control" name="DocNumber{{index}}" ng-model="rows.DocNumber" style="max-width:540px" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="control-label labeltext">DocDetails</label>
+                                                <input type="text" class="form-control" name="DocDetails{{index}}" ng-model="rows.DocDetails" style="max-width:540px" />
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="" style="z-index:35;position:relative;margin-top:38px;float:left;" ng-click="delete($index,'documents')"><span class="fa fa-trash" style="color: #d83e3b;"></span></a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><hr /></div>
+                </div>
+            </div>
+
+
+            <!--Button Div-->
+            <div class="row">
+                <hr />
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" @* ng-show="model.frmMode==1 && visbacktoform" *@ id="btnbacktosalesorder" ng-click="backtoprev()" style="margin-bottom: 16px; color: #fff;background: #50a74f !important;border-color: #0c940b !important;" Class="btn btn-primary btnf">Go To Sales Order</button>
+                </div>
+                <div class="col-md-9">
+                    @Html.Partial("_SavePanel")
+                </div>
+            </div>
+        </div>
+        <div id="dialogCustomer">
+            @*<div ng-repeat="row in cust_dsCombo">
+                    <input id="cust_{{row.CustomerID}}" type="radio" ng-model="$parent.SelectedCustId" value="{{row.CustomerID}}" /> {{row.PartyName}}
+                </div>*@
+        </div>
+
+
+    </form>
+</div>
+
+@section botscripts{
+
+
+    <script>
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                $(".my-datepicker").removeClass("my-datepicker").each(function () {
+                    $(this).datepicker({ dateFormat: 'yy-mm-dd' });
+                });
+            }, 10);
+
+            //Delegate
+            $(document).delegate("#acMainGrid", "iggridcellclick", function (evt, ui) {
+                $('#acMainGrid').igGridSelection('selectRow', ui.rowIndex);
+                rui = ui;
+            });
+            // Delegate for Tabletree
+            $(document).delegate("#tblSpare tr", "click", function (e) {
+
+                $('tblSpare tr').addClass('active');
+            });
+        });
+
+        rsApp.controller('FormController', function ($scope, $http) {
+
+            $scope.model = JSON.parse($("#model_json").val());
+            $scope.status = 'loaded';
+
+            var loadmodel = function (result) {
+
+                $scope.model = result;
+                $scope.WO = $scope.model.dsForm.DT[0];
+                $scope.fitting = $scope.model.dsForm.fitting;
+                $scope.ValueLists = $scope.model.ValueLists;
+                debugger;
+                $scope.dsCombo = $scope.model.dsCombo;
+                $scope.superchtype = $scope.model.ValueLists.superchtype.ValueListItems;
+                $scope.periodtype = $scope.model.ValueLists.periodtype.ValueListItems;
+                $scope.numtype = $scope.model.ValueLists.numtype.ValueListItems;
+                $scope.DelSched = $scope.model.GridViews.DelSched.MainGrid.myDS.dt;
+                $scope.Spare = $scope.model.GridViews.Spare.MainGrid.myDS.dt;
+                $scope.Services = $scope.model.GridViews.Service.MainGrid.myDS.dt;
+                $scope.Sites = $scope.model.GridViews.Campus.MainGrid.myDS.dt;
+                $scope.HSN = $scope.model.GridViews.Spare.MainGrid.dsLookup.Table1;
+                $scope.Unit = $scope.model.GridViews.Spare.MainGrid.dsLookup.Table2;
+                $scope.documents = $scope.model.GridViews.Doc.MainGrid.myDS.dt;
+                $scope.documentopt = $scope.model.GridViews.Doc.MainGrid.dsLookup.Table0;
+                $scope.WO.WOTypeSelected = $.grep($scope.dsCombo.wotype, function (item, index) { return item.codeword === $scope.model.dsForm.DT[0].WOType; })[0];
+                $scope.foroneun = [{ value: true, name: 'One Unit' }, { value: false, name: 'Each Unit' }];
+                $scope.tfddl = [{ value: true, name: 'Yes' }, { value: false, name: 'No' }];
+                $scope.TestType = $scope.model.GridViews.TT.MainGrid.myDS.dt;
+                $scope.testids = $scope.model.GridViews.TT.MainGrid.dsLookup.Table0;
+                $scope.productser = $scope.model.GridViews.TT.MainGrid.dsLookup.Table1;
+                $scope.WO.MatDepIDSelected = $.grep($scope.dsCombo.Deps, function (item, index) { return $scope.model.dsForm.DT[0].MatDepID == item.matdepid })[0];
+                $scope.tt = $scope.TestType.map(x => { return $scope.testids.map(y => { if (y.TypeTestID === x.TypeTestID) { x.testname = y.testname; return x; } }) })
+
+                $.each($scope.TestType, function (index, row) {
+                    // debugger;
+                    row.ForOneUnitSelected = $.grep($scope.foroneun, function (item, index) { return row.ForOneUnit == item.value })[0];
+                })
+
+                $.each($scope.TestType, function (index, row) {
+                    row.ForOneUnitSelected = $.grep($scope.foroneun, function (item, index) { return item.value === row.ForOneUnit })[0];
+                    row.DoWePaySelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.DoWePay })[0];
+                    row.AcceptReportSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.AcceptReport })[0];
+                    row.CustWitnessSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.CustWitness })[0];
+                    row.FailedSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.Failed })[0];
+                    row.WaivedSelected = $.grep($scope.tfddl, function (item, index) { return item.value === row.Waived })[0];
+                    row.ProdSerialIDSelected = $.grep($scope.productser, function (item, index) { return item.prodserialid === row.ProdSerialID })[0];
+                })
+
+                angular.forEach($scope.Spare, function (v, k) {
+                    v.SOparentid;
+                });
+
+                @Html.RenderLookup("WO", Model, Model.dsForm.Tables(0))
+
+            }
+
+            loadmodel($scope.model)
+            //Type Test
+            $scope.chkTypeTest = function (index) {
+                $('.customdis' + index).attr('disabled', false);
+            }
+            //Fitting
+            $scope.loadfittings = function () {
+                $scope.fitting = $scope.dsCombo.fittingmaster;
+                $scope.standard = $.grep($scope.fitting, function (item, index) { return item.isstandard == true; });
+                $scope.Additional = $.grep($scope.fitting, function (item, index) { return item.isstandard == false; });
+            }
+            $scope.loadfittings();
+            //Append boqval in Fullboqval
+            $scope.appendFull = function (value, index) {
+
+                var boqval = value.row.BOQNum;
+                if (boqval == '' || boqval == undefined) {
+                    $('#fullboq_' + index).val('');
+                }
+                else {
+                    if ($('#fullboq_' + index).val() != '') {
+                        var fullboq = $('#fullboq_' + index).val() + '' + boqval;
+                        $('#fullboq_' + index).val(fullboq);
+                        //$('#btnAddChild' + index).attr('disabled', false);
+                    }
+                    else {
+                        $('#fullboq_' + index).val(boqval);
+                        //$('#btnAddChild' + index).attr('disabled', 'disabled');
+
+                    }
+                }
+
+            }
+            var globalindex = '';
+            //Add Child
+            $scope.AddChild = function (value, index) {
+
+                var boqval = $('#fullboq_' + index).val() + ">";
+                // var boqval = $('#boqnum_' + index).val() + ">";
+                var newindex = $scope.Spare.length;
+                var child = [];
+                var newid = value.row.SOparentid + '>' + newindex;
+                child = { FullBOQNum: boqval, SOparentid: newid };
+                $scope.Spare.push(child);
+                console.log($scope.Spare);
+            }
+
+            $scope.Add = function (val) {
+                if (val == "DelSched") {
+                    $scope.DelSched.push({});
+                }
+                else if (val == "Spare") {
+                    // debugger;
+                    // $scope.Spare.push({});
+                    var count = JSON.stringify($scope.Spare.length);
+                    var ind = []
+                    ind = { SOparentid: count };
+                    $scope.Spare.push(ind);
+                    // $scope.sort();
+
+                }
+                else if (val == "Services") {
+                    // debugger;
+                    $scope.Services.push({});
+                    //var count = JSON.stringify($scope.Services.length);
+                    //var ind = []
+                    //ind = { SOparentid: count };
+                    //$scope.Services.push(ind);
+
+
+                }
+                else if (val == "documents") {
+                    $scope.documents.push({});
+                }
+            }
+            $scope.delete = function (index, val) {
+                if (val == "DelSched") {
+                    $scope.DelSched.splice(index, 1);
+                }
+                else if (val == "Spare") {
+
+
+                    $scope.Spare.splice(index, 1);
+
+                }
+                else if (val == "documents") {
+                    $scope.documents.splice(index, 1);
+                }
+            }
+
+            $scope.sort = function () {
+                $.each($scope.Spare, function (index, row) {
+
+                })
+            }
+
+            $scope.stand = [];
+            $scope.additional = [];
+            //standard to additional
+            $scope.standardtoadditional = function () {
+
+                $('.standardfitting:checkbox:checked').each(function () {
+                    // debugger;
+                    $scope.stand.push(this.value);
+
+                    console.log($scope.stand);
+                    //  $scope.standard = $.grep($scope.standard, function (item, index) { return item.isstandard == true; });
+                });
+
+            }
+            //additional to standard
+            $scope.additionaltostandard = function () {
+                //<a href="~/Views/Forms/frmWO.vbhtml">~/Views/Forms/frmWO.vbhtml</a>
+                $scope.arr = new Array();
+                var i = 0;
+                $('.additionalfitting:checkbox:checked').each(function () {
+                    // debugger;
+                    $scope.additional.push(this.value);
+                    $scope.arr.push()
+                    console.log($scope.additional);
+                });
+
+            }
+            //select all standard
+            $scope.selectallstandard = function () {
+                $(".standardfitting").prop('checked', true);
+            }
+
+            $scope.changeitem = function (key, value) {
+
+                if (key == 'name') {
+                    $scope.itemnam = $.grep($scope.model.dsCombo.Items, function (item, index) { return item.itemid == value.itemid })[0];
+                    $scope.Itemname = $scope.itemnam;
+                }
+                else if (key == 'code') {
+
+                    $scope.itemcod = $.grep($scope.model.dsCombo.Items, function (item, index) { return item.itemid == value.itemid })[0];
+                    $scope.WO.ItemIDSelected = $scope.itemcod;
+                }
+            }
+            // BACK TO SALES ORDER FORM
+            $scope.backtoprev = function () {
+                $scope.info = $scope.WO;
+                $scope.salesorderid = $scope.model.dsForm.DT[0].SalesOrderID;
+                var base = '/App/Link' + location.search;
+                var payload = { fKey: 'frmSalesOrder', fMode: 'acEditM', IDX: $scope.salesorderid, rowData: JSON.stringify($scope.info) }; // for edit
+                $.post(base, payload, function (result) {
+                    $scope.status = 'loaded';
+                    window.location = result;
+                });
+            }
+            //REDIRECT TO HSN
+            $scope.redirectToHsn = function () {
+                $scope.SalesWO = ($scope.model.frmMode == 2 ? false : true);
+                if ($scope.model.frmMode == 1 && $scope.SalesWO) {
+                    $scope.info = $scope.WO;
+                    $scope.info.WOTypeSelected = $scope.WO.WOTypeSelected.codeword;
+                    var base = '/App/Link' + location.search;
+                    var payload = { fKey: 'frmHsnSac', fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) }
+                    $.post(base, payload, function (result) {
+                        $scope.status = 'loaded';
+                        window.location = result;
+                    });
+                }
+                else {
+                    alert("Please Submit form Before Adding HSN");
+                }
+            }
+
+            //REDIRECT TO Campus
+            $scope.redirectToCampus = function () {
+                $scope.SalesWO = ($scope.model.frmMode == 2 ? false : true);
+                if ($scope.model.frmMode == 1 && $scope.SalesWO) {
+                    $scope.info = $scope.WO;
+                    $scope.info.WOTypeSelected = $scope.WO.WOTypeSelected.codeword;
+                    var base = '/App/Link' + location.search;
+                    var payload = { fKey: 'frmCampus', fMode: 'acAddM', IDX: 0, rowData: JSON.stringify($scope.info) }
+                    $.post(base, payload, function (result) {
+                        $scope.status = 'loaded';
+                        window.location = result;
+                    });
+                }
+                else {
+                    alert("Please Submit form Before Adding Campus");
+                }
+            }
+
+            $scope.cleanupmodel = function (datamodel) {
+
+            };
+
+            $scope.calculatemodel = function () {
+                //debugger;
+                $scope.TestType;
+                if ($scope.Itemname.IsETO) {
+                    $scope.model.dsForm.DT[0].descripwo = $scope.WO.ItemIDSelected.ETODescripAttribID;
+                    $scope.model.dsForm.DT[0].descriptech = $scope.WO.ItemIDSelected.ETOTechDescripAttribID;
+                }
+                else {
+                    $scope.model.dsForm.DT[0].descripwo = $scope.WO.ItemIDSelected.itemname;
+                    $scope.model.dsForm.DT[0].descriptech = $scope.WO.ItemIDSelected.itemname;
+                }
+            };
+
+            $scope.visdel = false;
+            @Html.RenderFile("~/scripts/rsforms.js");
+        });
+    </script>
+    <link href="~/Scripts/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jqueryui")
+}
+
+
+
+
+
+
