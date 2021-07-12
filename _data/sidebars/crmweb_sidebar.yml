@@ -154,6 +154,10 @@ entries:
       output: web
       url: /crm-nirvana-web/call.html
       
+    - title: Case
+      output: web
+      url: /crm-nirvana-web/case.html      
+      
     - title: Messages
       output: web
       url: /crm-nirvana-web/messages.html
